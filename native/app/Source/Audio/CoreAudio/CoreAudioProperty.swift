@@ -155,35 +155,34 @@ enum CAProperty {
     }
   }
 
-  /// Translates one value into another via `AudioValueTranslation`.
-  static func translate<In, Out> (
+  /// Reads a property whose input is supplied through the qualifier — the
+  /// shape used by the `kAudioHardwarePropertyTranslate*` selectors.
+  ///
+  /// Note these do NOT use `AudioValueTranslation`: the header states the UID
+  /// "is passed in via the qualifier as a CFString while the AudioObjectID is
+  /// returned to the caller as the property's data".
+  static func qualifiedValue<Q, T> (
     _ objectID: AudioObjectID,
     _ address: AudioObjectPropertyAddress,
-    input: In,
-    output: Out
-  ) -> Out? {
-    guard has(objectID, address) else { return nil }
+    qualifier: Q,
+    default fallback: T
+  ) -> T? {
     var address = address
-    var input = input
-    var output = output
+    var qualifier = qualifier
+    var value = fallback
+    var size = UInt32(MemoryLayout<T>.size)
 
-    // AudioValueTranslation stores raw pointers to both buffers, so those
-    // pointers have to outlive the call that reads them. Taking `&input`
-    // inline would let them dangle.
-    let status = withUnsafeMutablePointer(to: &input) { inputPointer in
-      withUnsafeMutablePointer(to: &output) { outputPointer -> OSStatus in
-        var translation = AudioValueTranslation(
-          mInputData: UnsafeMutableRawPointer(inputPointer),
-          mInputDataSize: UInt32(MemoryLayout<In>.size),
-          mOutputData: UnsafeMutableRawPointer(outputPointer),
-          mOutputDataSize: UInt32(MemoryLayout<Out>.size)
+    let status = withUnsafeMutablePointer(to: &qualifier) { qualifierPointer in
+      withUnsafeMutablePointer(to: &value) { valuePointer -> OSStatus in
+        return AudioObjectGetPropertyData(
+          objectID, &address,
+          UInt32(MemoryLayout<Q>.size), qualifierPointer,
+          &size, valuePointer
         )
-        var size = UInt32(MemoryLayout<AudioValueTranslation>.size)
-        return AudioObjectGetPropertyData(objectID, &address, 0, nil, &size, &translation)
       }
     }
 
     guard status == noErr else { return nil }
-    return output
+    return value
   }
 }

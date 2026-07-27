@@ -257,10 +257,10 @@ public struct AudioDevice: Equatable, Hashable, CustomStringConvertible {
 
   public static func lookup (by uid: String) -> AudioDevice? {
     let address = CAProperty.address(kAudioHardwarePropertyTranslateUIDToDevice)
-    guard let deviceID = CAProperty.translate(
+    guard let deviceID = CAProperty.qualifiedValue(
       systemObject, address,
-      input: uid as CFString,
-      output: AudioObjectID(kAudioObjectUnknown)
+      qualifier: uid as CFString,
+      default: AudioObjectID(kAudioObjectUnknown)
     ) else { return nil }
 
     return deviceID == kAudioObjectUnknown ? nil : AudioDevice(id: deviceID)
