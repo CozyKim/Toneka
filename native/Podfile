@@ -1,15 +1,16 @@
-source 'https://github.com/AudioKit/Specs.git'
-source 'https://github.com/CocoaPods/Specs.git'
+# NOTE: AudioKit/Specs was deleted from GitHub (404) and no pod here needs it.
+# Using the CDN instead of cloning the multi-GB Specs git repo.
+source 'https://cdn.cocoapods.org/'
 
 # Uncomment the next line to define a global platform for your project
-platform :osx, '10.12'
+platform :osx, '14.2'
 workspace 'eqMac.xcworkspace'
 use_frameworks!
 
 post_install do |installer|
   installer.pods_project.targets.each do |target|
     target.build_configurations.each do |config|
-      config.build_settings['MACOSX_DEPLOYMENT_TARGET'] = '10.12'
+      config.build_settings['MACOSX_DEPLOYMENT_TARGET'] = '14.2'
     end
   end
 end
@@ -27,13 +28,18 @@ target 'eqMac' do
   project 'app/eqMac.xcodeproj'
 
   pod 'SwiftHTTP', '~> 3.0'
-  pod 'AMCoreAudio', :git => 'https://github.com/bitgapp/AMCoreAudio.git', :commit => 'b312d1509ef863dea3ca56cfa3f57451de4ff721'
+  # AMCoreAudio is gone: the bitgapp fork was deleted (404) and upstream was
+  # renamed to SimplyCoreAudio, which broke the 3.4 podspec's source_files so
+  # the pod installs with zero Swift sources. Replaced by our own CoreAudio
+  # wrapper in Source/Audio/CoreAudio/ with a matching API surface.
   pod 'WebViewJavascriptBridge', '~> 6.0'
 #  pod 'ReachabilitySwift'
   pod 'ReSwift', '~> 6.1'
   pod 'SwiftLint'
   pod 'Sparkle', '~> 1.24'
-  pod 'Sentry', '~> 7.1.3'
+  # 7.1.3 fails to compile on modern libc++: SentryCrashMonitor_CPPException.cpp
+  # used std::set_terminate without including <exception>. Fixed in 8.x/9.x.
+  pod 'Sentry', '~> 9.9'
   pod 'EmitterKit', '~> 5.2.2'
   pod 'SwiftyJSON', '~> 4.2'
   pod 'SwiftyUserDefaults', '4.0'

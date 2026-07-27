@@ -9,7 +9,6 @@
 import Foundation
 import ReSwift
 import EmitterKit
-import AMCoreAudio
 import AVFoundation
 
 class Volume: StoreSubscriber {

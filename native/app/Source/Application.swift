@@ -8,7 +8,6 @@
 
 import Foundation
 import Cocoa
-import AMCoreAudio
 import Dispatch
 import Sentry
 import EmitterKit

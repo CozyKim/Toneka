@@ -1,13 +1,16 @@
 //
-//  DeviceEvents.swift
+//  AudioDeviceEvents.swift
 //  eqMac
 //
 //  Created by Roman Kisil on 14/11/2018.
 //  Copyright © 2018 Roman Kisil. All rights reserved.
 //
+//  Rewritten to listen on CoreAudio directly instead of AMCoreAudio's
+//  NotificationCenter. The static API is unchanged so call sites still work.
+//
 
 import Foundation
-import AMCoreAudio
+import CoreAudio
 import EmitterKit
 
 struct ListChangedDevices {
@@ -34,12 +37,12 @@ enum AudioDeviceEventType {
   case systemDeviceChanged
 }
 
-class AudioDeviceEvents: EventSubscriber {
+class AudioDeviceEvents {
   static var events = AudioDeviceEvents()
-  static var listeners: [EmitterKit.EventListener<AudioDevice>] = [] as! [EmitterKit.EventListener<AudioDevice>]
+  static var listeners: [EmitterKit.EventListener<AudioDevice>] = []
 
-  var hashValue: Int = 1
   var subscribed = false
+
   // Per Device
   let isJackConnectedChangedEvent = EmitterKit.Event<AudioDevice>()
   let isRunningSomewhereChangedEvent = EmitterKit.Event<AudioDevice>()
@@ -54,131 +57,160 @@ class AudioDeviceEvents: EventSubscriber {
   let isRunningChangedEvent = EmitterKit.Event<AudioDevice>()
   let preferredChannelsForStereoChangedEvent = EmitterKit.Event<AudioDevice>()
   let hogModeChangedEvent = EmitterKit.Event<AudioDevice>()
-  
+
   // Hardware Events
   let deviceListChangedEvent = EmitterKit.Event<ListChangedDevices>()
-  static var deviceListChangedListeners: [EmitterKit.EventListener<ListChangedDevices>] = [] as! [EmitterKit.EventListener<ListChangedDevices>]
-  
+  static var deviceListChangedListeners: [EmitterKit.EventListener<ListChangedDevices>] = []
+
   let outputChangedEvent = EmitterKit.Event<AudioDevice>()
   let inputChangedEvent = EmitterKit.Event<AudioDevice>()
   let systemDeviceChangedEvent = EmitterKit.Event<AudioDevice>()
 
-  func subscribe () {
-    if !subscribed {
-      NotificationCenter.defaultCenter.subscribe(
-        self,
-        eventType: AudioHardwareEvent.self,
-        dispatchQueue: DispatchQueue.main
-      )
-      NotificationCenter.defaultCenter.subscribe(
-        self,
-        eventType: AudioDeviceEvent.self,
-        dispatchQueue: DispatchQueue.main
-      )
-      subscribed = true
+  // MARK: - CoreAudio plumbing
+
+  private static let systemObject = AudioObjectID(kAudioObjectSystemObject)
+  private static let listenerQueue = DispatchQueue.main
+
+  /// Device-scoped properties we forward as events.
+  private static let deviceSelectors: [(AudioObjectPropertySelector, AudioDeviceEventType)] = [
+    (kAudioDevicePropertyVolumeScalar, .volumeChanged),
+    (kAudioDevicePropertyMute, .muteChanged),
+    (kAudioDevicePropertyDeviceIsAlive, .isAliveChanged),
+    (kAudioDevicePropertyJackIsConnected, .isJackConnectedChanged),
+    (kAudioDevicePropertyNominalSampleRate, .nominalSampleRateChanged),
+    (kAudioDevicePropertyAvailableNominalSampleRates, .availableNominalSampleRatesChanged),
+    (kAudioDevicePropertyClockSource, .clockSourceChanged),
+    (kAudioObjectPropertyName, .nameChanged),
+    (kAudioDevicePropertyDeviceIsRunning, .isRunningChanged),
+    (kAudioDevicePropertyDeviceIsRunningSomewhere, .isRunningSomewhereChanged),
+    (kAudioDevicePropertyPreferredChannelsForStereo, .preferredChannelsForStereoChanged),
+    (kAudioDevicePropertyHogMode, .hogModeChanged)
+  ]
+
+  /// System-scoped properties we forward as events.
+  private static let hardwareSelectors: [AudioObjectPropertySelector] = [
+    kAudioHardwarePropertyDevices,
+    kAudioHardwarePropertyDefaultOutputDevice,
+    kAudioHardwarePropertyDefaultInputDevice,
+    kAudioHardwarePropertyDefaultSystemOutputDevice
+  ]
+
+  /// Blocks are retained so they can be removed again on unsubscribe.
+  private var registered: [(AudioObjectID, AudioObjectPropertyAddress, AudioObjectPropertyListenerBlock)] = []
+  private var knownDevices: [AudioDevice] = []
+
+  private func addListener (
+    _ objectID: AudioObjectID,
+    _ selector: AudioObjectPropertySelector,
+    _ handler: @escaping () -> Void
+  ) {
+    var address = AudioObjectPropertyAddress(
+      mSelector: selector,
+      mScope: kAudioObjectPropertyScopeWildcard,
+      mElement: kAudioObjectPropertyElementWildcard
+    )
+
+    let block: AudioObjectPropertyListenerBlock = { _, _ in handler() }
+
+    guard AudioObjectAddPropertyListenerBlock(
+      objectID, &address, AudioDeviceEvents.listenerQueue, block
+    ) == noErr else { return }
+
+    registered.append((objectID, address, block))
+  }
+
+  private func attach (to device: AudioDevice) {
+    for (selector, type) in AudioDeviceEvents.deviceSelectors {
+      addListener(device.id, selector) { [weak self] in
+        guard let self = self else { return }
+        AudioDeviceEvents.getEventEmitterFromEventType(type).emit(device)
+        _ = self
+      }
     }
   }
-  
+
+  private func handleDeviceListChanged () {
+    let current = AudioDevice.allDevices()
+    let currentIDs = Set(current.map { $0.id })
+    let knownIDs = Set(knownDevices.map { $0.id })
+
+    let added = current.filter { !knownIDs.contains($0.id) }
+    let removed = knownDevices.filter { !currentIDs.contains($0.id) }
+
+    knownDevices = current
+    for device in added { attach(to: device) }
+
+    let addedHardware = added.filter { $0.isHardware }
+    let removedHardware = removed.filter { $0.isHardware }
+
+    if !addedHardware.isEmpty || !removedHardware.isEmpty {
+      deviceListChangedEvent.emit(
+        ListChangedDevices(added: addedHardware, removed: removedHardware)
+      )
+    }
+  }
+
+  func subscribe () {
+    guard !subscribed else { return }
+    subscribed = true
+
+    knownDevices = AudioDevice.allDevices()
+    for device in knownDevices { attach(to: device) }
+
+    for selector in AudioDeviceEvents.hardwareSelectors {
+      addListener(AudioDeviceEvents.systemObject, selector) { [weak self] in
+        guard let self = self else { return }
+        switch selector {
+        case kAudioHardwarePropertyDevices:
+          self.handleDeviceListChanged()
+        case kAudioHardwarePropertyDefaultOutputDevice:
+          if let device = AudioDevice.defaultOutputDevice() { self.outputChangedEvent.emit(device) }
+        case kAudioHardwarePropertyDefaultInputDevice:
+          if let device = AudioDevice.defaultInputDevice() { self.inputChangedEvent.emit(device) }
+        case kAudioHardwarePropertyDefaultSystemOutputDevice:
+          if let device = AudioDevice.defaultSystemOutputDevice() { self.systemDeviceChangedEvent.emit(device) }
+        default: break
+        }
+      }
+    }
+  }
+
   func unsubscribe () {
-    NotificationCenter.defaultCenter.unsubscribe(self, eventType: AudioHardwareEvent.self)
-    NotificationCenter.defaultCenter.unsubscribe(self, eventType: AudioDeviceEvent.self)
+    for (objectID, address, block) in registered {
+      var address = address
+      AudioObjectRemovePropertyListenerBlock(
+        objectID, &address, AudioDeviceEvents.listenerQueue, block
+      )
+    }
+    registered.removeAll()
+    knownDevices.removeAll()
     subscribed = false
   }
-  
+
   static func subscribe () {
     events.subscribe()
   }
-  
+
   static func unsubscribe () {
     events.unsubscribe()
   }
-  
-  internal func eventReceiver(_ event: AMCoreAudio.Event) {
-    switch event {
-    case let event as AudioHardwareEvent:
-      switch event {
-      case .defaultOutputDeviceChanged(let device): outputChangedEvent.emit(device)
-      case .deviceListChanged(var added, var removed):
-        added = added.filter { $0.isHardware }
-        removed = removed.filter { $0.isHardware }
-        if (added.count > 0 || removed.count > 0) {
-          deviceListChangedEvent.emit(ListChangedDevices(
-            added: added,
-            removed: removed
-          ))
-        }
-      case .defaultInputDeviceChanged(let device): inputChangedEvent.emit(device)
-      case .defaultSystemOutputDeviceChanged(let device): systemDeviceChangedEvent.emit(device)
-      }
-    case let event as AudioDeviceEvent:
-      let emitter = AudioDeviceEvents.getEventEmitterFromEvent(event)
-      let device = AudioDeviceEvents.getDeviceFromEvent(event)
-      emitter.emit(device)
-    default: return
-    }
-  }
-    
-  static func recreateEventEmitters(_ eventsToRecreate: [AudioDeviceEventType]) throws {
+
+  static func recreateEventEmitters (_ eventsToRecreate: [AudioDeviceEventType]) throws {
     subscribe()
     for event in eventsToRecreate {
       switch event {
       case .isAliveChanged:
         events.isAliveChangedEvent = EmitterKit.Event<AudioDevice>()
-        break
       case .volumeChanged:
         events.volumeChangedEvent = EmitterKit.Event<AudioDevice>()
-        break
       case .nominalSampleRateChanged:
         events.nominalSampleRateChangedEvent = EmitterKit.Event<AudioDevice>()
-        break
       default:
         throw "This event can't be recreated, or change this code"
       }
     }
   }
-  
-  static func getEventEmitterFromEvent (_ event: AudioDeviceEvent) -> EmitterKit.Event<AudioDevice> {
-    let eventType = getEventTypeFromEvent(event)
-    let emitter = getEventEmitterFromEventType(eventType)
-    return emitter
-  }
-  
-  static func getEventTypeFromEvent (_ event: AudioDeviceEvent) -> AudioDeviceEventType {
-    switch event {
-    case .isRunningSomewhereDidChange(_): return .isRunningSomewhereChanged
-    case .volumeDidChange(_, _, _): return .volumeChanged
-    case .muteDidChange(_, _, _): return .muteChanged
-    case .isAliveDidChange(_): return .isAliveChanged
-    case .isJackConnectedDidChange(_): return .isJackConnectedChanged
-    case .nominalSampleRateDidChange(_): return .nominalSampleRateChanged
-    case .availableNominalSampleRatesDidChange(_): return .availableNominalSampleRatesChanged
-    case .clockSourceDidChange(_): return .clockSourceChanged
-    case .nameDidChange(_): return .nameChanged
-    case .listDidChange(_): return .listChanged
-    case .isRunningDidChange(_): return .isRunningChanged
-    case .preferredChannelsForStereoDidChange(_): return .preferredChannelsForStereoChanged
-    case .hogModeDidChange(_): return .hogModeChanged
-    }
-  }
-  
-  static func getDeviceFromEvent (_ event: AudioDeviceEvent) -> AudioDevice {
-    switch event {
-    case .isRunningSomewhereDidChange(let device): return device
-    case .volumeDidChange(let device, _, _): return device
-    case .muteDidChange(let device, _, _): return device
-    case .isAliveDidChange(let device): return device
-    case .isJackConnectedDidChange(let device): return device
-    case .nominalSampleRateDidChange(let device): return device
-    case .availableNominalSampleRatesDidChange(let device): return device
-    case .clockSourceDidChange(let device): return device
-    case .nameDidChange(let device): return device
-    case .listDidChange(let device): return device
-    case .isRunningDidChange(let device): return device
-    case .preferredChannelsForStereoDidChange(let device): return device
-    case .hogModeDidChange(let device): return device
-    }
-  }
-  
+
   static func getEventEmitterFromEventType (_ event: AudioDeviceEventType) -> EmitterKit.Event<AudioDevice> {
     switch event {
     case .isRunningSomewhereChanged: return events.isRunningSomewhereChangedEvent
@@ -199,7 +231,7 @@ class AudioDeviceEvents: EventSubscriber {
     case .systemDeviceChanged: return events.systemDeviceChangedEvent
     }
   }
-  
+
   @discardableResult
   static func on (_ event: AudioDeviceEventType, retain: Bool = true, _ handler: @escaping (AudioDevice) -> Void) -> EmitterKit.EventListener<AudioDevice> {
     events.subscribe()
@@ -210,12 +242,12 @@ class AudioDeviceEvents: EventSubscriber {
     }
     return listener
   }
-  
+
   @discardableResult
   static func on (_ event: AudioDeviceEventType, onDevice device: AudioDevice, retain: Bool = true, _ handler: @escaping () -> Void) -> EmitterKit.EventListener<AudioDevice> {
     return on(event, retain: retain) { if $0.id == device.id { handler() }}
   }
-  
+
   @discardableResult
   static func once (_ event: AudioDeviceEventType, _ handler: @escaping (AudioDevice) -> Void) -> EmitterKit.EventListener<AudioDevice> {
     events.subscribe()
@@ -223,7 +255,7 @@ class AudioDeviceEvents: EventSubscriber {
     let listener: EmitterKit.EventListener<AudioDevice> = emitter.once(handler: handler)
     return listener
   }
-  
+
   static func once (_ event: AudioDeviceEventType, onDevice device: AudioDevice, _ handler: @escaping () -> Void) {
     let emitter = getEventEmitterFromEventType(event)
     emitter.once { d in
@@ -234,32 +266,32 @@ class AudioDeviceEvents: EventSubscriber {
       }
     }
   }
-  
+
   @discardableResult
   static func onDeviceListChanged (_ handler: @escaping (ListChangedDevices) -> Void) -> EmitterKit.EventListener<ListChangedDevices> {
+    events.subscribe()
     let listener = events.deviceListChangedEvent.on(handler)
     deviceListChangedListeners.append(listener)
     return listener
   }
-  
+
   static func start () {
     subscribe()
     for listener in listeners {
       listener.isListening = true
     }
   }
-  
+
   static func stop () {
     unsubscribe()
     for listener in listeners {
       listener.isListening = false
     }
     listeners.removeAll()
-    
+
     for listener in deviceListChangedListeners {
       listener.isListening = false
     }
     deviceListChangedListeners.removeAll()
   }
-  
 }

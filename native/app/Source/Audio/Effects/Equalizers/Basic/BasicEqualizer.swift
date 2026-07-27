@@ -10,7 +10,6 @@ import Foundation
 import ReSwift
 import EmitterKit
 import AVFoundation
-import AMCoreAudio
 import Shared
 
 let BasicEqualizerDefaultPresets: [BasicEqualizerPreset] = []

@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import AMCoreAudio
 import Version
 
 struct Constants {

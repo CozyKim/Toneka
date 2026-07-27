@@ -11,7 +11,6 @@ import SwiftyJSON
 import ServiceManagement
 import Sparkle
 import EmitterKit
-import AMCoreAudio
 import Shared
 
 @NSApplicationMain

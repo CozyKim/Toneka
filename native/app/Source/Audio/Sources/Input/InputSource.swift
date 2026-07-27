@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import AMCoreAudio
 import AVFoundation
 
 class InputSource {

@@ -1,11 +1,10 @@
 PODS:
-  - AMCoreAudio (3.5)
   - EmitterKit (5.2.2)
   - KeychainSwift (13.0.0)
   - ReSwift (6.1.0)
-  - Sentry (7.1.3):
-    - Sentry/Core (= 7.1.3)
-  - Sentry/Core (7.1.3)
+  - Sentry (9.19.1):
+    - Sentry/Core (= 9.19.1)
+  - Sentry/Core (9.19.1)
   - Sparkle (1.24.0)
   - STPrivilegedTask (1.0.7)
   - SwiftHTTP (3.0.1)
@@ -16,11 +15,10 @@ PODS:
   - Zip (2.1.1)
 
 DEPENDENCIES:
-  - AMCoreAudio (from `https://github.com/bitgapp/AMCoreAudio.git`, commit `b312d1509ef863dea3ca56cfa3f57451de4ff721`)
   - EmitterKit (~> 5.2.2)
   - KeychainSwift (~> 13.0)
   - ReSwift (~> 6.1)
-  - Sentry (~> 7.1.3)
+  - Sentry (~> 9.9)
   - Sparkle (~> 1.24)
   - STPrivilegedTask (from `https://github.com/sveinbjornt/STPrivilegedTask.git`, commit `fdca677c77adb166a2be4c5ea9c7580a738c49c9`)
   - SwiftHTTP (~> 3.0)
@@ -31,7 +29,7 @@ DEPENDENCIES:
   - Zip (from `https://github.com/bitgapp/Zip.git`)
 
 SPEC REPOS:
-  https://github.com/CocoaPods/Specs.git:
+  trunk:
     - EmitterKit
     - KeychainSwift
     - ReSwift
@@ -44,9 +42,6 @@ SPEC REPOS:
     - WebViewJavascriptBridge
 
 EXTERNAL SOURCES:
-  AMCoreAudio:
-    :commit: b312d1509ef863dea3ca56cfa3f57451de4ff721
-    :git: https://github.com/bitgapp/AMCoreAudio.git
   STPrivilegedTask:
     :commit: fdca677c77adb166a2be4c5ea9c7580a738c49c9
     :git: https://github.com/sveinbjornt/STPrivilegedTask.git
@@ -54,9 +49,6 @@ EXTERNAL SOURCES:
     :git: https://github.com/bitgapp/Zip.git
 
 CHECKOUT OPTIONS:
-  AMCoreAudio:
-    :commit: b312d1509ef863dea3ca56cfa3f57451de4ff721
-    :git: https://github.com/bitgapp/AMCoreAudio.git
   STPrivilegedTask:
     :commit: fdca677c77adb166a2be4c5ea9c7580a738c49c9
     :git: https://github.com/sveinbjornt/STPrivilegedTask.git
@@ -65,11 +57,10 @@ CHECKOUT OPTIONS:
     :git: https://github.com/bitgapp/Zip.git
 
 SPEC CHECKSUMS:
-  AMCoreAudio: d7fc6672b56df2ade8e77d08f3247d18d59697e3
   EmitterKit: e7a27b37118823d8ad413b8396f75e40d59f8cba
   KeychainSwift: 23d6c16cbc33f20fafa30c3d783241b4b87d998c
   ReSwift: eab3c01e4279ba81b54a61e4fd6499634d20123a
-  Sentry: 6d963d64804dd06d96e778be729613f481394312
+  Sentry: e4588d62ac3fd3c82652bb7c8a215ec8c3de776b
   Sparkle: 270cd27377bf04e9c128af06e3a22d0f572d6ee3
   STPrivilegedTask: 56c3397238a1ec07720fb877a044898373cd2c68
   SwiftHTTP: e94f1aa8cde58637dcc0100f6349de31a3337fde
@@ -79,6 +70,6 @@ SPEC CHECKSUMS:
   WebViewJavascriptBridge: 7f5bc4d3581e672e8f32bd0f812d54bc69bb8e29
   Zip: 414f59909701fda9a84ab774ebe0f5449b1082cc
 
-PODFILE CHECKSUM: 80a9c25477279d138986fe22fa3da41f77c4e379
+PODFILE CHECKSUM: ada8adcca801b73777b7999641ed97c90437361d
 
-COCOAPODS: 1.11.2
+COCOAPODS: 1.17.0

@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import AMCoreAudio
+import CoreAudio
 import CoreFoundation
 import Version
 import EmitterKit

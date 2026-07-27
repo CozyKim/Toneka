@@ -10,7 +10,6 @@ import Foundation
 import ReSwift
 import CoreAudio
 import EmitterKit
-import AMCoreAudio
 import SwiftyUserDefaults
 
 class SystemAudioSource: InputSource {

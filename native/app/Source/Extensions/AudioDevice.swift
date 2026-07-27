@@ -1,11 +1,11 @@
 import Foundation
-import AMCoreAudio
+import CoreAudio
 import SwiftyUserDefaults
 import CoreFoundation
 import EmitterKit
 
 extension AudioDevice {
-  func canBeDefaultDevice (direction: AMCoreAudio.Direction) -> Bool {
+  func canBeDefaultDevice (direction: Direction) -> Bool {
     var address = AudioObjectPropertyAddress(
       mSelector: kAudioDevicePropertyDeviceCanBeDefaultDevice,
       mScope: AudioDevice.scope(direction: direction),
@@ -18,11 +18,13 @@ extension AudioDevice {
     checkErr(AudioObjectGetPropertyData(self.id, &address, 0, nil, &size, &result))
     return result == 1
   }
+  // `nonmutating` throughout: AudioDevice is a value type wrapping an object ID,
+  // and these setters write to CoreAudio/storage rather than to `self`.
   var stashedVolume: Double {
     get {
       return Storage.double(forKey: "stashedVolume:\(self.id)")
     }
-    set {
+    nonmutating set {
       Storage.set(newValue, forKey: "stashedVolume:\(self.id)")
     }
   }
@@ -68,7 +70,7 @@ extension AudioDevice {
         return (1...self.channels(direction: .playback).intValue).allSatisfy { self.isMuted(channel: UInt32($0), direction: .playback) ?? false }
       }
     }
-    set {
+    nonmutating set {
       if (self.canMuteVirtualMasterChannel(direction: .playback)) {
         self.setMute(newValue, channel: 0, direction: .playback)
       } else {
