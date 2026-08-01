@@ -17,6 +17,12 @@ type EventData = Parameters<EventHandler>[0]
 
 const eventHandlers = new Map<string, EventHandler>()
 
+function emit (event: string, data?: unknown) {
+  const handler = eventHandlers.get(event)
+  if (!handler) return
+  handler(data as EventData, () => {})
+}
+
 export function installBridgeStub () {
   window.WebViewJavascriptBridge = {
     callHandler (handler, data, callback) {
@@ -25,7 +31,15 @@ export function installBridgeStub () {
       //
       // mock-state describes its replies without the application's JSON types
       // so that it stays runnable on its own; the two shapes meet here.
-      setTimeout(() => callback(respond(handler, data) as BridgeReply), 0)
+      setTimeout(() => {
+        const reply = respond(handler, data)
+        callback(reply as BridgeReply)
+        // The native side pushes after it has answered, and a section that
+        // only listens would otherwise never hear about its own write.
+        for (const { event, data: payload } of reply.events ?? []) {
+          setTimeout(() => emit(event, payload), 0)
+        }
+      }, 0)
     },
 
     registerHandler (event, handler) {
@@ -39,12 +53,11 @@ export function installBridgeStub () {
   // browser console, e.g. eqmacHarness.emit('/error', { error: 'boom' })
   window.eqmacHarness = {
     emit (event: string, data?: unknown) {
-      const handler = eventHandlers.get(event)
-      if (!handler) {
+      if (!eventHandlers.has(event)) {
         console.warn(`[harness] nothing is listening on "${event}"`)
         return
       }
-      handler(data as EventData, () => {})
+      emit(event, data)
     },
     events: () => [ ...eventHandlers.keys() ]
   }

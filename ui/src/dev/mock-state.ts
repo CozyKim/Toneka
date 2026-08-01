@@ -8,6 +8,10 @@
 export interface MockReply {
   data?: unknown
   error?: string
+  /// What the native side would push after handling this request. Returned
+  /// rather than emitted so this file stays free of browser APIs; the bridge
+  /// stub fires them.
+  events?: Array<{ event: string, data: unknown }>
 }
 
 export type MockRequest = Record<string, any> | undefined
@@ -89,6 +93,46 @@ function write<K extends keyof typeof state.ui> (key: K, value: (typeof state.ui
   return {}
 }
 
+/// The two equalisers keep their presets the same way and answer the same four
+/// routes, so they are described once. Each one pushes the new list and the new
+/// selection after it changes them, which is what the native side does and what
+/// the sections listen for -- they never re-read after a write.
+function presetRoutes (route: string, store: { presets: any[], selected: string }) {
+  const list = () => ({ event: `${route}/presets`, data: store.presets })
+  const chosen = () => ({
+    event: `${route}/presets/selected`,
+    data: store.presets.find(preset => preset.id === store.selected)
+  })
+
+  return {
+    [`GET ${route}/presets`]: () => ({ data: store.presets }),
+    [`GET ${route}/presets/selected`]: () => ({
+      data: store.presets.find(preset => preset.id === store.selected)
+    }),
+    [`POST ${route}/presets/select`]: (data: MockRequest) => {
+      store.selected = String(data?.['id'])
+      return { events: [ chosen() ] }
+    },
+    // An id means update and no id means create, the way the native route
+    // reads it.
+    [`POST ${route}/presets`]: (data: MockRequest) => {
+      const preset = { ...(data as any) }
+      preset.id ??= `user-${store.presets.length}`
+      preset.isDefault ??= false
+      const at = store.presets.findIndex(p => p.id === preset.id)
+      if (at >= 0) store.presets[at] = preset
+      else store.presets.push(preset)
+      if (preset.select) store.selected = preset.id
+      return { data: preset, events: preset.select ? [ list(), chosen() ] : [ list() ] }
+    },
+    [`DELETE ${route}/presets`]: (data: MockRequest) => {
+      store.presets = store.presets.filter(preset => preset.id !== String(data?.['id']))
+      store.selected = 'flat'
+      return { events: [ list(), chosen() ] }
+    }
+  }
+}
+
 const routes: Record<string, (data: MockRequest) => MockReply> = {
   'GET /info': () => ({ data: state.info }),
   'GET /enabled': () => read('enabled', state.enabled),
@@ -155,41 +199,16 @@ const routes: Record<string, (data: MockRequest) => MockReply> = {
   'GET /effects/equalizers/type': () => read('type', state.equalizers.type),
   'POST /effects/equalizers/type': data => { state.equalizers.type = String(data?.['type']); return {} },
 
-  'GET /effects/equalizers/advanced/presets': () => ({ data: state.equalizers.advanced.presets }),
-  'GET /effects/equalizers/advanced/presets/selected': () => ({
-    data: state.equalizers.advanced.presets.find(p => p.id === state.equalizers.advanced.selected)
-  }),
-  'POST /effects/equalizers/advanced/presets/select': data => {
-    state.equalizers.advanced.selected = String(data?.['id'])
-    return {}
-  },
-  'POST /effects/equalizers/advanced/presets': data => {
-    const preset = data as any
-    const at = state.equalizers.advanced.presets.findIndex(p => p.id === preset.id)
-    if (at >= 0) state.equalizers.advanced.presets[at] = preset
-    else state.equalizers.advanced.presets.push(preset)
-    if (preset.select) state.equalizers.advanced.selected = preset.id
-    return {}
-  },
+  ...presetRoutes('/effects/equalizers/advanced', state.equalizers.advanced),
+  ...presetRoutes('/effects/equalizers/basic', state.equalizers.basic),
+
+  // Native file dialogs, which a browser has no counterpart for.
+  'GET /effects/equalizers/advanced/presets/import': () => { console.info('[harness] preset import dialog'); return {} },
+  'GET /effects/equalizers/advanced/presets/export': () => { console.info('[harness] preset export dialog'); return {} },
+  'GET /effects/equalizers/advanced/presets/import-legacy': () => { console.info('[harness] legacy preset import'); return {} },
+  'GET /effects/equalizers/advanced/presets/import-legacy/available': () => read('available', false),
   'GET /effects/equalizers/advanced/settings/show-default-presets': () => read('show', true),
   'POST /effects/equalizers/advanced/settings/show-default-presets': () => ({}),
-
-  'GET /effects/equalizers/basic/presets': () => ({ data: state.equalizers.basic.presets }),
-  'GET /effects/equalizers/basic/presets/selected': () => ({
-    data: state.equalizers.basic.presets.find(p => p.id === state.equalizers.basic.selected)
-  }),
-  'POST /effects/equalizers/basic/presets/select': data => {
-    state.equalizers.basic.selected = String(data?.['id'])
-    return {}
-  },
-  'POST /effects/equalizers/basic/presets': data => {
-    const preset = data as any
-    const at = state.equalizers.basic.presets.findIndex(p => p.id === preset.id)
-    if (at >= 0) state.equalizers.basic.presets[at] = preset
-    else state.equalizers.basic.presets.push(preset)
-    if (preset.select) state.equalizers.basic.selected = preset.id
-    return {}
-  },
 
   'GET /ui/close': () => { console.info('[harness] close'); return {} },
   'GET /ui/hide': () => { console.info('[harness] hide'); return {} },

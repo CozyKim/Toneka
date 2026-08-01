@@ -1,16 +1,19 @@
-import { ChangeDetectionStrategy, Component, OnInit, inject, signal } from '@angular/core'
+import { ChangeDetectionStrategy, Component, OnInit, computed, inject, signal } from '@angular/core'
 
 import { ButtonComponent } from '../../../lib/button/button.component'
+import { AdvancedEqualizerService, EqualizerPreset } from '../../services/advanced-equalizer.service'
+import { BasicEqualizerService } from '../../services/basic-equalizer.service'
 import { EqualizersService } from '../../services/equalizers.service'
 import { AdvancedEqualizerComponent } from './advanced/advanced.component'
 import { BasicEqualizerComponent } from './basic/basic.component'
+import { PresetStore, PresetsComponent } from './presets/presets.component'
 
 export type EqualizerMode = 'off' | 'basic' | 'advanced'
 
 @Component({
   selector: 'eqm-equalizer',
   standalone: true,
-  imports: [ AdvancedEqualizerComponent, BasicEqualizerComponent, ButtonComponent ],
+  imports: [ AdvancedEqualizerComponent, BasicEqualizerComponent, ButtonComponent, PresetsComponent ],
   template: `
     <div class="head">
       <span class="label">EQ</span>
@@ -25,6 +28,12 @@ export type EqualizerMode = 'off' | 'basic' | 'advanced'
         </eqm-button>
       }
     </div>
+
+    @if (store(); as store) {
+      <div class="presets">
+        <eqm-presets [store]="store"></eqm-presets>
+      </div>
+    }
 
     @switch (current()) {
       @case ('basic')    { <eqm-basic-equalizer class="body"></eqm-basic-equalizer> }
@@ -44,6 +53,10 @@ export type EqualizerMode = 'off' | 'basic' | 'advanced'
     .head { display: flex; align-items: center; gap: var(--space-2); }
     .label { font-size: 11px; color: var(--text-secondary); }
 
+    /* Its own row rather than beside the segments: at 400px the three of them
+       plus a name leave the name nothing to be read in. */
+    .presets { display: flex; align-items: center; }
+
     /* The bands take whatever is left, which is what a taller window buys. */
     .body { flex: 1; min-height: 0; }
   `],
@@ -51,6 +64,8 @@ export type EqualizerMode = 'off' | 'basic' | 'advanced'
 })
 export class EqualizerComponent implements OnInit {
   private readonly equalizers = inject(EqualizersService)
+  private readonly advanced = inject(AdvancedEqualizerService)
+  private readonly basic = inject(BasicEqualizerService)
 
   readonly modes = [
     { key: 'off' as const, name: '끔' },
@@ -59,6 +74,15 @@ export class EqualizerComponent implements OnInit {
   ]
 
   readonly current = signal<EqualizerMode>('advanced')
+
+  /// Which list the presets row is showing. Off has no presets to show.
+  readonly store = computed<PresetStore<EqualizerPreset> | undefined>(() => {
+    switch (this.current()) {
+      case 'basic': return this.basic
+      case 'advanced': return this.advanced
+      case 'off': return undefined
+    }
+  })
 
   async ngOnInit () {
     const [ enabled, type ] = await Promise.all([

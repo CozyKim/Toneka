@@ -5,6 +5,10 @@ export interface EqualizerPreset {
   id: string
   name: string
   isDefault: boolean
+  /// Shaped differently per equaliser -- ten bands here, three named gains on
+  /// the basic one -- and left opaque so that what is common to both can be
+  /// handled without knowing which arrived.
+  gains: unknown
 }
 
 export interface AdvancedEqualizerPreset extends EqualizerPreset {
