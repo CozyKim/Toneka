@@ -51,6 +51,11 @@
             "development": {
               "optimization": false,
               "sourceMap": true
+            },
+            "harness": {
+              "optimization": false,
+              "sourceMap": true,
+              "browser": "src/dev/main.dev.ts"
             }
           },
           "defaultConfiguration": "development"
@@ -59,6 +64,11 @@
           "builder": "@angular/build:dev-server",
           "options": {
             "buildTarget": "eqmac:build:development"
+          },
+          "configurations": {
+            "harness": {
+              "buildTarget": "eqmac:build:harness"
+            }
           }
         }
       }

@@ -22,6 +22,6 @@
     "typeCheckHostBindings": true,
     "strictTemplates": true
   },
-  "files": [ "src/main.ts" ],
+  "files": [ "src/main.ts", "src/dev/main.dev.ts" ],
   "include": [ "src/**/*.d.ts" ]
 }
