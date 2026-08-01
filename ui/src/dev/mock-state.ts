@@ -51,7 +51,8 @@ const state = {
       { id: 94, name: 'Studio Display', transportType: 'displayPort' }
     ],
     selected: 51
-  }
+  },
+  volume: { gain: 0.62, muted: false, balance: 0, boost: false }
 }
 
 /// A GET that reads one field, paired with the key the caller destructures.
@@ -117,6 +118,15 @@ const routes: Record<string, (data: MockRequest) => MockReply> = {
     state.outputs.selected = Number(data?.['id'])
     return {}
   },
+
+  'GET /volume/gain': () => read('gain', state.volume.gain),
+  'POST /volume/gain': data => { state.volume.gain = Number(data?.['gain']); return {} },
+  'GET /volume/muted': () => read('muted', state.volume.muted),
+  'POST /volume/muted': data => { state.volume.muted = Boolean(data?.['muted']); return {} },
+  'GET /volume/balance': () => read('balance', state.volume.balance),
+  'POST /volume/balance': data => { state.volume.balance = Number(data?.['balance']); return {} },
+  'GET /volume/gain/boost/enabled': () => read('enabled', state.volume.boost),
+  'POST /volume/gain/boost/enabled': data => { state.volume.boost = Boolean(data?.['enabled']); return {} },
 
   'GET /ui/close': () => { console.info('[harness] close'); return {} },
   'GET /ui/hide': () => { console.info('[harness] hide'); return {} },
