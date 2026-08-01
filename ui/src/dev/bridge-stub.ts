@@ -23,6 +23,30 @@ function emit (event: string, data?: unknown) {
   handler(data as EventData, () => {})
 }
 
+// The analyser pushes readings on its own once it is switched on, which nothing
+// in a request-and-answer stub does. A slow wave per band, each a little behind
+// the one before it, is enough to see the bars move and to see them line up
+// with the sliders they stand behind.
+const SPECTRUM_BANDS = 10
+let spectrumTimer: number | undefined
+
+function driveSpectrum (on: boolean) {
+  if (spectrumTimer !== undefined) {
+    clearInterval(spectrumTimer)
+    spectrumTimer = undefined
+  }
+  if (!on) return
+
+  let phase = 0
+  spectrumTimer = window.setInterval(() => {
+    phase += 0.06
+    emit('/analyzer/volumes', Array.from(
+      { length: SPECTRUM_BANDS },
+      (_, band) => 0.5 + 0.42 * Math.sin(phase - band * 0.55)
+    ))
+  }, 1000 / 30)
+}
+
 export function installBridgeStub () {
   window.WebViewJavascriptBridge = {
     callHandler (handler, data, callback) {
@@ -34,6 +58,9 @@ export function installBridgeStub () {
       setTimeout(() => {
         const reply = respond(handler, data)
         callback(reply as BridgeReply)
+        if (handler === 'POST /analyzer/enabled') {
+          driveSpectrum(Boolean((data as Record<string, unknown> | undefined)?.['enabled']))
+        }
         // The native side pushes after it has answered, and a section that
         // only listens would otherwise never hear about its own write.
         for (const { event, data: payload } of reply.events ?? []) {

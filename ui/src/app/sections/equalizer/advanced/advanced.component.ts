@@ -11,6 +11,7 @@ import {
 import { FlatSliderComponent } from '../../../../lib/flat-slider/flat-slider.component'
 import { AdvancedEqualizerPreset, AdvancedEqualizerService } from '../../../services/advanced-equalizer.service'
 import { ResponseCurveComponent } from '../response-curve/response-curve.component'
+import { SpectrumComponent } from '../spectrum/spectrum.component'
 
 /// Fixed on the native side; the interface only labels them.
 const FREQUENCIES = [ 32, 64, 125, 250, 500, 1_000, 2_000, 4_000, 8_000, 16_000 ] as const
@@ -27,9 +28,10 @@ const SEND_INTERVAL = 1000 / 30
 @Component({
   selector: 'eqm-advanced-equalizer',
   standalone: true,
-  imports: [ FlatSliderComponent, ResponseCurveComponent ],
+  imports: [ FlatSliderComponent, ResponseCurveComponent, SpectrumComponent ],
   template: `
     <div class="plot">
+      <eqm-spectrum class="behind"></eqm-spectrum>
       <eqm-response-curve class="behind" [gains]="gains()" [range]="limit"></eqm-response-curve>
       @for (frequency of frequencies; track frequency; let i = $index) {
         <div class="band">

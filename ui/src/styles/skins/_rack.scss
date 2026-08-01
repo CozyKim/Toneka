@@ -49,5 +49,10 @@
   --curve-fill: rgb(70 224 138 / .16);
   --grid-line: rgb(255 255 255 / .07);
 
+  // Dimmer than the curve on purpose: the curve is the setting and the bars are
+  // the sound. At similar weight neither can be read for what it is.
+  --spectrum-bar: rgb(70 224 138 / .14);
+  --spectrum-peak: rgb(70 224 138 / .45);
+
   --decor: 1;
 }

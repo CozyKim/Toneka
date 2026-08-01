@@ -58,6 +58,7 @@ const state = {
     selected: 51
   },
   volume: { gain: 0.62, muted: false, balance: 0, boost: false },
+  analyzer: { enabled: false },
   settings: { launchOnStartup: false, iconMode: 'statusBar' },
   equalizers: {
     enabled: true,
@@ -195,6 +196,12 @@ const routes: Record<string, (data: MockRequest) => MockReply> = {
   'POST /volume/balance': data => { state.volume.balance = Number(data?.['balance']); return {} },
   'GET /volume/gain/boost/enabled': () => read('enabled', state.volume.boost),
   'POST /volume/gain/boost/enabled': data => { state.volume.boost = Boolean(data?.['enabled']); return {} },
+
+  // The readings themselves are pushed rather than answered, so the stub drives
+  // them; here there is only the switch that says whether they should be.
+  'GET /analyzer/frequencies': () => ({ data: [ 32, 64, 125, 250, 500, 1_000, 2_000, 4_000, 8_000, 16_000 ] }),
+  'GET /analyzer/enabled': () => read('enabled', state.analyzer.enabled),
+  'POST /analyzer/enabled': data => { state.analyzer.enabled = Boolean(data?.['enabled']); return {} },
 
   'GET /effects/equalizers/enabled': () => read('enabled', state.equalizers.enabled),
   'POST /effects/equalizers/enabled': data => { state.equalizers.enabled = Boolean(data?.['enabled']); return {} },
