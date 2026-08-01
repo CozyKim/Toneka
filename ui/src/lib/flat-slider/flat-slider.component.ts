@@ -168,7 +168,17 @@ export class FlatSliderComponent implements OnInit, OnDestroy {
     return this.containerRef.nativeElement.offsetWidth
   }
 
+  /// The thumb and the notches are placed in pixels worked out from the
+  /// element's own measurements, so every one of those numbers goes stale the
+  /// moment the element is a different size. Nothing else notices: the
+  /// application runs without zone.js, and a layout change raises no change
+  /// detection on its own. The groove keeps up only because it is sized in
+  /// percentages that CSS recomputes without being asked.
+  private resizeObserver?: ResizeObserver
+
   ngOnInit () {
+    this.resizeObserver = new ResizeObserver(() => this.changeRef.markForCheck())
+    this.resizeObserver.observe(this.containerRef.nativeElement)
   }
 
   public clampValue (value: number) {
@@ -485,6 +495,7 @@ export class FlatSliderComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy () {
+    this.resizeObserver?.disconnect()
     this.dettachWindowEvents()
   }
 }
