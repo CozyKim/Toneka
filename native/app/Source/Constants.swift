@@ -12,14 +12,11 @@ import Version
 struct Constants {
   
   #if DEBUG
-//  static let UI_ENDPOINT_URL = URL(string: "http://www.eqmac.local:8080")!
-//  static let UI_ENDPOINT_URL = URL(string: "https://ui-v3.eqmac.app")!
-  static let UI_ENDPOINT_URL = URL(string: "http://localhost:8080")!
-
   static let DEBUG = true
+  /// `yarn start`가 띄우는 개발 서버. 떠 있으면 UI.load()가 이쪽을 쓴다.
+  static let DEV_UI_URL = URL(string: "http://localhost:8080")!
   #else
   static let DEBUG = false
-  static let UI_ENDPOINT_URL = URL(string: "https://ui-v3.eqmac.app")!
   #endif
   
   static let SENTRY_ENDPOINT = "https://afd95e4c332b4b1da4bb23b9cc66782c@sentry.io/1243254"
