@@ -22,6 +22,12 @@ export interface KnobValueChangedEvent {
 
 export type KnobControlStyle = 'directional' | 'rotational'
 
+/// Shift is the one modifier audio applications agree on, and it means finer.
+/// A quarter matches the step the native volume keys take with Shift held.
+function fineStep (event: { shiftKey: boolean }) {
+  return event.shiftKey ? 0.25 : 1
+}
+
 @Component({
   selector: 'eqm-knob',
   standalone: true,
@@ -112,6 +118,9 @@ export class KnobComponent implements OnInit, OnDestroy {
   mouseWheel (wheelEvent: Event) {
     const event = wheelEvent as WheelEvent
     if (this.enabled && this.scrollEnabled) {
+      // Consumed, or the page behind the knob scrolls at the same time as the
+      // value changes.
+      event.preventDefault()
       this.continueAnimation = false
       const now = new Date().getTime()
       if ((now - this.lastWheelEvent) < this.wheelDebouncer) return
@@ -125,7 +134,7 @@ export class KnobComponent implements OnInit, OnDestroy {
       })()
       const diff = changeDelta < 0 ? -changeDelta : changeDelta
       if (diff < 2) return
-      this.value += changeDelta / (1000 / this.max)
+      this.value += fineStep(event) * changeDelta / (1000 / this.max)
       this.userChangedValue.emit({ value: this.value })
     }
   }
@@ -165,7 +174,7 @@ export class KnobComponent implements OnInit, OnDestroy {
       if (this.dragging) {
         this.continueAnimation = false
         if (this.controlStyle === 'directional') {
-          const change = (-event.movementY + event.movementX) / (100 / this.max)
+          const change = fineStep(event) * (-event.movementY + event.movementX) / (100 / this.max)
           this.value += change
           this.userChangedValue.emit({ value: this.value })
         }
@@ -190,7 +199,7 @@ export class KnobComponent implements OnInit, OnDestroy {
             }
           })()
           const oldValue = this.value
-          this.value += degreeDiff / (multiplier / this.max)
+          this.value += fineStep(event) * degreeDiff / (multiplier / this.max)
           const newValue = this.value
           if (oldValue !== newValue) this.userChangedValue.emit({ value: this.value })
         }

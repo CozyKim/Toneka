@@ -185,6 +185,9 @@ export class FlatSliderComponent implements OnInit, OnDestroy {
   mouseWheel (wheelEvent: Event) {
     const event = wheelEvent as WheelEvent
     if (this.enabled && this.scrollEnabled) {
+      // Consumed, or the page behind the slider scrolls at the same time as
+      // the value changes.
+      event.preventDefault()
       const now = new Date().getTime()
       if (now - this.lastWheelEvent < this.wheelDebouncer) return
       this.lastWheelEvent = now
