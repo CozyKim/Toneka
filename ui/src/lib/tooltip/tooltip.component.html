@@ -1,0 +1,17 @@
+<div class="container" [ngStyle]="style">
+  <div #arrow
+    [hidden]="!showArrow" 
+    class="arrow-container"
+    [ngStyle]="arrowStyle"
+  >
+    <div class="arrow"></div>
+  </div>
+  <eqm-container class="tooltip" #tooltip>
+    <ng-content></ng-content>
+    @if (text) {
+      <eqm-label>
+        {{text}}
+      </eqm-label>
+    }
+  </eqm-container>
+</div>

@@ -17,7 +17,7 @@ usage () {
 Usage: scripts/run-debug.sh [options]
 
   --ui        Rebuild the web UI and clear its cache before launching.
-              Needed after changing anything under ui/ or modules/.
+              Needed after changing anything under ui/.
   --clean-ui  Clear the unpacked UI cache without rebuilding it.
   --build     Build only; do not launch.
   -h, --help  Show this message.

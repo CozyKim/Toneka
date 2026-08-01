@@ -1,0 +1,5 @@
+<div class="wrapper" [ngStyle]="wrapperStyle" #wrapper>
+  @for (item of items; track $index) {
+    <ng-container class="item" [ngTemplateOutlet]="item.template"></ng-container>
+  }
+</div>

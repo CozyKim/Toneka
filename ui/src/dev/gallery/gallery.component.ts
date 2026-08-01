@@ -2,6 +2,7 @@ import { Component } from '@angular/core'
 
 import { BreadcrumbsComponent } from '../../lib/breadcrumbs/breadcrumbs.component'
 import { ButtonComponent } from '../../lib/button/button.component'
+import { CarouselComponent, CarouselItemDirective } from '../../lib/carousel/carousel.component'
 import { CheckboxComponent } from '../../lib/checkbox/checkbox.component'
 import { ContainerComponent } from '../../lib/container/container.component'
 import { DividerComponent } from '../../lib/divider/divider.component'
@@ -12,10 +13,15 @@ import { KnobComponent } from '../../lib/knob/knob.component'
 import { InputFieldComponent } from '../../lib/input-field/input-field.component'
 import { LabelComponent } from '../../lib/label/label.component'
 import { LoadingComponent } from '../../lib/loading/loading.component'
+import { ProComponent } from '../../lib/pro/pro.component'
+import { PromptComponent } from '../../lib/prompt/prompt.component'
+import { QuestionComponent } from '../../lib/question/question.component'
 import { ScrewComponent } from '../../lib/screw/screw.component'
 import { SelectBoxComponent } from '../../lib/select-box/select-box.component'
 import { SkeuomorphSliderComponent } from '../../lib/skeuomorph-slider/skeuomorph-slider.component'
 import { ToggleComponent } from '../../lib/toggle/toggle.component'
+import { TooltipContainerComponent } from '../../lib/tooltip/tooltip-container.component'
+import { TooltipDirective } from '../../lib/tooltip/tooltip.directive'
 import { ValueScreenComponent } from '../../lib/value-screen/value-screen.component'
 import { VentComponent } from '../../lib/vent/vent.component'
 
@@ -27,6 +33,8 @@ import { VentComponent } from '../../lib/vent/vent.component'
   imports: [
     BreadcrumbsComponent,
     ButtonComponent,
+    CarouselComponent,
+    CarouselItemDirective,
     CheckboxComponent,
     ContainerComponent,
     DividerComponent,
@@ -37,10 +45,15 @@ import { VentComponent } from '../../lib/vent/vent.component'
     KnobComponent,
     LabelComponent,
     LoadingComponent,
+    ProComponent,
+    PromptComponent,
+    QuestionComponent,
     ScrewComponent,
     SelectBoxComponent,
     SkeuomorphSliderComponent,
     ToggleComponent,
+    TooltipContainerComponent,
+    TooltipDirective,
     ValueScreenComponent,
     VentComponent
   ],
@@ -173,7 +186,45 @@ import { VentComponent } from '../../lib/vent/vent.component'
           <span>{{ skeuoValue }}</span>
         </div>
       </section>
+
+      <section>
+        <h2>question / pro / prompt</h2>
+        <div class="row">
+          <eqm-question></eqm-question>
+          <eqm-pro></eqm-pro>
+          <eqm-prompt></eqm-prompt>
+        </div>
+      </section>
+
+      <section>
+        <h2>tooltip</h2>
+        <div class="row">
+          <eqm-label eqmTooltip="A tooltip, on hover">Hover me</eqm-label>
+          <eqm-label eqmTooltip="Below instead" eqmTooltipPositionSide="bottom">And me</eqm-label>
+        </div>
+      </section>
+
+      <section>
+        <h2>carousel</h2>
+        <!-- Driven through next()/prev() rather than a bound selectedItemId:
+             the input setter animates straight away, and on the first binding
+             the projected items do not exist yet. -->
+        <eqm-carousel #carousel (selectedItemIdChange)="carouselItem = $event">
+          <div *eqmCarouselItem="'one'">First slide</div>
+          <div *eqmCarouselItem="'two'">Second slide</div>
+          <div *eqmCarouselItem="'three'">Third slide</div>
+        </eqm-carousel>
+        <div class="row">
+          <eqm-button type="narrow" (pressed)="carousel.prev()">Previous</eqm-button>
+          <eqm-button type="narrow" (pressed)="carousel.next()">Next</eqm-button>
+          <span>{{ carouselItem }}</span>
+        </div>
+      </section>
     </div>
+
+    <!-- The tooltips render here rather than next to what they describe, so
+         one container at the end of the page serves all of them. -->
+    <eqm-tooltip-container></eqm-tooltip-container>
   `,
   styles: [`
     /* A checkerboard so anything translucent reads as translucent, the way it
@@ -247,4 +298,6 @@ export class GalleryComponent {
   knobValue = 0
   flatValue = 0.5
   skeuoValue = 0
+
+  carouselItem = ''
 }
