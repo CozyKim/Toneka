@@ -14,42 +14,47 @@ import EmitterKit
 import Shared
 
 @NSApplicationMain
-class AppDelegate: NSObject, NSApplicationDelegate, SUUpdaterDelegate {
+class AppDelegate: NSObject, NSApplicationDelegate, SPUUpdaterDelegate {
 
   var updateProcessed = EmitterKit.Event<Void>()
-  var willBeDownloadingUpdate = false
-  
+
   func applicationDidFinishLaunching(_ aNotification: Notification) {
     for window in NSApplication.shared.windows {
       window.close()
     }
 
-    Application.updater.delegate = self
-    Application.updater.feedURL = Settings.updatesFeedUrl
-    
+    // Sparkle 2 takes its delegate at construction time, so the controller has
+    // to exist before anything touches Application.updater.
+    Application.updaterController = SPUStandardUpdaterController(
+      startingUpdater: true,
+      updaterDelegate: self,
+      userDriverDelegate: nil
+    )
+
     updateProcessed.once { _ in
       Application.start()
     }
 
-    // Debug builds skip the update check entirely: Sparkle 1.x can leave the
-    // callback pending against the live appcast, and start() is gated behind
-    // it, so the app would never finish launching.
-    if (!Constants.DEBUG && Application.store.state.settings.doAutoCheckUpdates) {
-      var stillCheckingConnection = true
+    if (Application.store.state.settings.doAutoCheckUpdates) {
+      // Launch is gated on the update check finishing, so guarantee it ends:
+      // fire once whichever comes first, the check or the timeout.
+      var settled = false
+      func settle () {
+        if settled { return }
+        settled = true
+        self.updateProcessed.emit()
+      }
+      updateCycleFinished = settle
+
       Networking.checkConnected { connected in
-        stillCheckingConnection = false
         if (connected) {
           Application.updater.checkForUpdatesInBackground()
         } else {
-          self.updateProcessed.emit()
+          settle()
         }
       }
 
-      Async.delay(2000) {
-        if (stillCheckingConnection) {
-          self.updateProcessed.emit()
-        }
-      }
+      Async.delay(5000) { settle() }
     } else {
       self.updateProcessed.emit()
     }
@@ -88,40 +93,26 @@ class AppDelegate: NSObject, NSApplicationDelegate, SUUpdaterDelegate {
     }
   }
   
-  func updaterDidNotFindUpdate(_ updater: SUUpdater) {
-    updateProcessed.emit()
+  // MARK: - SPUUpdaterDelegate
+
+  /// Set while launch is waiting on the update check. Sparkle 2 reports the end
+  /// of a check through a single callback, so the eight separate Sparkle 1
+  /// delegate methods this used to need collapse into it.
+  private var updateCycleFinished: (() -> Void)?
+
+  func updater (
+    _ updater: SPUUpdater,
+    didFinishUpdateCycleFor updateCheck: SPUUpdateCheck,
+    error: Error?
+  ) {
+    updateCycleFinished?()
   }
-  
-  func updater(_ updater: SUUpdater, userDidSkipThisVersion item: SUAppcastItem) {
-    updateProcessed.emit()
-  }
-  
-  func updater(_ updater: SUUpdater, didCancelInstallUpdateOnQuit item: SUAppcastItem) {
-    updateProcessed.emit()
-  }
-  
-  func updater(_ updater: SUUpdater, willDownloadUpdate item: SUAppcastItem, with request: NSMutableURLRequest) {
-    willBeDownloadingUpdate = true
-  }
-  
-  func updater(_ updater: SUUpdater, didDismissUpdateAlertPermanently permanently: Bool, for item: SUAppcastItem) {
-    Async.delay(500, completion: {
-      if !self.willBeDownloadingUpdate {
-        self.updateProcessed.emit()
-      }
-    })
-  }
-  
-  func userDidCancelDownload(_ updater: SUUpdater) {
-    updateProcessed.emit()
-  }
-  
-  func updater(_ updater: SUUpdater, didAbortWithError error: Error) {
-    updateProcessed.emit()
-  }
-  
-  func updater(_ updater: SUUpdater, failedToDownloadUpdate item: SUAppcastItem, error: Error) {
-    updateProcessed.emit()
+
+  /// Sparkle 2 prefers the feed to come from the delegate rather than being
+  /// written into user defaults, which also keeps the beta toggle honest -- it
+  /// is read fresh on every check.
+  func feedURLString (for updater: SPUUpdater) -> String? {
+    return Settings.updatesFeedUrl?.absoluteString
   }
 
   @objc func willSleep(event: NSNotification) {

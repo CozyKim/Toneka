@@ -57,11 +57,9 @@ class Settings: StoreSubscriber {
     }
   }
 
-  static var doBetaUpdates = Application.store.state.settings.doBetaUpdates {
-    didSet {
-      Application.updater.feedURL = updatesFeedUrl
-    }
-  }
+  // The feed URL is served through SPUUpdaterDelegate.feedURLString(for:),
+  // which reads this on every check, so toggling it needs no further work.
+  static var doBetaUpdates = Application.store.state.settings.doBetaUpdates
 
   static var updatesFeedUrl: URL! {
     return Application.store.state.settings.doBetaUpdates ? Constants.BETA_UPDATES_FEED : Constants.UPDATES_FEED

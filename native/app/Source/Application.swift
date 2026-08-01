@@ -54,7 +54,10 @@ class Application {
   static var dataBus: ApplicationDataBus!
   static let error = EmitterKit.Event<String>()
   
-  static var updater = SUUpdater(for: Bundle.main)!
+  /// Owned by AppDelegate, which constructs it early so this stays non-nil for
+  /// everything that runs afterwards.
+  static var updaterController: SPUStandardUpdaterController!
+  static var updater: SPUUpdater { return updaterController.updater }
   
   static let store: Store = Store(
     reducer: ApplicationStateReducer,
@@ -506,7 +509,7 @@ class Application {
   }
   
   static func checkForUpdates () {
-    updater.checkForUpdates(nil)
+    updater.checkForUpdates()
   }
   
   static func uninstall () {
