@@ -8,13 +8,17 @@
 
 import Foundation
 import SwiftyJSON
+import EmitterKit
 
 class BasicEqualizerDataBus: DataBus {
-  
+
   var state: BasicEqualizerState {
     return Application.store.state.effects.equalizers.basic
   }
-  
+
+  var presetsChangedListener: EventListener<[BasicEqualizerPreset]>?
+  var selectedPresetChangedListener: EventListener<BasicEqualizerPreset>?
+
   required init (route: String, bridge: Bridge) {
     super.init(route: route, bridge: bridge)
     
@@ -75,6 +79,16 @@ class BasicEqualizerDataBus: DataBus {
       BasicEqualizer.deletePreset(preset)
       Application.dispatchAction(BasicEqualizerAction.selectPreset("flat", true))
       return "Basic Equalizer Preset has been deleted."
+    }
+
+    // The advanced equaliser has pushed its list all along; this one never did,
+    // so the interface only learned of a change by being reopened.
+    presetsChangedListener = BasicEqualizer.presetsChanged.on { _ in
+      self.send(to: "/presets", data: JSON(BasicEqualizer.presets.map { $0.dictionary }))
+    }
+
+    selectedPresetChangedListener = BasicEqualizer.selectedPresetChanged.on { preset in
+      self.send(to: "/presets/selected", data: JSON(preset.dictionary))
     }
   }
   

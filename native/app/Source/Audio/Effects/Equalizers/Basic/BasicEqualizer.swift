@@ -115,7 +115,7 @@ class BasicEqualizer: Equalizer, StoreSubscriber {
         midGain = selectedPreset.gains.mid
         trebleGain = selectedPreset.gains.treble
       }
-      selectedPresetChanged.emit(selectedPreset)
+      BasicEqualizer.selectedPresetChanged.emit(selectedPreset)
     }
   }
   
@@ -123,7 +123,10 @@ class BasicEqualizer: Equalizer, StoreSubscriber {
   
   // MARK: - Events
   static var presetsChanged = EmitterKit.Event<[BasicEqualizerPreset]>()
-  var selectedPresetChanged = EmitterKit.Event<BasicEqualizerPreset>()
+  // Static like its sibling above: a new equaliser is built every time the type
+  // is switched, so anything holding an instance's event would be listening to
+  // an object that is no longer the one in use.
+  static var selectedPresetChanged = EmitterKit.Event<BasicEqualizerPreset>()
   
   // MARK: - Properties
   var bassGain: Double = 0 {

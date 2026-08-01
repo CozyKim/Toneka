@@ -95,7 +95,10 @@ class AdvancedEqualizer: Equalizer, StoreSubscriber {
   }
   
   static var presetsChanged = Event<[AdvancedEqualizerPreset]>()
-  var selectedPresetChanged = Event<AdvancedEqualizerPreset>()
+  // Static like its sibling above: a new equaliser is built every time the type
+  // is switched, so anything holding an instance's event would be listening to
+  // an object that is no longer the one in use.
+  static var selectedPresetChanged = Event<AdvancedEqualizerPreset>()
   
   var transition = false
   
@@ -117,7 +120,7 @@ class AdvancedEqualizer: Equalizer, StoreSubscriber {
           setGain(index: index, gain: gain)
         }
       }
-      selectedPresetChanged.emit(selectedPreset)
+      AdvancedEqualizer.selectedPresetChanged.emit(selectedPreset)
     }
   }
   

@@ -17,6 +17,7 @@ class AdvancedEqualizerDataBus: DataBus {
     return Application.store.state.effects.equalizers.advanced
   }
   var presetsChangedListener: EventListener<[AdvancedEqualizerPreset]>?
+  var selectedPresetChangedListener: EventListener<AdvancedEqualizerPreset>?
   
   required init (route: String, bridge: Bridge) {
     super.init(
@@ -170,6 +171,13 @@ class AdvancedEqualizerDataBus: DataBus {
     
     presetsChangedListener = AdvancedEqualizer.presetsChanged.on { presets in
       self.send(to: "/presets", data: JSON(AdvancedEqualizer.presets.map { $0.dictionary }))
+    }
+
+    // Without this the interface hears about a new list but never about which
+    // one of them is now in use, so choosing a preset changed the sound while
+    // the bands stayed where they were.
+    selectedPresetChangedListener = AdvancedEqualizer.selectedPresetChanged.on { preset in
+      self.send(to: "/presets/selected", data: JSON(preset.dictionary))
     }
     
   }
