@@ -51,19 +51,10 @@ class Settings: StoreSubscriber {
     }
   }
 
-  static var doAutoCheckUpdates = Application.store.state.settings.doAutoCheckUpdates {
-    didSet {
-      Application.updater.automaticallyChecksForUpdates = doAutoCheckUpdates
-    }
-  }
-
-  // The feed URL is served through SPUUpdaterDelegate.feedURLString(for:),
-  // which reads this on every check, so toggling it needs no further work.
+  // Kept because the settings routes still read and write them; this build has
+  // no update channel, so nothing acts on the values.
+  static var doAutoCheckUpdates = Application.store.state.settings.doAutoCheckUpdates
   static var doBetaUpdates = Application.store.state.settings.doBetaUpdates
-
-  static var updatesFeedUrl: URL! {
-    return Application.store.state.settings.doBetaUpdates ? Constants.BETA_UPDATES_FEED : Constants.UPDATES_FEED
-  }
 
   init() {
     self.setupStateListener()

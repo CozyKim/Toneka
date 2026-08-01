@@ -16,7 +16,6 @@ import SwiftyUserDefaults
 import SwiftyJSON
 import ServiceManagement
 import ReSwift
-import Sparkle
 import Shared
 
 enum VolumeChangeDirection: String {
@@ -54,12 +53,7 @@ class Application {
 
   static var dataBus: ApplicationDataBus!
   static let error = EmitterKit.Event<String>()
-  
-  /// Owned by AppDelegate, which constructs it early so this stays non-nil for
-  /// everything that runs afterwards.
-  static var updaterController: SPUStandardUpdaterController!
-  static var updater: SPUUpdater { return updaterController.updater }
-  
+
   static let store: Store = Store(
     reducer: ApplicationStateReducer,
     state: ApplicationState.load(),
@@ -554,10 +548,6 @@ class Application {
   
   static func restartMac () {
     Script.apple("restart_mac")
-  }
-  
-  static func checkForUpdates () {
-    updater.checkForUpdates()
   }
   
   static func uninstall () {

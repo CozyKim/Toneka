@@ -85,8 +85,8 @@ class ApplicationDataBus: DataBus {
 //    }
 //
     self.on(.GET, "/update") { _, _ in
-      Application.checkForUpdates()
-      return "Checking for updates."
+      // This build is not distributed, so there is nothing to update from.
+      return "Updates are not available in this build."
     }
 
     self.on(.GET, "/enabled") { _, _ in
