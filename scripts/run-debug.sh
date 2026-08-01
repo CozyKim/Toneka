@@ -69,9 +69,20 @@ xcodebuild \
   -quiet \
   build
 
-app="$(ls -dt "$HOME/Library/Developer/Xcode/DerivedData/eqMac-"*/Build/Products/Debug/eqMac.app 2>/dev/null | head -1)"
-if [ -z "$app" ]; then
-  echo "Could not find the built app under DerivedData." >&2
+# Ask xcodebuild where it put the app. Picking the newest match under
+# DerivedData looks equivalent but is not: a worktree gets its own derived
+# directory, and the bundle's timestamp does not always move when the binary
+# inside it does, so the guess can hand back a stale build.
+products="$(xcodebuild \
+  -workspace "$ROOT/native/eqMac.xcworkspace" \
+  -scheme eqMac \
+  -configuration Debug \
+  -showBuildSettings 2>/dev/null \
+  | awk -F' = ' '/ BUILT_PRODUCTS_DIR = /{print $2; exit}')"
+
+app="$products/eqMac.app"
+if [ ! -d "$app" ]; then
+  echo "Could not find the built app at $app" >&2
   exit 1
 fi
 

@@ -37,9 +37,18 @@ xcodebuild \
   -quiet \
   build
 
-built="$(ls -dt "$HOME/Library/Developer/Xcode/DerivedData/eqMac-"*/Build/Products/Release/"$APP_NAME" 2>/dev/null | head -1)"
-if [ -z "$built" ]; then
-  echo "Could not find the built app under DerivedData." >&2
+# See the note in run-debug.sh: the newest match under DerivedData can be a
+# stale build, so ask xcodebuild instead of guessing.
+products="$(xcodebuild \
+  -workspace "$ROOT/native/eqMac.xcworkspace" \
+  -scheme eqMac \
+  -configuration Release \
+  -showBuildSettings 2>/dev/null \
+  | awk -F' = ' '/ BUILT_PRODUCTS_DIR = /{print $2; exit}')"
+
+built="$products/$APP_NAME"
+if [ ! -d "$built" ]; then
+  echo "Could not find the built app at $built" >&2
   exit 1
 fi
 
