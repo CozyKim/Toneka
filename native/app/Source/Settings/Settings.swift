@@ -50,17 +50,10 @@ class Settings: StoreSubscriber {
     }
   }
 
-  // Kept because the settings routes still read and write them; this build has
-  // no update channel, so nothing acts on the values.
-  static var doAutoCheckUpdates = Application.store.state.settings.doAutoCheckUpdates
-  static var doBetaUpdates = Application.store.state.settings.doBetaUpdates
-
   init() {
     self.setupStateListener()
     ({
       Settings.iconMode = Application.store.state.settings.iconMode
-      Settings.doAutoCheckUpdates = Application.store.state.settings.doAutoCheckUpdates
-      Settings.doBetaUpdates = Application.store.state.settings.doBetaUpdates
     })()
   }
 
@@ -74,12 +67,6 @@ class Settings: StoreSubscriber {
   func newState(state: SettingsState) {
     if (state.iconMode != Settings.iconMode) {
       Settings.iconMode = state.iconMode
-    }
-    if (state.doAutoCheckUpdates != Settings.doAutoCheckUpdates) {
-      Settings.doAutoCheckUpdates = state.doAutoCheckUpdates
-    }
-    if (state.doBetaUpdates != Settings.doBetaUpdates) {
-      Settings.doBetaUpdates = state.doBetaUpdates
     }
   }
 
