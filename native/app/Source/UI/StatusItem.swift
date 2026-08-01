@@ -130,16 +130,19 @@ class StatusItem {
   @IBAction private func wasClicked (sender: NSStatusItem) {
     highlighted = false
 
-    let event = NSApp.currentEvent!
-    
     guard let button = item.button else { return }
     // Just below the status item, where NSStatusItem.popUpMenu used to put it.
     let origin = NSPoint(x: 0, y: button.bounds.height + 5)
 
-    if (event.type == .rightMouseDown) {
+    // currentEvent is whatever was last taken off the queue, which is the press
+    // only when a press is what got us here. An assistive technology or a
+    // script activating the item leaves something unrelated there, and testing
+    // for a left click would drop those on the floor. Anything that is not a
+    // right click means "open eqMac".
+    if NSApp.currentEvent?.type == .rightMouseDown {
       rightClickMenu.popUp(positioning: nil, at: origin, in: button)
       rightClicked.emit()
-    } else if (event.type == .leftMouseDown) {
+    } else {
       dummyMenu.popUp(positioning: nil, at: origin, in: button)
       clicked.emit()
     }
