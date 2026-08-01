@@ -79,12 +79,16 @@ export class Bridge {
   }
 
   static async call (handler: string, data?: JSONData): Promise<any> {
-    return new Promise(async (resolve, reject) => {
-      const bridge = await this.bridge
-      if (!Bridge.didSpeedUp) {
-        Bridge.didSpeedUp = true
-        bridge.disableJavscriptAlertBoxSafetyTimeout()
-      }
+    // Awaiting inside the executor would swallow a rejection here and leave the
+    // returned promise pending forever.
+    const bridge = await this.bridge
+
+    if (!Bridge.didSpeedUp) {
+      Bridge.didSpeedUp = true
+      bridge.disableJavscriptAlertBoxSafetyTimeout()
+    }
+
+    return new Promise((resolve, reject) => {
       bridge.callHandler(handler, data, res => {
         const err = res?.error
         return err ? reject(new Error(err)) : resolve(res?.data)
