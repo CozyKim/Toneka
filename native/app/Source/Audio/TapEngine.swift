@@ -29,13 +29,33 @@ private final class TapInputHandoff {
   var cycles = 0
   var renderFailures = 0
   var peak: Float = 0
+  // Told apart from `cycles` so that a spectrum showing nothing can be blamed
+  // on the analyser rather than on the audio never reaching it.
+  var spectrumWrites = 0
+
+  /// Where the rendered channels are mixed down to mono on their way to the
+  /// analyser. Allocated once and owned here, because the mixing happens on the
+  /// realtime thread and that thread must never reach the allocator.
+  let mono: UnsafeMutablePointer<Float>
+  private let monoCapacity: Int
+
+  init (frameCapacity: Int) {
+    monoCapacity = frameCapacity
+    mono = .allocate(capacity: frameCapacity)
+    mono.initialize(repeating: 0, count: frameCapacity)
+  }
+
+  deinit {
+    mono.deinitialize(count: monoCapacity)
+    mono.deallocate()
+  }
 }
 
 final class TapEngine {
   private let tap: ProcessTap
   private let aggregate: AggregateDevice
   private let engine = AVAudioEngine()
-  private let handoff = TapInputHandoff()
+  private let handoff = TapInputHandoff(frameCapacity: Int(TapEngine.maximumFrames))
 
   private var sourceNode: AVAudioSourceNode?
   private var procID: AudioDeviceIOProcID?
@@ -74,6 +94,8 @@ final class TapEngine {
     self.equalizers = equalizers
     self.volume = volume
     self.outputDevice = outputDevice
+
+    SpectrumRing.shared.sampleRate = tap.format.mSampleRate
 
     guard buildGraph() else { return nil }
 
@@ -146,6 +168,7 @@ final class TapEngine {
     guard let renderBlock = renderBlock, let renderBuffer = renderBuffer else { return false }
 
     let handoff = self.handoff
+    let ring = SpectrumRing.shared
     var procID: AudioDeviceIOProcID?
     let createStatus = AudioDeviceCreateIOProcIDWithBlock(&procID, aggregate.objectID, nil) {
       _, inputData, _, outputData, _ in
@@ -154,7 +177,8 @@ final class TapEngine {
         output: outputData,
         handoff: handoff,
         renderBlock: renderBlock,
-        renderBuffer: renderBuffer
+        renderBuffer: renderBuffer,
+        ring: ring
       )
     }
 
@@ -185,7 +209,8 @@ final class TapEngine {
     Console.log(
       "Tap pipeline stopped after \(handoff.cycles) cycles,",
       "\(handoff.renderFailures) render failures,",
-      "peak \(handoff.peak)"
+      "peak \(handoff.peak),",
+      "\(handoff.spectrumWrites) spectrum writes"
     )
   }
 
@@ -237,7 +262,8 @@ final class TapEngine {
     output: UnsafeMutablePointer<AudioBufferList>,
     handoff: TapInputHandoff,
     renderBlock: @escaping AVAudioEngineManualRenderingBlock,
-    renderBuffer: AVAudioPCMBuffer
+    renderBuffer: AVAudioPCMBuffer,
+    ring: SpectrumRing
   ) {
     let outputBuffers = UnsafeMutableAudioBufferListPointer(output)
     guard let target = outputBuffers.first,
@@ -263,7 +289,16 @@ final class TapEngine {
     }
 
     let rendered = UnsafeMutableAudioBufferListPointer(renderBuffer.mutableAudioBufferList)
+
+    // The analyser wants one signal, and it is gathered here rather than in a
+    // pass of its own: the samples are already in registers on their way to the
+    // device. Averaged rather than summed, so two channels carrying the same
+    // material do not read six decibels louder than either of them.
+    let mono = handoff.mono
+    let share = 1 / Float(channels)
+
     for channel in 0 ..< channels {
+      let isFirst = channel == 0
       if channel < rendered.count,
          let source = rendered[channel].mData?.assumingMemoryBound(to: Float.self) {
         for frame in 0 ..< frames {
@@ -271,11 +306,19 @@ final class TapEngine {
           targetData[frame * channels + channel] = value
           let magnitude = abs(value)
           if magnitude > handoff.peak { handoff.peak = magnitude }
+          let part = value * share
+          mono[frame] = isFirst ? part : mono[frame] + part
         }
       } else {
-        for frame in 0 ..< frames { targetData[frame * channels + channel] = 0 }
+        for frame in 0 ..< frames {
+          targetData[frame * channels + channel] = 0
+          if isFirst { mono[frame] = 0 }
+        }
       }
     }
+
+    ring.write(mono, count: frames)
+    handoff.spectrumWrites += 1
   }
 
   deinit {
