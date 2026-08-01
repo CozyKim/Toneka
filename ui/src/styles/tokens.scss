@@ -7,11 +7,41 @@
   --space-2: 8px;
   --space-3: 12px;
   --space-4: 16px;
+
+  // The interface sits on the window's material, so surfaces are tints over
+  // whatever is behind rather than opaque fills.
+  --surface: rgb(255 255 255 / 0.06);
+  --surface-raised: rgb(255 255 255 / 0.12);
+  --surface-sunken: rgb(0 0 0 / 0.22);
+
+  // Fixed on purpose: danger must not follow the accent colour, or a user
+  // whose accent is red loses the distinction.
+  --warning: #eb3f42;
+  --caution: #ffd500;
+
+  // eqMac's own mark. Not a system colour.
+  --icon-gradient-start: #05ff71;
+  --icon-gradient-middle: #03f193;
+  --icon-gradient-end: #04e2b5;
+
+  --accent: #4f8d71;
+  --accent-bright: color-mix(in srgb, var(--accent) 80%, white);
+}
+
+// Follows the accent colour chosen in System Settings where the engine
+// understands it, which is the point of delegating to the system at all.
+@supports (color: AccentColor) {
+  :root {
+    --accent: AccentColor;
+  }
 }
 
 @media (prefers-color-scheme: light) {
   :root {
     --text-primary: rgb(0 0 0 / 0.92);
     --text-secondary: rgb(0 0 0 / 0.55);
+    --surface: rgb(0 0 0 / 0.05);
+    --surface-raised: rgb(0 0 0 / 0.10);
+    --surface-sunken: rgb(0 0 0 / 0.16);
   }
 }

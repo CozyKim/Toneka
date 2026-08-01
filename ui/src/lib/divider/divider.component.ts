@@ -1,0 +1,46 @@
+import { Component, Input, ElementRef, HostBinding, ChangeDetectionStrategy } from '@angular/core'
+
+@Component({
+  selector: 'eqm-divider',
+  standalone: true,
+  template: '',
+  styleUrls: [ './divider.component.scss' ],
+  changeDetection: ChangeDetectionStrategy.OnPush
+})
+export class DividerComponent {
+  @Input() orientation: 'vertical' | 'horizontal' = 'horizontal'
+
+  constructor (
+    public elem: ElementRef
+  ) {}
+
+  @HostBinding('style.width')
+  get width () {
+    return this.orientation === 'vertical' ? '1px' : '100%'
+  }
+
+  @HostBinding('style.height')
+  get height () {
+    return this.orientation === 'vertical' ? 'initial' : '1px'
+  }
+
+  @HostBinding('style.border-left')
+  get leftBorder () {
+    return this.orientation === 'vertical' ? '1px solid var(--surface-sunken)' : undefined
+  }
+
+  @HostBinding('style.border-right')
+  get rightBorder () {
+    return this.orientation === 'vertical' ? '1px solid var(--surface-raised)' : undefined
+  }
+
+  @HostBinding('style.border-top')
+  get topBorder () {
+    return this.orientation === 'horizontal' ? '1px solid var(--surface-sunken)' : undefined
+  }
+
+  @HostBinding('style.border-bottom')
+  get bottomtBorder () {
+    return this.orientation === 'horizontal' ? '1px solid var(--surface-raised)' : undefined
+  }
+}
