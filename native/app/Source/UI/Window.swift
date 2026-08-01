@@ -19,7 +19,11 @@ class Window: NSWindow, NSWindowDelegate {
     self.titleVisibility = .hidden
     self.titlebarAppearsTransparent = true
     self.isMovableByWindowBackground = true
-    
+    // The content view provides the material; an opaque window would sit in
+    // front of it and nothing behind the window could show through.
+    self.isOpaque = false
+    self.backgroundColor = .clear
+
     Async.delay(1000, completion: {
       for subview in self.contentView!.superview!.subviews {
         if subview.isKind(of: NSClassFromString("NSTitlebarContainerView")!) {

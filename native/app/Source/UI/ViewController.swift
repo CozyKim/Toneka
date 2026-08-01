@@ -45,8 +45,33 @@ class ViewController: NSViewController, WKNavigationDelegate {
   // MARK: - Initialization
   override func viewDidLoad () {
     super.viewDidLoad()
+    installBackdrop()
     loadingSpinner.startAnimation(nil)
     loaded.emit()
+  }
+
+  /// Moves the storyboard's subviews inside a material view so the window can
+  /// show system material behind the web content.
+  private func installBackdrop () {
+    // drawsBackground is not exposed on macOS WKWebView, but the underlying
+    // setting is what makes the web content composite over what is behind it.
+    webView.setValue(false, forKey: "drawsBackground")
+
+    let content = NSView(frame: view.bounds)
+    content.autoresizingMask = [.width, .height]
+    for subview in view.subviews {
+      subview.removeFromSuperview()
+      content.addSubview(subview)
+    }
+
+    let backdrop = Materials.backdrop(
+      bounds: view.bounds,
+      content: content,
+      cornerRadius: 0,
+      preferClearGlass: false,
+      fallbackMaterial: .sidebar
+    )
+    view.addSubview(backdrop)
   }
 
   func load (_ url: URL) {

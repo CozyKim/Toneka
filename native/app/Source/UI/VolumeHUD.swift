@@ -53,31 +53,13 @@ final class VolumeHUD {
     content.addSubview(icon)
     content.addSubview(bar)
 
-    // Reduce Transparency asks for the background to obscure what is behind it,
-    // which is the opposite of what a glass effect does.
-    let reduceTransparency = NSWorkspace.shared.accessibilityDisplayShouldReduceTransparency
-
-    if #available(macOS 26.0, *), !reduceTransparency {
-      // NSGlassEffectView only guarantees placement for its contentView, and
-      // setting it is also what lets AppKit apply the legibility treatments.
-      let glass = NSGlassEffectView(frame: bounds)
-      glass.autoresizingMask = [.width, .height]
-      glass.cornerRadius = 14
-      glass.style = .clear
-      glass.contentView = content
-      window.contentView = glass
-    } else {
-      let blur = NSVisualEffectView(frame: bounds)
-      blur.material = reduceTransparency ? .windowBackground : .hudWindow
-      blur.blendingMode = .behindWindow
-      blur.state = .active
-      blur.wantsLayer = true
-      blur.layer?.cornerRadius = 14
-      blur.layer?.masksToBounds = true
-      blur.autoresizingMask = [.width, .height]
-      blur.addSubview(content)
-      window.contentView = blur
-    }
+    window.contentView = Materials.backdrop(
+      bounds: bounds,
+      content: content,
+      cornerRadius: 14,
+      preferClearGlass: true,
+      fallbackMaterial: .hudWindow
+    )
   }
 
   /// - Parameters:
