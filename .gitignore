@@ -6,7 +6,9 @@ node_modules
 .env
 dist
 !modules/**/dist
+# yarn.lock is committed on purpose: without it an install resolves fresh
+# versions, and that is how a deprecated @types stub with no declarations
+# broke the UI build.
 **/package-lock.json
-**/yarn.lock
 
 native/app/Sandbox.playground/Resources/track.mp3
