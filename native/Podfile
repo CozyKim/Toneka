@@ -44,7 +44,6 @@ target 'eqMac' do
   pod 'SwiftyJSON', '~> 4.2'
   pod 'SwiftyUserDefaults', '4.0'
   pod 'KeychainSwift', '~> 13.0'
-  pod 'Zip', :git => 'https://github.com/bitgapp/Zip.git'
   shared_pods
 
 end

@@ -12,7 +12,6 @@ import Cocoa
 import EmitterKit
 import SwiftyUserDefaults
 import WebKit
-import Zip
 import SwiftHTTP
 import Shared
 
@@ -106,16 +105,32 @@ class UI: StoreSubscriber {
   static func unarchiveZip () {
     // Unpack Archive
     let fs = FileManager.default
-    
+
     if fs.fileExists(atPath: remoteZipPath.path) {
-      try! Zip.unzipFile(remoteZipPath, destination: localPath, overwrite: true, password: nil) // Unzip
+      try! unzip(remoteZipPath, into: localPath)
     } else {
       if !fs.fileExists(atPath: localZipPath.path) {
         Console.log("\(localZipPath.path) doesnt exist")
         let bundleUIZipPath = Bundle.main.url(forResource: "ui", withExtension: "zip", subdirectory: "Embedded")!
         try! fs.copyItem(at: bundleUIZipPath, to: localZipPath)
       }
-      try! Zip.unzipFile(localZipPath, destination: localPath, overwrite: true, password: nil) // Unzip
+      try! unzip(localZipPath, into: localPath)
+    }
+  }
+
+  /// Extraction via ditto, which ships with macOS and overwrites in place.
+  /// Avoids depending on a third-party zip library for the one thing we
+  /// unpack -- the same kind of fork dependency that broke this build once.
+  private static func unzip (_ archive: URL, into destination: URL) throws {
+    let process = Process()
+    process.executableURL = URL(fileURLWithPath: "/usr/bin/ditto")
+    process.arguments = ["-x", "-k", archive.path, destination.path]
+
+    try process.run()
+    process.waitUntilExit()
+
+    guard process.terminationStatus == 0 else {
+      throw "Failed to extract \(archive.lastPathComponent): ditto exited \(process.terminationStatus)"
     }
   }
   
