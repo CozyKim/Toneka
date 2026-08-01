@@ -74,8 +74,6 @@ class Application {
   static public func start () {
     self.settings = Settings()
 
-    Networking.startMonitor()
-    
     if enabled {
       setupAudio()
     }

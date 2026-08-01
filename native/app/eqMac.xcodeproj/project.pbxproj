@@ -13,7 +13,6 @@
 		63CF9C5F616D1A56D59ED3DA /* TapEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67955640E9DC25278A5D11A5 /* TapEngine.swift */; };
 		78048A62265041600020AAD9 /* DateExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78048A61265041600020AAD9 /* DateExtensions.swift */; };
 		7810723826112C2B005DB609 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7810723726112C2B005DB609 /* Security.framework */; };
-		78242E96261A8AEE00058ADE /* Connectivity in Frameworks */ = {isa = PBXBuildFile; productRef = 78242E95261A8AEE00058ADE /* Connectivity */; };
 		783A6FA02670225C00A96B42 /* Benchmark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 783A6F9F2670225C00A96B42 /* Benchmark.swift */; };
 		785453AB269B75F100E8AB42 /* Assets in Resources */ = {isa = PBXBuildFile; fileRef = 785453AA269B75F000E8AB42 /* Assets */; };
 		7858FBC224A9630800637941 /* restart_mac.scpt in Resources */ = {isa = PBXBuildFile; fileRef = 7858FBC124A9630800637941 /* restart_mac.scpt */; };
@@ -36,7 +35,6 @@
 		AF8A81B1C07FEF2EE203BDA0 /* ProcessTap.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6E1ECF750ABA4A637998881 /* ProcessTap.swift */; };
 		E00618E220F14C08003BA0B0 /* UIState.swift in Sources */ = {isa = PBXBuildFile; fileRef = E00618E120F14C08003BA0B0 /* UIState.swift */; };
 		E00618EB20F22BD1003BA0B0 /* Effect.swift in Sources */ = {isa = PBXBuildFile; fileRef = E00618EA20F22BD1003BA0B0 /* Effect.swift */; };
-		E00618ED20F292B9003BA0B0 /* Networking.swift in Sources */ = {isa = PBXBuildFile; fileRef = E00618EC20F292B9003BA0B0 /* Networking.swift */; };
 		E00C595D23BBBB6C00C7B8B6 /* UnsafeMutableAudioBufferListPointer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E00C595C23BBBB6C00C7B8B6 /* UnsafeMutableAudioBufferListPointer.swift */; };
 		E012A4702044C4DA0029C800 /* Sysctl.swift in Sources */ = {isa = PBXBuildFile; fileRef = E012A46F2044C4DA0029C800 /* Sysctl.swift */; };
 		E0136BB322D9EC920048D5BC /* DraggableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0136BB222D9EC920048D5BC /* DraggableView.swift */; };
@@ -129,7 +127,6 @@
 		D6E1ECF750ABA4A637998881 /* ProcessTap.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ProcessTap.swift; sourceTree = "<group>"; };
 		E00618E120F14C08003BA0B0 /* UIState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIState.swift; sourceTree = "<group>"; };
 		E00618EA20F22BD1003BA0B0 /* Effect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Effect.swift; sourceTree = "<group>"; };
-		E00618EC20F292B9003BA0B0 /* Networking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Networking.swift; sourceTree = "<group>"; };
 		E00C595C23BBBB6C00C7B8B6 /* UnsafeMutableAudioBufferListPointer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnsafeMutableAudioBufferListPointer.swift; sourceTree = "<group>"; };
 		E012A46F2044C4DA0029C800 /* Sysctl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sysctl.swift; sourceTree = "<group>"; };
 		E0136BB222D9EC920048D5BC /* DraggableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DraggableView.swift; sourceTree = "<group>"; };
@@ -209,7 +206,6 @@
 				787474A925336D9200FF4A95 /* CoreFoundation.framework in Frameworks */,
 				E02ACA982459EF3B00754204 /* Pods_eqMac.framework in Frameworks */,
 				7893D5752674F6B100F3815B /* Version in Frameworks */,
-				78242E96261A8AEE00058ADE /* Connectivity in Frameworks */,
 				78D8C3322569B2910084739C /* LaunchAtLogin in Frameworks */,
 				E0453056245A03E800CDB1BF /* Foundation.framework in Frameworks */,
 				78D8C3332569B3000084739C /* AudioToolbox.framework in Frameworks */,
@@ -223,14 +219,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		7811AEF6261A6B86005BDAE3 /* Networking */ = {
-			isa = PBXGroup;
-			children = (
-				E00618EC20F292B9003BA0B0 /* Networking.swift */,
-			);
-			path = Networking;
-			sourceTree = "<group>";
-		};
 		785E4F83274C74A2003D6DB0 /* Packages */ = {
 			isa = PBXGroup;
 			children = (
@@ -508,7 +496,6 @@
 				E036BCE8235B09CB001F057B /* DataBus */,
 				E004A8F3209D08AF00A878AA /* Extensions */,
 				E095BBC02014CDAD003473E9 /* Helpers */,
-				7811AEF6261A6B86005BDAE3 /* Networking */,
 				E0D5F88522DD1BB800499250 /* Settings */,
 				E0DDF3FB218901E700B37E77 /* Scripts */,
 				E01B5C862356E07600E1A675 /* Transition */,
@@ -578,7 +565,6 @@
 			name = eqMac;
 			packageProductDependencies = (
 				78D8C3312569B2910084739C /* LaunchAtLogin */,
-				78242E95261A8AEE00058ADE /* Connectivity */,
 				7893D5742674F6B100F3815B /* Version */,
 				78AA48F3270362AA007CDE89 /* BetterCodable */,
 				78F28AD4274D25580005474D /* Shared */,
@@ -621,7 +607,6 @@
 			mainGroup = E086AFF31FCCB8E700CF9F0D;
 			packageReferences = (
 				78D8C3302569B2910084739C /* XCRemoteSwiftPackageReference "LaunchAtLogin" */,
-				78242E94261A8AEE00058ADE /* XCRemoteSwiftPackageReference "connectivity" */,
 				7893D5732674F6B100F3815B /* XCRemoteSwiftPackageReference "Version" */,
 				78AA48F2270362AA007CDE89 /* XCRemoteSwiftPackageReference "BetterCodable" */,
 			);
@@ -776,7 +761,6 @@
 				E0C8F78621D3B6590023B1E5 /* UIDataBus.swift in Sources */,
 				E07A6EE122B6BA4E00DE7B16 /* File.swift in Sources */,
 				E0A3B96320DF992600E46908 /* Buffer.swift in Sources */,
-				E00618ED20F292B9003BA0B0 /* Networking.swift in Sources */,
 				E0AD99D52251022700D893F7 /* AdvancedEqualizerDefaultPresets.swift in Sources */,
 				E0ECA88B23B8B8DD002AFBF0 /* AVAudioEngine.swift in Sources */,
 				E057A63B22703F590019D13C /* BasicEqualizerDataBus.swift in Sources */,
@@ -1102,14 +1086,6 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		78242E94261A8AEE00058ADE /* XCRemoteSwiftPackageReference "connectivity" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/rwbutler/connectivity";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 5.0.1;
-			};
-		};
 		7893D5732674F6B100F3815B /* XCRemoteSwiftPackageReference "Version" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/mxcl/Version";
@@ -1137,11 +1113,6 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		78242E95261A8AEE00058ADE /* Connectivity */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 78242E94261A8AEE00058ADE /* XCRemoteSwiftPackageReference "connectivity" */;
-			productName = Connectivity;
-		};
 		7893D5742674F6B100F3815B /* Version */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 7893D5732674F6B100F3815B /* XCRemoteSwiftPackageReference "Version" */;
