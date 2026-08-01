@@ -28,8 +28,7 @@ class EventInterceptor: NSApplication {
           Application.volumeChangeButtonPressed(direction: .DOWN, quarterStep: shiftPressed(event: event) && optionPressed(event: event))
           return
         case NX_KEYTYPE_MUTE:
-          // The system mutes the output device itself; our state follows via
-          // the device's mute-changed event.
+          Application.muteButtonPressed()
           return
         default: break
         }

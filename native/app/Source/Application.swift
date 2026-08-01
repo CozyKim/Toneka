@@ -48,6 +48,7 @@ class Application {
     
     
   static var ui: UI!
+  static let volumeHUD = VolumeHUD()
     
     
 
@@ -387,34 +388,57 @@ class Application {
       return
     }
     let gain = engine.volume.gain
-    if (gain >= 1) {
-      let steps = quarterStep ? Constants.QUARTER_VOLUME_STEPS : Constants.FULL_VOLUME_STEPS
-      
-      var stepIndex: Int
-      
-      if direction == .UP {
-        stepIndex = steps.index(where: { $0 > gain }) ?? steps.count - 1
-      } else {
-        stepIndex = steps.index(where: { $0 >= gain }) ?? 0
-        stepIndex -= 1
-        if (stepIndex < 0) {
-          stepIndex = 0
-        }
+
+    // Devices with their own volume control are driven by the system, so we
+    // only take over above 1.0 where hardware volume cannot reach. Devices
+    // without one -- HDMI and DisplayPort displays -- get nothing from the
+    // media keys at all, so eqMac has to apply the step itself. The driver
+    // used to paper over this by always exposing a volume control.
+    let deviceHasVolumeControl = selectedDevice?.outputVolumeSupported ?? false
+    if (deviceHasVolumeControl && gain < 1) { return }
+
+    let steps = quarterStep ? Constants.QUARTER_VOLUME_STEPS : Constants.FULL_VOLUME_STEPS
+
+    var stepIndex: Int
+
+    if direction == .UP {
+      stepIndex = steps.firstIndex(where: { $0 > gain }) ?? steps.count - 1
+    } else {
+      stepIndex = steps.firstIndex(where: { $0 >= gain }) ?? 0
+      stepIndex -= 1
+      if (stepIndex < 0) {
+        stepIndex = 0
       }
-      
-      var newGain = steps[stepIndex]
-      
-      if (newGain <= 1) {
-        Async.delay(100) {
-          selectedDevice?.setVirtualMasterVolume(Float(newGain), direction: .playback)
-        }
-      } else {
-        if (!Application.store.state.volume.boostEnabled) {
-          newGain = 1
-        }
-      }
-      Application.dispatchAction(VolumeAction.setGain(newGain, false))
     }
+
+    var newGain = steps[stepIndex]
+
+    if (newGain > 1 && !Application.store.state.volume.boostEnabled) {
+      newGain = 1
+    }
+
+    // Volume.gain applies this to the hardware or to the mixer, depending on
+    // what the device supports.
+    Application.dispatchAction(VolumeAction.setGain(newGain, false))
+
+    // Reaching here means the system is not showing its own HUD for this
+    // change -- either the device has no volume control, or we are above the
+    // 100% the system HUD tops out at.
+    volumeHUD.show(gain: newGain, muted: engine.volume.muted)
+  }
+
+  static func muteButtonPressed () {
+    guard !ignoreEvents, let engine = tapEngine else { return }
+
+    // Same split as the volume keys: a device with a mute control is handled
+    // by the system, and our state follows its mute-changed event. One without
+    // it -- HDMI and DisplayPort displays -- never sees the key, so eqMac has
+    // to toggle its own state and let Volume silence the mixer.
+    if (selectedDevice?.outputVolumeSupported ?? false) { return }
+
+    let muted = !engine.volume.muted
+    Application.dispatchAction(VolumeAction.setMuted(muted))
+    volumeHUD.show(gain: engine.volume.gain, muted: muted)
   }
 
   /// The user may have raised the hardware volume to compensate for a negative
