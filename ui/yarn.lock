@@ -41,6 +41,13 @@
     ora "9.4.1"
     rxjs "7.8.2"
 
+"@angular/animations@~22.1.0":
+  version "22.1.0"
+  resolved "https://registry.yarnpkg.com/@angular/animations/-/animations-22.1.0.tgz#6c07e855b3cc296846423a105233275bc710b97b"
+  integrity sha512-MHXOXmn9zmkiq234J+pr2Ir4A+z1iiVmQ0WjQ4skvK8GHTjnjeHKb4HrpAo5f7S3W0oenszmkNCddTQ3pvoJPw==
+  dependencies:
+    tslib "^2.3.0"
+
 "@angular/build@~22.1.0":
   version "22.1.2"
   resolved "https://registry.yarnpkg.com/@angular/build/-/build-22.1.2.tgz#06422e43e6f2d0f72b64e00bda4c4246fcd0debb"
@@ -74,6 +81,14 @@
     watchpack "2.5.2"
   optionalDependencies:
     lmdb "3.5.6"
+
+"@angular/cdk@~22.1.0":
+  version "22.1.0"
+  resolved "https://registry.yarnpkg.com/@angular/cdk/-/cdk-22.1.0.tgz#76f5723e8209846b0d573c3d971baabc4a583186"
+  integrity sha512-yfQug47CZ+51mHy0ZLWzi6F/YHfsAF2Z7Jxo3JLM7Aj3Er47hHB8VnrNERwK5tBLs0bE5DoEIm59ga/MI3fVGg==
+  dependencies:
+    parse5 "^8.0.0"
+    tslib "^2.3.0"
 
 "@angular/cli@~22.1.2":
   version "22.1.2"

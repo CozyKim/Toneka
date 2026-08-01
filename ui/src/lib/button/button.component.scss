@@ -1,0 +1,74 @@
+:host {
+  display: inline-block;
+  margin: 1px;
+}
+
+.button {
+  transform: translate(-1px, -1px);
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background-color: var(--surface-raised);
+  transition-property: filter;
+  transition-duration: .5s;
+  border-radius: 3px; // font-size: 20px;
+  filter: grayscale(80%) brightness(80%);
+}
+
+.transparent {
+  background-color: transparent;
+  box-shadow: none !important;
+}
+
+.large {
+  height: 34px;
+}
+
+.square {
+  height: 34px;
+  width: 34px;
+}
+
+.circle {
+  height: 34px;
+  width: 34px;
+  border-radius: 999px;
+}
+
+.narrow {
+  height: 22px;
+  padding: 0 5px;
+}
+
+// The shadows below stay in black and grey rather than becoming tokens: they
+// are shading, not colour, and a tinted token here would read as a stain.
+.off {
+  box-shadow: 0 0 0 1px rgb(0 0 0), 1px 1px 0 0 rgb(128 128 128 / .1) inset, -1px -1px 0 0 rgb(0 0 0 / .2) inset, 0px 5px 10px -2px rgb(0 0 0 / .5);
+}
+
+.on {
+  box-shadow: 0 0 0 1px rgb(0 0 0), 0 0 0 1px color-mix(in srgb, var(--accent) 50%, transparent) inset, 0 0 15px 10px rgb(0 0 0 / .3) inset;
+}
+
+.hoverable-on {
+  &:hover {
+    box-shadow: 0 0 0 1px rgb(0 0 0), 0 0 15px 1px color-mix(in srgb, var(--accent) 50%, transparent) inset, 0 0 15px 10px rgb(0 0 0 / .3) inset;
+  }
+}
+
+.hoverable-off {
+  &:hover {
+    box-shadow: 0 0 0 1px rgb(0 0 0), 0 0 15px 1px color-mix(in srgb, var(--accent) 50%, transparent) inset, 0px 5px 10px -2px rgb(0 0 0 / .5);
+  }
+}
+
+.enabled {
+  filter: none;
+  cursor: pointer !important;
+
+  & * {
+    cursor: pointer !important;
+  }
+}

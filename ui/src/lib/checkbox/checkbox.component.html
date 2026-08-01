@@ -1,0 +1,19 @@
+<ng-template #label>
+  <eqm-label style="margin: 0 5px;" [clickable]="enabled" [color]="labelColor">
+    <ng-content></ng-content>
+  </eqm-label>
+</ng-template>
+
+@if (labelSide === 'left') {
+  <div #content>
+    <ng-container *ngTemplateOutlet="label"></ng-container>
+  </div>
+}
+<eqm-container [color]="bgColor">
+  <eqm-icon name="checkbox" [size]="10" [color]="checked ? color : 'transparent'"></eqm-icon>
+</eqm-container>
+@if (labelSide === 'right') {
+  <div #content>
+    <ng-container *ngTemplateOutlet="label"></ng-container>
+  </div>
+}

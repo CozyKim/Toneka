@@ -1,0 +1,33 @@
+:host {
+  display: block;
+  width: 100%;
+  filter: grayscale(80%);
+}
+.container{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+
+  .input-field {
+    // Only the family: the size comes from the fontSize input.
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    width: 100%;
+    background: none;
+    border: none;
+    flex-grow: 4;
+    text-align: center;
+    margin: 4px;
+    &:focus{
+      outline: none;
+    }
+    &:invalid{
+    }
+  }
+}
+
+:host.enabled {
+  filter: none;
+}
