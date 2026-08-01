@@ -9,7 +9,7 @@ extension AudioDevice {
     var address = AudioObjectPropertyAddress(
       mSelector: kAudioDevicePropertyDeviceCanBeDefaultDevice,
       mScope: AudioDevice.scope(direction: direction),
-      mElement: kAudioObjectPropertyElementMaster
+      mElement: kAudioObjectPropertyElementMain
     )
     var size: UInt32 = UInt32(MemoryLayout<UInt32>.size)
     
@@ -89,7 +89,7 @@ extension AudioDevice {
   var decibelRange: ClosedRange<Double> {
     var propertyAddress = AudioObjectPropertyAddress(mSelector: kAudioDevicePropertyVolumeRangeDecibels,
                                                      mScope: kAudioDevicePropertyScopeOutput,
-                                                     mElement: kAudioObjectPropertyElementMaster)
+                                                     mElement: kAudioObjectPropertyElementMain)
     var value = AudioValueRange(mMinimum: 0, mMaximum: 0)
     // Try master first
     
@@ -104,7 +104,7 @@ extension AudioDevice {
   
   var sourceName: String? {
     let scope = isInputOnlyDevice() ? kAudioDevicePropertyScopeInput : kAudioDevicePropertyScopeOutput
-    var address = AudioObjectPropertyAddress(mSelector: kAudioDevicePropertyDataSource, mScope: scope, mElement: kAudioObjectPropertyElementMaster)
+    var address = AudioObjectPropertyAddress(mSelector: kAudioDevicePropertyDataSource, mScope: scope, mElement: kAudioObjectPropertyElementMain)
     
     var sourceCode: UInt32 = 0
     var propSize = UInt32(MemoryLayout<UInt32>.size)
@@ -115,23 +115,30 @@ extension AudioDevice {
     }
     
     var name: CFString = "" as CFString
-    
-    var translation = AudioValueTranslation(
-      mInputData: &sourceCode,
-      mInputDataSize: UInt32(MemoryLayout<UInt32>.size),
-      mOutputData: &name,
-      mOutputDataSize: UInt32(MemoryLayout<CFString>.size)
-    )
-    
+
     address = AudioObjectPropertyAddress(
       mSelector: kAudioDevicePropertyDataSourceNameForIDCFString,
       mScope: scope,
-      mElement: kAudioObjectPropertyElementMaster
+      mElement: kAudioObjectPropertyElementMain
     )
-    
+
     propSize = UInt32(MemoryLayout<AudioValueTranslation>.size)
-    
-    AudioObjectGetPropertyData(id, &address, 0, nil, &propSize, &translation)
+
+    // AudioValueTranslation holds raw pointers to both buffers, so they have to
+    // stay valid for the whole call. Taking `&sourceCode` inline lets them
+    // dangle before CoreAudio reads them.
+    withUnsafeMutablePointer(to: &sourceCode) { inputPointer in
+      withUnsafeMutablePointer(to: &name) { outputPointer in
+        var translation = AudioValueTranslation(
+          mInputData: UnsafeMutableRawPointer(inputPointer),
+          mInputDataSize: UInt32(MemoryLayout<UInt32>.size),
+          mOutputData: UnsafeMutableRawPointer(outputPointer),
+          mOutputDataSize: UInt32(MemoryLayout<CFString>.size)
+        )
+        AudioObjectGetPropertyData(id, &address, 0, nil, &propSize, &translation)
+      }
+    }
+
     let stringName = name as String
     return stringName == "" ? nil : stringName
   }
@@ -145,30 +152,6 @@ extension AudioDevice {
       return 0
     }
     return value
-  }
-  
-  static func lookupIDByPluginBundleID (by pluginBundleID: String) -> AudioDeviceID? {
-    var deviceId: AudioDeviceID = kAudioObjectUnknown
-    var cfBundleId = (pluginBundleID as CFString)
-    
-    var address = AudioObjectPropertyAddress(
-      mSelector: kAudioHardwarePropertyPlugInForBundleID,
-      mScope: kAudioObjectPropertyScopeGlobal,
-      mElement: kAudioObjectPropertyElementMaster
-    )
-    
-    var translation = AudioValueTranslation(
-      mInputData: &cfBundleId,
-      mInputDataSize: UInt32(MemoryLayout<CFString>.size),
-      mOutputData: &deviceId,
-      mOutputDataSize: UInt32(MemoryLayout<AudioObjectID>.size)
-    )
-    
-    var size: UInt32 = UInt32(MemoryLayout<AudioValueTranslation>.size)
-    var inSize = 0
-    checkErr(AudioObjectGetPropertyData(AudioObjectID(kAudioObjectSystemObject), &address, 0, &inSize, &size, &translation))
-    
-    return deviceId == kAudioObjectUnknown ? nil : deviceId
   }
   
   static public func getOutputDeviceFromUID (UID: String) -> AudioDevice? {
@@ -242,9 +225,9 @@ extension AudioDevice {
 
     var theAddress = address
     var size = UInt32(MemoryLayout<T>.size)
-    let status = AudioObjectGetPropertyData(objectID, &theAddress, UInt32(0), nil, &size, &value)
-
-    return status
+    return withUnsafeMutablePointer(to: &value) {
+      AudioObjectGetPropertyData(objectID, &theAddress, UInt32(0), nil, &size, $0)
+    }
   }
 
   public static func getPropertyDataSize(_ objectID: AudioObjectID, address: AudioObjectPropertyAddress, size: inout UInt32) -> (OSStatus) {

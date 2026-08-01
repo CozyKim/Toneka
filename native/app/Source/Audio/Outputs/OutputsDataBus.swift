@@ -23,7 +23,7 @@ class OutputsDataBus: DataBus {
     
     self.on(.GET, "/selected") { _, _ in
       return [
-        "id": Outputs.current
+        "id": Outputs.current ?? JSON.null
       ]
     }
     

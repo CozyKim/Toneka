@@ -167,7 +167,7 @@ class UIDataBus: DataBus {
     }
     
     self.on(.GET, "/max-height") { _, _ in
-      return [ "maxHeight": self.state.maxHeight ]
+      return [ "maxHeight": self.state.maxHeight ?? JSON.null ]
     }
 
     self.on(.POST, "/max-height") { data, _ in
@@ -177,7 +177,7 @@ class UIDataBus: DataBus {
     }
     
     self.on(.GET, "/max-width") { _, _ in
-      return [ "maxWidth": self.state.maxWidth ]
+      return [ "maxWidth": self.state.maxWidth ?? JSON.null ]
     }
 
     self.on(.POST, "/max-width") { data, _ in

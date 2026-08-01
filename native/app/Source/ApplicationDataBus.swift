@@ -115,12 +115,12 @@ class ApplicationDataBus: DataBus {
         throw "Invalid 'bundleId' parameter, must be a string"
       }
 
-      guard let path = NSWorkspace.shared.absolutePathForApplication(withBundleIdentifier: bundleId) else {
+      guard let url = NSWorkspace.shared.urlForApplication(withBundleIdentifier: bundleId) else {
         return JSON.null
       }
 
       return [
-        "base64": NSWorkspace.shared.icon(forFile: path).base64String ?? JSON.null
+        "base64": NSWorkspace.shared.icon(forFile: url.path).base64String ?? JSON.null
       ]
     }
 

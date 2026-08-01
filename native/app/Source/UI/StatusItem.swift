@@ -132,11 +132,15 @@ class StatusItem {
 
     let event = NSApp.currentEvent!
     
+    guard let button = item.button else { return }
+    // Just below the status item, where NSStatusItem.popUpMenu used to put it.
+    let origin = NSPoint(x: 0, y: button.bounds.height + 5)
+
     if (event.type == .rightMouseDown) {
-      item.popUpMenu(rightClickMenu)
+      rightClickMenu.popUp(positioning: nil, at: origin, in: button)
       rightClicked.emit()
     } else if (event.type == .leftMouseDown) {
-      item.popUpMenu(dummyMenu)
+      dummyMenu.popUp(positioning: nil, at: origin, in: button)
       clicked.emit()
     }
     

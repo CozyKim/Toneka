@@ -16,7 +16,6 @@ class Window: NSWindow, NSWindowDelegate {
     super.init(contentRect: contentRect, styleMask: style, backing: backingStoreType, defer: flag)
 
     self.delegate = self
-    self.isOneShot = false
     self.titleVisibility = .hidden
     self.titlebarAppearsTransparent = true
     self.isMovableByWindowBackground = true

@@ -198,7 +198,7 @@ class Application {
     AudioDeviceEvents.on(.isJackConnectedChanged) { device in
       if ignoreEvents { return }
       let connected = device.isJackConnected(direction: .playback)
-      Console.log("isJackConnectedChanged", device, connected)
+      Console.log("isJackConnectedChanged", device, String(describing: connected))
       if (device.id != selectedDevice?.id) {
         if (connected == true) {
           selectOutput(device: device)
