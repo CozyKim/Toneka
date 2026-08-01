@@ -9,7 +9,6 @@
 import Foundation
 import Cocoa
 import Dispatch
-import Sentry
 import EmitterKit
 import AVFoundation
 import SwiftyUserDefaults
@@ -73,10 +72,6 @@ class Application {
   static var equalizersTypeChangedListener: EventListener<EqualizerType>?
 
   static public func start () {
-    if (!Constants.DEBUG) {
-      setupCrashReporting()
-    }
-    
     self.settings = Settings()
 
     Networking.startMonitor()
@@ -116,20 +111,6 @@ class Application {
     }
   }
   
-  private static func setupCrashReporting () {
-    // Create a Sentry client and start crash handler
-    SentrySDK.start { options in
-      options.dsn = Constants.SENTRY_ENDPOINT
-      // Only send crash reports if user gave consent
-      options.beforeSend = { event in
-        if (store.state.settings.doCollectCrashReports) {
-          return event
-        }
-        return nil
-      }
-    }
-  }
-
   private static var settingUpAudio = false
   private static func setupAudio () {
     if (settingUpAudio) { return }
