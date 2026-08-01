@@ -43,6 +43,14 @@ const state = {
       outputFeatureEnabled: true,
       showEqualizers: true
     } as Record<string, any>
+  },
+  outputs: {
+    devices: [
+      { id: 51, name: 'MacBook Pro 스피커', transportType: 'builtIn' },
+      { id: 73, name: 'AirPods Pro', transportType: 'bluetooth' },
+      { id: 94, name: 'Studio Display', transportType: 'displayPort' }
+    ],
+    selected: 51
   }
 }
 
@@ -101,6 +109,13 @@ const routes: Record<string, (data: MockRequest) => MockReply> = {
   'POST /ui/settings': data => {
     state.ui.settings = { ...state.ui.settings, ...(data ?? {}) }
     return { data: state.ui.settings }
+  },
+
+  'GET /outputs/devices': () => ({ data: state.outputs.devices }),
+  'GET /outputs/selected': () => read('id', state.outputs.selected),
+  'POST /outputs/selected': data => {
+    state.outputs.selected = Number(data?.['id'])
+    return {}
   },
 
   'GET /ui/close': () => { console.info('[harness] close'); return {} },

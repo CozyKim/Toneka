@@ -2,15 +2,18 @@ import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/cor
 
 import { TitlebarComponent } from './sections/titlebar/titlebar.component'
 import { FooterComponent } from './sections/footer/footer.component'
+import { OutputComponent } from './sections/output/output.component'
 import { UIService } from './services/ui.service'
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [ TitlebarComponent, FooterComponent ],
+  imports: [ TitlebarComponent, FooterComponent, OutputComponent ],
   template: `
     <eqm-titlebar></eqm-titlebar>
-    <main></main>
+    <main>
+      <eqm-output></eqm-output>
+    </main>
     <eqm-footer></eqm-footer>
   `,
   styles: [`
