@@ -10,6 +10,7 @@ import {
 
 import { FlatSliderComponent } from '../../../../lib/flat-slider/flat-slider.component'
 import { AdvancedEqualizerPreset, AdvancedEqualizerService } from '../../../services/advanced-equalizer.service'
+import { ResponseCurveComponent } from '../response-curve/response-curve.component'
 
 /// Fixed on the native side; the interface only labels them.
 const FREQUENCIES = [ 32, 64, 125, 250, 500, 1_000, 2_000, 4_000, 8_000, 16_000 ] as const
@@ -26,10 +27,10 @@ const SEND_INTERVAL = 1000 / 30
 @Component({
   selector: 'eqm-advanced-equalizer',
   standalone: true,
-  imports: [ FlatSliderComponent ],
+  imports: [ FlatSliderComponent, ResponseCurveComponent ],
   template: `
-    <div class="bands">
-      <div class="grid" aria-hidden="true"></div>
+    <div class="plot">
+      <eqm-response-curve class="behind" [gains]="gains()" [range]="limit"></eqm-response-curve>
       @for (frequency of frequencies; track frequency; let i = $index) {
         <div class="band">
           <eqm-flat-slider
@@ -39,8 +40,13 @@ const SEND_INTERVAL = 1000 / 30
             [stickToMiddle]="true"
             (userChangedValue)="setBand(i, $event.value)">
           </eqm-flat-slider>
-          <span class="frequency">{{ label(frequency) }}</span>
         </div>
+      }
+    </div>
+
+    <div class="labels" aria-hidden="true">
+      @for (frequency of frequencies; track frequency) {
+        <span class="frequency">{{ label(frequency) }}</span>
       }
     </div>
   `,
@@ -49,9 +55,15 @@ const SEND_INTERVAL = 1000 / 30
       display: flex;
       flex-direction: column;
       min-height: 0;
+      gap: var(--space-1);
     }
 
-    .bands {
+    /* The box the curve is drawn in is this row and nothing else, so the two
+       agree on where a value sits without either of them being told the
+       other's measurements. The labels are a row of their own underneath for
+       the same reason: inside the columns they would eat into the height the
+       curve shares with the handles. */
+    .plot {
       position: relative;
       flex: 1;
       min-height: 0;
@@ -59,41 +71,35 @@ const SEND_INTERVAL = 1000 / 30
       align-items: stretch;
     }
 
+    /* Behind the handles and deaf to the pointer. Without this the curve
+       covers all ten sliders and none of them can be dragged. */
+    .behind {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    /* Each band owns an equal column and stands in the middle of it, which is
+       the position the curve places its points at. */
     .band {
       flex: 1;
       min-width: 0;
       display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: var(--space-1);
+      justify-content: center;
     }
 
-    eqm-flat-slider {
-      flex: 1;
-      min-height: 0;
+    .labels {
+      flex: 0 0 auto;
+      display: flex;
     }
 
     .frequency {
-      flex: 0 0 auto;
+      flex: 1;
+      min-width: 0;
+      text-align: center;
       font-size: 9px;
       color: var(--text-secondary);
       font-variant-numeric: tabular-nums;
-    }
-
-    /* The decibel scale belongs to the row of bands rather than to any one of
-       them, so it is drawn once behind all ten. The lines sit at -24, -12, 0,
-       +12 and +24, and the middle one is brighter because it is unity. */
-    .grid {
-      position: absolute;
-      inset: 0 0 14px;
-      pointer-events: none;
-      background:
-        linear-gradient(var(--surface-raised), var(--surface-raised)) 0 0 / 100% 1px no-repeat,
-        linear-gradient(var(--surface-raised), var(--surface-raised)) 0 25% / 100% 1px no-repeat,
-        linear-gradient(var(--text-secondary), var(--text-secondary)) 0 50% / 100% 1px no-repeat,
-        linear-gradient(var(--surface-raised), var(--surface-raised)) 0 75% / 100% 1px no-repeat,
-        linear-gradient(var(--surface-raised), var(--surface-raised)) 0 100% / 100% 1px no-repeat;
-      opacity: 0.6;
     }
   `],
   changeDetection: ChangeDetectionStrategy.OnPush
