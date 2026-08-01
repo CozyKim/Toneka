@@ -39,9 +39,6 @@
 		E012A4702044C4DA0029C800 /* Sysctl.swift in Sources */ = {isa = PBXBuildFile; fileRef = E012A46F2044C4DA0029C800 /* Sysctl.swift */; };
 		E0136BB322D9EC920048D5BC /* DraggableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0136BB222D9EC920048D5BC /* DraggableView.swift */; };
 		E018710F21696D9500436B68 /* NSObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = E018710E21696D9500436B68 /* NSObject.swift */; };
-		E01B1BB5235E452D00CC58E5 /* Sources.swift in Sources */ = {isa = PBXBuildFile; fileRef = E01B1BB4235E452D00CC58E5 /* Sources.swift */; };
-		E01B1BB9235E454500CC58E5 /* InputSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = E01B1BB8235E454500CC58E5 /* InputSource.swift */; };
-		E01B1BBD235E458200CC58E5 /* Driver.swift in Sources */ = {isa = PBXBuildFile; fileRef = E01B1BBC235E458200CC58E5 /* Driver.swift */; };
 		E021BCE722313F1E004921FF /* SettingsDataBus.swift in Sources */ = {isa = PBXBuildFile; fileRef = E021BCE622313F1E004921FF /* SettingsDataBus.swift */; };
 		E0241AA5225E9FB700748656 /* BasicEqualizerPreset.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0241AA4225E9FB700748656 /* BasicEqualizerPreset.swift */; };
 		E02662F022BC3239006B486C /* NSSavePanelExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E02662EF22BC3239006B486C /* NSSavePanelExtensions.swift */; };
@@ -133,9 +130,6 @@
 		E012A46F2044C4DA0029C800 /* Sysctl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sysctl.swift; sourceTree = "<group>"; };
 		E0136BB222D9EC920048D5BC /* DraggableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DraggableView.swift; sourceTree = "<group>"; };
 		E018710E21696D9500436B68 /* NSObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSObject.swift; sourceTree = "<group>"; };
-		E01B1BB4235E452D00CC58E5 /* Sources.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources.swift; sourceTree = "<group>"; };
-		E01B1BB8235E454500CC58E5 /* InputSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputSource.swift; sourceTree = "<group>"; };
-		E01B1BBC235E458200CC58E5 /* Driver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Driver.swift; sourceTree = "<group>"; };
 		E021BCE622313F1E004921FF /* SettingsDataBus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsDataBus.swift; sourceTree = "<group>"; };
 		E0241AA4225E9FB700748656 /* BasicEqualizerPreset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicEqualizerPreset.swift; sourceTree = "<group>"; };
 		E02662EF22BC3239006B486C /* NSSavePanelExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSSavePanelExtensions.swift; sourceTree = "<group>"; };
@@ -291,7 +285,6 @@
 			children = (
 				E01B1BB7235E453900CC58E5 /* System */,
 				E01B1BB6235E453200CC58E5 /* Input */,
-				E01B1BB4235E452D00CC58E5 /* Sources.swift */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -299,7 +292,6 @@
 		E01B1BB6235E453200CC58E5 /* Input */ = {
 			isa = PBXGroup;
 			children = (
-				E01B1BB8235E454500CC58E5 /* InputSource.swift */,
 			);
 			path = Input;
 			sourceTree = "<group>";
@@ -307,7 +299,6 @@
 		E01B1BB7235E453900CC58E5 /* System */ = {
 			isa = PBXGroup;
 			children = (
-				E01B1BBC235E458200CC58E5 /* Driver.swift */,
 			);
 			path = System;
 			sourceTree = "<group>";
@@ -822,7 +813,6 @@
 				E00618ED20F292B9003BA0B0 /* Networking.swift in Sources */,
 				E0AD99D52251022700D893F7 /* AdvancedEqualizerDefaultPresets.swift in Sources */,
 				E0ECA88B23B8B8DD002AFBF0 /* AVAudioEngine.swift in Sources */,
-				E01B1BBD235E458200CC58E5 /* Driver.swift in Sources */,
 				E057A63B22703F590019D13C /* BasicEqualizerDataBus.swift in Sources */,
 				78AA48F727038093007CDE89 /* BetterCodableExtensions.swift in Sources */,
 				783A6FA02670225C00A96B42 /* Benchmark.swift in Sources */,
@@ -831,7 +821,6 @@
 				E0D1A0DA249E191700BBC742 /* eqMac2.swift in Sources */,
 				E0E8B62F20EEB6A900DE905C /* EffectsState.swift in Sources */,
 				E0D5F88722DD20F800499250 /* SettingsState.swift in Sources */,
-				E01B1BB9235E454500CC58E5 /* InputSource.swift in Sources */,
 				789B5F73269A45C400C72029 /* NSImageExtensions.swift in Sources */,
 				E07B45A620FBA4990086AA7E /* Encodable.swift in Sources */,
 				E0241AA5225E9FB700748656 /* BasicEqualizerPreset.swift in Sources */,
@@ -850,7 +839,6 @@
 				78048A62265041600020AAD9 /* DateExtensions.swift in Sources */,
 				E0493D0B21F222D300A8FD3D /* EventInterceptor.swift in Sources */,
 				E044AB7621ED27E4000C41A1 /* Equalizer.swift in Sources */,
-				E01B1BB5235E452D00CC58E5 /* Sources.swift in Sources */,
 				E090AD5A20A972DE003BE5FF /* BasicEqualizer.swift in Sources */,
 				E0DDF3FA2188390300B37E77 /* Alert.swift in Sources */,
 				E0FFB703200119060003EC9E /* StatusItem.swift in Sources */,

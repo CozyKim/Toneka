@@ -83,19 +83,17 @@ class Application {
 
     Networking.startMonitor()
     
-    Sources.getInputPermission {
-      if enabled {
-        setupAudio()
-      }
+    if enabled {
+      setupAudio()
+    }
 
-      setupListeners()
+    setupListeners()
 
-      self.setupUI {
-        if (User.isFirstLaunch) {
-          UI.show()
-        } else {
-          UI.close()
-        }
+    setupUI {
+      if (User.isFirstLaunch) {
+        UI.show()
+      } else {
+        UI.close()
       }
     }
   }
