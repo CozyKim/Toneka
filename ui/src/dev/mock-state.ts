@@ -66,6 +66,13 @@ const state = {
         { id: 'bassBooster', name: 'Bass Booster', isDefault: true, gains: { global: 0, bands: [ 11, 8.5, 7, 5, 2.5, 0, 0, 0, 0, 0 ] } }
       ] as any[],
       selected: 'flat'
+    },
+    basic: {
+      presets: [
+        { id: 'manual', name: 'Manual', isDefault: true, peakLimiter: false, gains: { bass: 0, mid: 0, treble: 0 } },
+        { id: 'flat', name: 'Flat', isDefault: true, peakLimiter: false, gains: { bass: 0, mid: 0, treble: 0 } }
+      ] as any[],
+      selected: 'flat'
     }
   }
 }
@@ -166,6 +173,23 @@ const routes: Record<string, (data: MockRequest) => MockReply> = {
   },
   'GET /effects/equalizers/advanced/settings/show-default-presets': () => read('show', true),
   'POST /effects/equalizers/advanced/settings/show-default-presets': () => ({}),
+
+  'GET /effects/equalizers/basic/presets': () => ({ data: state.equalizers.basic.presets }),
+  'GET /effects/equalizers/basic/presets/selected': () => ({
+    data: state.equalizers.basic.presets.find(p => p.id === state.equalizers.basic.selected)
+  }),
+  'POST /effects/equalizers/basic/presets/select': data => {
+    state.equalizers.basic.selected = String(data?.['id'])
+    return {}
+  },
+  'POST /effects/equalizers/basic/presets': data => {
+    const preset = data as any
+    const at = state.equalizers.basic.presets.findIndex(p => p.id === preset.id)
+    if (at >= 0) state.equalizers.basic.presets[at] = preset
+    else state.equalizers.basic.presets.push(preset)
+    if (preset.select) state.equalizers.basic.selected = preset.id
+    return {}
+  },
 
   'GET /ui/close': () => { console.info('[harness] close'); return {} },
   'GET /ui/hide': () => { console.info('[harness] hide'); return {} },
