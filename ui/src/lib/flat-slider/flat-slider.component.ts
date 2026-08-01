@@ -216,7 +216,10 @@ export class FlatSliderComponent implements OnInit, OnDestroy {
 
   public getValueFromMouseEvent (event: MouseEvent) {
     const coords = this.utils.getCoordinatesInsideElementFromEvent(event, this.containerRef.nativeElement)
-    let progress = this.orientation === 'vertical' ? coords.y : coords.x
+    // A pointer's y grows downward, but the thumb is positioned from the
+    // bottom edge up, so a vertical slider has to read its axis inverted or it
+    // answers the pointer with the value from the opposite end.
+    let progress = this.orientation === 'vertical' ? this.height - coords.y : coords.x
     let value = (() => {
       const inMin = this.thumbRadius
       const inMax = (this.orientation === 'vertical' ? this.height : this.width) - this.thumbRadius * 2
@@ -378,7 +381,10 @@ export class FlatSliderComponent implements OnInit, OnDestroy {
       style.width = `calc(${this.progress * 100}% - ${this.thumbRadius}px)`
       style.height = `${this.thickness}px`
     } else {
-      style.top = `${this.thumbRadius}px`
+      // Anchored to the bottom for the same reason the thumb is: the filled
+      // part is the distance the thumb has risen, so it has to grow the way
+      // the thumb moves.
+      style.bottom = `${this.thumbRadius}px`
       style.left = `calc(50% - ${this.thickness}px / 2)`
       style.height = `calc(${this.progress * 100}% - ${this.thumbRadius * 2}px)`
       style.width = `${this.thickness}px`
@@ -402,7 +408,9 @@ export class FlatSliderComponent implements OnInit, OnDestroy {
       style.left = `${Math.round((this.width - this.thumbRadius * 2) * middleProgress)}px`
     } else {
       style.left = center
-      style.top = `${Math.round((this.height - this.thumbRadius * 2) * middleProgress)}px`
+      // Measured from the bottom like the thumb is, so the two land on each
+      // other when the value is the middle instead of reading as two thumbs.
+      style.bottom = `${Math.round((this.height - this.thumbRadius * 2) * middleProgress)}px`
     }
 
     return style
