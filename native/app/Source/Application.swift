@@ -275,11 +275,13 @@ class Application {
       volume: Volume()
     ) else {
       Console.log("Failed to build the tap pipeline for \(device.name)")
+      warnAudioCaptureUnavailable()
       return
     }
 
     guard engine.start() else {
       Console.log("Failed to start the tap pipeline for \(device.name)")
+      warnAudioCaptureUnavailable()
       return
     }
 
@@ -344,7 +346,29 @@ class Application {
 
     audioPipelineIsRunning.emit()
   }
-  
+
+  /// Without the audio capture permission the tap cannot be created, and the
+  /// only symptom is that eqMac appears to run while doing nothing at all.
+  /// Shown once per launch so switching devices does not repeat it.
+  private static var warnedAudioCaptureUnavailable = false
+  private static func warnAudioCaptureUnavailable () {
+    if warnedAudioCaptureUnavailable { return }
+    warnedAudioCaptureUnavailable = true
+
+    Alert.confirm(
+      title: "eqMac can't process your audio",
+      message: "eqMac captures system audio in order to equalize it, which requires permission.\n\nOpen System Settings > Privacy & Security > Audio Recording and allow eqMac, then restart the app.",
+      okText: "Open System Settings",
+      cancelText: "Later"
+    ) { openSettings in
+      guard openSettings else { return }
+      // Lands directly on Privacy & Security > Audio Recording.
+      if let url = URL(string: "x-apple.systempreferences:com.apple.settings.PrivacySecurity.extension?Privacy_AudioCapture") {
+        NSWorkspace.shared.open(url)
+      }
+    }
+  }
+
   private static func setupUI (_ completion: @escaping () -> Void) {
     Console.log("Setting up UI")
     ui = UI {
