@@ -98,15 +98,24 @@ final class TapEngine {
     // The aggregate's rate rather than the tap's. Manual rendering hands frames
     // straight through without resampling them, so what leaves the graph is
     // clocked by the device the IOProc drives, and the two do not have to agree.
-    if let rate = CAProperty.value(
+    //
+    // Everything downstream that turns a frequency into a number of samples
+    // needs this one: the equaliser to place its filters and the analyser to
+    // place its bins. Asked for once and shared, because two answers to the
+    // same question would put the bars somewhere the bands are not.
+    //
+    // The tap's rate when the device will not say. Filters landing away from
+    // their labels is a graph that still passes audio; no graph at all is
+    // silence.
+    let deviceRate = CAProperty.value(
       aggregate.objectID,
       CAProperty.address(kAudioDevicePropertyNominalSampleRate),
       default: Double(0)
-    ), rate > 0 {
-      SpectrumRing.shared.sampleRate = rate
-    }
+    ) ?? 0
+    let sampleRate = deviceRate > 0 ? deviceRate : tap.format.mSampleRate
+    SpectrumRing.shared.sampleRate = sampleRate
 
-    guard buildGraph() else { return nil }
+    guard buildGraph(sampleRate: sampleRate) else { return nil }
 
     // The mixer only holds a volume once it belongs to a running graph.
     volume.postSetup()
@@ -114,12 +123,14 @@ final class TapEngine {
 
   // MARK: - Graph
 
-  private func buildGraph () -> Bool {
+  /// The channel count is the tap's and the frame count is whatever the IOProc
+  /// asks for; only the rate comes from the caller.
+  private func buildGraph (sampleRate: Double) -> Bool {
     // The tap vends interleaved Float32 but AVAudioEngine's mixers only accept
     // deinterleaved, so the graph runs in the standard format and we convert
     // at both edges.
     guard let renderFormat = AVAudioFormat(
-      standardFormatWithSampleRate: tap.format.mSampleRate,
+      standardFormatWithSampleRate: sampleRate,
       channels: tap.format.mChannelsPerFrame
     ) else {
       Console.log("Could not derive render format from tap")
