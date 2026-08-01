@@ -43,7 +43,7 @@ class OutputsDataBus: DataBus {
     AudioDeviceEvents.onDeviceListChanged(sendOutputDevices)
 
     outputCreatedListener = Application.outputCreated.on {
-      self.send(to: "/selected", data: [ "id": Application.output!.device.id ])
+      self.send(to: "/selected", data: [ "id": Application.tapEngine!.outputDevice.id ])
     }
   }
   

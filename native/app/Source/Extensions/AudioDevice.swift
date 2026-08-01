@@ -44,9 +44,11 @@ extension AudioDevice {
     return false //AudioObjectHasProperty(self.id, kAudioPlugInCustomPropertyDeviceActive)
   }
   
+  /// True for the private aggregate device eqMac builds around its tap, which
+  /// must never be offered to the user as an output.
   var isDriver: Bool {
     get {
-      return self.id == Driver.device?.id
+      return self.uid == AggregateDevice.uid
     }
   }
   

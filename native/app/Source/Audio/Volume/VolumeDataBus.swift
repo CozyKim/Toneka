@@ -33,7 +33,7 @@ class VolumeDataBus: DataBus {
       }
       let transition = data["transition"] as? Bool ?? false
       Application.ignoreNextVolumeEvent = true
-      Application.ignoreNextDriverMuteEvent = true
+      Application.ignoreNextMuteEvent = true
       Application.dispatchAction(VolumeAction.setGain(gain!, transition))
       return "Volume Gain has been set"
     }
@@ -63,7 +63,7 @@ class VolumeDataBus: DataBus {
       }
       let transition = data["transition"] as? Bool ?? false
       Application.ignoreNextVolumeEvent = true
-      Application.ignoreNextDriverMuteEvent = true
+      Application.ignoreNextMuteEvent = true
       Application.dispatchAction(VolumeAction.setBalance(balance!, transition))
       return "Volume Balance has been set"
     }
@@ -78,7 +78,7 @@ class VolumeDataBus: DataBus {
         throw "Invalid 'muted' value, must be a boolean"
       }
       Application.ignoreNextVolumeEvent = true
-      Application.ignoreNextDriverMuteEvent = true
+      Application.ignoreNextMuteEvent = true
       Application.dispatchAction(VolumeAction.setMuted(muted!))
       return "Volume mute has been set"
     }

@@ -41,7 +41,6 @@
 		E018710F21696D9500436B68 /* NSObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = E018710E21696D9500436B68 /* NSObject.swift */; };
 		E01B1BB5235E452D00CC58E5 /* Sources.swift in Sources */ = {isa = PBXBuildFile; fileRef = E01B1BB4235E452D00CC58E5 /* Sources.swift */; };
 		E01B1BB9235E454500CC58E5 /* InputSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = E01B1BB8235E454500CC58E5 /* InputSource.swift */; };
-		E01B1BBB235E456600CC58E5 /* SystemSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = E01B1BBA235E456600CC58E5 /* SystemSource.swift */; };
 		E01B1BBD235E458200CC58E5 /* Driver.swift in Sources */ = {isa = PBXBuildFile; fileRef = E01B1BBC235E458200CC58E5 /* Driver.swift */; };
 		E021BCE722313F1E004921FF /* SettingsDataBus.swift in Sources */ = {isa = PBXBuildFile; fileRef = E021BCE622313F1E004921FF /* SettingsDataBus.swift */; };
 		E0241AA5225E9FB700748656 /* BasicEqualizerPreset.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0241AA4225E9FB700748656 /* BasicEqualizerPreset.swift */; };
@@ -76,7 +75,6 @@
 		E07A24E61FF3D4E4007AEF20 /* CheckErr.swift in Sources */ = {isa = PBXBuildFile; fileRef = E07A24E51FF3D4E4007AEF20 /* CheckErr.swift */; };
 		E07A6EE122B6BA4E00DE7B16 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = E07A6EE022B6BA4E00DE7B16 /* File.swift */; };
 		E07B45A620FBA4990086AA7E /* Encodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E07B45A520FBA4990086AA7E /* Encodable.swift */; };
-		E07CB5B121902F4F0033DA89 /* Output.swift in Sources */ = {isa = PBXBuildFile; fileRef = E07CB5B021902F4F0033DA89 /* Output.swift */; };
 		E083214720715BBA0038ED1A /* NSOpenPanelExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E083214620715BBA0038ED1A /* NSOpenPanelExtensions.swift */; };
 		E086B0001FCCB8E700CF9F0D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E086AFFF1FCCB8E700CF9F0D /* AppDelegate.swift */; };
 		E089AC492095E0B1005B72E5 /* Console.swift in Sources */ = {isa = PBXBuildFile; fileRef = E089AC482095E0B1005B72E5 /* Console.swift */; };
@@ -101,7 +99,6 @@
 		E0ECA88B23B8B8DD002AFBF0 /* AVAudioEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0ECA88A23B8B8DD002AFBF0 /* AVAudioEngine.swift */; };
 		E0F661861FDDED0C00252923 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0F661851FDDED0C00252923 /* ViewController.swift */; };
 		E0FFB703200119060003EC9E /* StatusItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0FFB702200119060003EC9E /* StatusItem.swift */; };
-		E0FFB705200679DD0003EC9E /* Engine.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0FFB704200679DD0003EC9E /* Engine.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -138,7 +135,6 @@
 		E018710E21696D9500436B68 /* NSObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSObject.swift; sourceTree = "<group>"; };
 		E01B1BB4235E452D00CC58E5 /* Sources.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources.swift; sourceTree = "<group>"; };
 		E01B1BB8235E454500CC58E5 /* InputSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputSource.swift; sourceTree = "<group>"; };
-		E01B1BBA235E456600CC58E5 /* SystemSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemSource.swift; sourceTree = "<group>"; };
 		E01B1BBC235E458200CC58E5 /* Driver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Driver.swift; sourceTree = "<group>"; };
 		E021BCE622313F1E004921FF /* SettingsDataBus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsDataBus.swift; sourceTree = "<group>"; };
 		E0241AA4225E9FB700748656 /* BasicEqualizerPreset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicEqualizerPreset.swift; sourceTree = "<group>"; };
@@ -175,7 +171,6 @@
 		E07A24E51FF3D4E4007AEF20 /* CheckErr.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckErr.swift; sourceTree = "<group>"; };
 		E07A6EE022B6BA4E00DE7B16 /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		E07B45A520FBA4990086AA7E /* Encodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Encodable.swift; sourceTree = "<group>"; };
-		E07CB5B021902F4F0033DA89 /* Output.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Output.swift; sourceTree = "<group>"; };
 		E083214620715BBA0038ED1A /* NSOpenPanelExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSOpenPanelExtensions.swift; sourceTree = "<group>"; };
 		E086AFFC1FCCB8E700CF9F0D /* eqMac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = eqMac.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E086AFFF1FCCB8E700CF9F0D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -206,7 +201,6 @@
 		E0F661701FDC38B600252923 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		E0F661851FDDED0C00252923 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		E0FFB702200119060003EC9E /* StatusItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusItem.swift; sourceTree = "<group>"; };
-		E0FFB704200679DD0003EC9E /* Engine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Engine.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -313,7 +307,6 @@
 		E01B1BB7235E453900CC58E5 /* System */ = {
 			isa = PBXGroup;
 			children = (
-				E01B1BBA235E456600CC58E5 /* SystemSource.swift */,
 				E01B1BBC235E458200CC58E5 /* Driver.swift */,
 			);
 			path = System;
@@ -416,7 +409,6 @@
 				E0AD99DB2251151F00D893F7 /* Outputs */,
 				E02B922D219CBCD800AC130B /* AudioDeviceEvents.swift */,
 				E057A636227032EC0019D13C /* EngineDataBus.swift */,
-				E0FFB704200679DD0003EC9E /* Engine.swift */,
 				FA55FAC388EF89710157EFC1 /* CoreAudio */,
 				67955640E9DC25278A5D11A5 /* TapEngine.swift */,
 			);
@@ -458,7 +450,6 @@
 		E0AD99DB2251151F00D893F7 /* Outputs */ = {
 			isa = PBXGroup;
 			children = (
-				E07CB5B021902F4F0033DA89 /* Output.swift */,
 				E057A6502271A7DC0019D13C /* OutputsDataBus.swift */,
 				E031E9CD23700DDF00BA6DD8 /* Outputs.swift */,
 			);
@@ -809,7 +800,6 @@
 				E0E8B63220EEB6A900DE905C /* EqualizersState.swift in Sources */,
 				E036BCEA235B1171001F057B /* ApplicationDataBus.swift in Sources */,
 				E036BCEC235B2C12001F057B /* EffectsDataBus.swift in Sources */,
-				E0FFB705200679DD0003EC9E /* Engine.swift in Sources */,
 				E073727B20167CA300874CC6 /* Constants.swift in Sources */,
 				E044AB7821ED2CA9000C41A1 /* NumberExtensions.swift in Sources */,
 				E02B922E219CBCD800AC130B /* AudioDeviceEvents.swift in Sources */,
@@ -819,7 +809,6 @@
 				E0E8B63320EEB6A900DE905C /* BasicEqualizerState.swift in Sources */,
 				E06E98D021D17E230041DD9C /* UI.swift in Sources */,
 				E057A64922710F2B0019D13C /* AdvancedEqualizerDataBus.swift in Sources */,
-				E07CB5B121902F4F0033DA89 /* Output.swift in Sources */,
 				7860D7DF2703C20600D1347B /* User.swift in Sources */,
 				E0267AFD218AE39500FB2E5A /* Script.swift in Sources */,
 				E0F661861FDDED0C00252923 /* ViewController.swift in Sources */,
@@ -851,7 +840,6 @@
 				E0E8B63620EEB6A900DE905C /* ApplicationState.swift in Sources */,
 				E02662F022BC3239006B486C /* NSSavePanelExtensions.swift in Sources */,
 				E0A9A90E22D24A6200EB1E49 /* Window.swift in Sources */,
-				E01B1BBB235E456600CC58E5 /* SystemSource.swift in Sources */,
 				E00C595D23BBBB6C00C7B8B6 /* UnsafeMutableAudioBufferListPointer.swift in Sources */,
 				E0E8B63420EEB6A900DE905C /* VolumeState.swift in Sources */,
 				78E562F326139ACF00BF3F19 /* Data+extensions.swift in Sources */,

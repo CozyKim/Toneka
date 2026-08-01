@@ -14,12 +14,16 @@ import Foundation
 import CoreAudio
 
 final class AggregateDevice {
+  /// Identifies eqMac's own aggregate so it can be filtered out of the device
+  /// lists we show to the user.
+  static let uid = "com.bitgapp.eqmac.aggregate"
+
   let objectID: AudioObjectID
 
   init? (tapUID: String, outputDeviceUID: String) {
     let composition: [String: Any] = [
       kAudioAggregateDeviceNameKey: "eqMac",
-      kAudioAggregateDeviceUIDKey: "com.bitgapp.eqmac.aggregate",
+      kAudioAggregateDeviceUIDKey: AggregateDevice.uid,
       kAudioAggregateDeviceIsPrivateKey: true,
       kAudioAggregateDeviceIsStackedKey: false,
       kAudioAggregateDeviceTapAutoStartKey: true,

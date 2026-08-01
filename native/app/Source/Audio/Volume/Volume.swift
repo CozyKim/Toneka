@@ -45,8 +45,6 @@ class Volume: StoreSubscriber {
         } else {
           mixer.pan = Float(balance)
         }
-
-        Driver.device!.setVirtualMasterVolume(Float32(gain), direction: .playback)
       } else { // gain > 1
         if (!boostEnabled) {
           Application.dispatchAction(VolumeAction.setGain(1, false))
@@ -64,9 +62,6 @@ class Volume: StoreSubscriber {
         } else {
           mixer.pan = Float(balance)
         }
-
-        Application.ignoreNextVolumeEvent = true
-        Driver.device!.setVirtualMasterVolume(1, direction: .playback)
       }
 
       mixer.outputVolume = Float(virtualVolume)
@@ -83,14 +78,12 @@ class Volume: StoreSubscriber {
   
   var muted: Bool = false {
     didSet {
-      Driver.device!.mute = muted
-      Application.selectedDevice!.mute = muted
+      Application.selectedDevice?.mute = muted
       if (muted) {
         mixer.outputVolume = 0
       } else {
         (gain = gain)
       }
-      Application.ignoreNextDriverMuteEvent = false
       Volume.mutedChanged.emit(muted)
     }
   }
