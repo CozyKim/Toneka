@@ -4,17 +4,19 @@ import { TitlebarComponent } from './sections/titlebar/titlebar.component'
 import { FooterComponent } from './sections/footer/footer.component'
 import { OutputComponent } from './sections/output/output.component'
 import { VolumeComponent } from './sections/volume/volume.component'
+import { EqualizerComponent } from './sections/equalizer/equalizer.component'
 import { UIService } from './services/ui.service'
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [ TitlebarComponent, FooterComponent, OutputComponent, VolumeComponent ],
+  imports: [ TitlebarComponent, FooterComponent, OutputComponent, VolumeComponent, EqualizerComponent ],
   template: `
     <eqm-titlebar></eqm-titlebar>
     <main>
       <eqm-output></eqm-output>
       <eqm-volume></eqm-volume>
+      <eqm-equalizer></eqm-equalizer>
     </main>
     <eqm-footer></eqm-footer>
   `,

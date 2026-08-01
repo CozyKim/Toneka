@@ -52,7 +52,22 @@ const state = {
     ],
     selected: 51
   },
-  volume: { gain: 0.62, muted: false, balance: 0, boost: false }
+  volume: { gain: 0.62, muted: false, balance: 0, boost: false },
+  equalizers: {
+    enabled: true,
+    // 'Basic' and 'Advanced' with a capital: the native enum's raw values.
+    type: 'Advanced',
+    advanced: {
+      presets: [
+        // The native side synthesises "manual" and edits land on it, so it is
+        // the one the bands write to rather than the preset in front of them.
+        { id: 'manual', name: 'Manual', isDefault: true, gains: { global: 0, bands: Array(10).fill(0) } },
+        { id: 'flat', name: 'Flat', isDefault: true, gains: { global: 0, bands: Array(10).fill(0) } },
+        { id: 'bassBooster', name: 'Bass Booster', isDefault: true, gains: { global: 0, bands: [ 11, 8.5, 7, 5, 2.5, 0, 0, 0, 0, 0 ] } }
+      ] as any[],
+      selected: 'flat'
+    }
+  }
 }
 
 /// A GET that reads one field, paired with the key the caller destructures.
@@ -127,6 +142,30 @@ const routes: Record<string, (data: MockRequest) => MockReply> = {
   'POST /volume/balance': data => { state.volume.balance = Number(data?.['balance']); return {} },
   'GET /volume/gain/boost/enabled': () => read('enabled', state.volume.boost),
   'POST /volume/gain/boost/enabled': data => { state.volume.boost = Boolean(data?.['enabled']); return {} },
+
+  'GET /effects/equalizers/enabled': () => read('enabled', state.equalizers.enabled),
+  'POST /effects/equalizers/enabled': data => { state.equalizers.enabled = Boolean(data?.['enabled']); return {} },
+  'GET /effects/equalizers/type': () => read('type', state.equalizers.type),
+  'POST /effects/equalizers/type': data => { state.equalizers.type = String(data?.['type']); return {} },
+
+  'GET /effects/equalizers/advanced/presets': () => ({ data: state.equalizers.advanced.presets }),
+  'GET /effects/equalizers/advanced/presets/selected': () => ({
+    data: state.equalizers.advanced.presets.find(p => p.id === state.equalizers.advanced.selected)
+  }),
+  'POST /effects/equalizers/advanced/presets/select': data => {
+    state.equalizers.advanced.selected = String(data?.['id'])
+    return {}
+  },
+  'POST /effects/equalizers/advanced/presets': data => {
+    const preset = data as any
+    const at = state.equalizers.advanced.presets.findIndex(p => p.id === preset.id)
+    if (at >= 0) state.equalizers.advanced.presets[at] = preset
+    else state.equalizers.advanced.presets.push(preset)
+    if (preset.select) state.equalizers.advanced.selected = preset.id
+    return {}
+  },
+  'GET /effects/equalizers/advanced/settings/show-default-presets': () => read('show', true),
+  'POST /effects/equalizers/advanced/settings/show-default-presets': () => ({}),
 
   'GET /ui/close': () => { console.info('[harness] close'); return {} },
   'GET /ui/hide': () => { console.info('[harness] hide'); return {} },
