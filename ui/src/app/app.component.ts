@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit, inject, signal } from '@angular/core'
 
+import { ChromeComponent } from './sections/chrome/chrome.component'
 import { TitlebarComponent } from './sections/titlebar/titlebar.component'
 import { FooterComponent } from './sections/footer/footer.component'
 import { OutputComponent } from './sections/output/output.component'
@@ -12,7 +13,7 @@ import { UIService } from './services/ui.service'
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [ TitlebarComponent, FooterComponent, OutputComponent, VolumeComponent, EqualizerComponent, SettingsComponent ],
+  imports: [ ChromeComponent, TitlebarComponent, FooterComponent, OutputComponent, VolumeComponent, EqualizerComponent, SettingsComponent ],
   template: `
     <eqm-titlebar (settingsRequested)="settingsShown.set(true)"></eqm-titlebar>
     <main>
@@ -21,6 +22,7 @@ import { UIService } from './services/ui.service'
       <eqm-equalizer></eqm-equalizer>
     </main>
     <eqm-footer></eqm-footer>
+    <eqm-chrome></eqm-chrome>
 
     @if (settingsShown()) {
       <eqm-settings (closed)="settingsShown.set(false)"></eqm-settings>
@@ -36,6 +38,10 @@ import { UIService } from './services/ui.service'
       overflow: hidden;
       color: var(--text-primary);
       font: var(--font-body);
+      /* The face of the box in a skin that has one. Where a skin has none this
+         is transparent and the window's own material shows through, which is
+         what the native side went to the trouble of putting there. */
+      background: var(--chrome);
     }
 
     /* Everything a taller window gains lands here, and nowhere else: the bars

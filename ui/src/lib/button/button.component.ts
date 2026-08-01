@@ -1,6 +1,5 @@
-import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectionStrategy, inject } from '@angular/core'
+import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core'
 import { NgStyle } from '@angular/common'
-import { ColorsService } from '../services/colors.service'
 
 @Component({
   selector: 'eqm-button',
@@ -11,10 +10,6 @@ import { ColorsService } from '../services/colors.service'
   changeDetection: ChangeDetectionStrategy.Default
 })
 export class ButtonComponent implements OnInit {
-  // Declared first because the colour input below reads it while it
-  // initialises, and fields initialise in the order they are written.
-  readonly colors = inject(ColorsService)
-
   @Input() type: 'large' | 'narrow' | 'square' | 'circle' | 'transparent' = 'large'
   @Input() height = null
   @Input() width = null
@@ -23,7 +18,9 @@ export class ButtonComponent implements OnInit {
   @Input() depressable = true
   @Input() hoverable = true
   @Input() backgroundColor = 'var(--control-raised)'
-  @Input() color = this.colors.textPrimary
+  // Named rather than resolved: a value read here is read once, and the skin
+  // can change while the button is on screen.
+  @Input() color = 'var(--text-primary)'
   @Output() pressed = new EventEmitter<MouseEvent>()
   @Input() enabled = true
 

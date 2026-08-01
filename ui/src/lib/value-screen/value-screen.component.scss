@@ -1,9 +1,23 @@
-.screen {
-  text-align: center;
-  display: flex;
-  flex-direction: column;
+// A number behind glass in one skin and a plain number in the other, from one
+// set of tokens: the skin decides whether there is any glass to be behind.
+:host {
+  display: inline-flex;
   align-items: center;
   justify-content: center;
+  box-sizing: border-box;
+  padding: 1px var(--space-1);
+  border-radius: 2px;
+  font: var(--readout-font);
+  font-variant-numeric: tabular-nums;
+  background: var(--readout-bg);
+  box-shadow: var(--readout-inset);
+  color: var(--readout-ink);
+  text-shadow: var(--readout-glow);
   transition-property: filter;
   transition-duration: .5s;
+  filter: grayscale(80%);
+}
+
+:host(.enabled) {
+  filter: none;
 }

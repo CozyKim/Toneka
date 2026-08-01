@@ -23,9 +23,12 @@ import { ToggleComponent } from '../../../lib/toggle/toggle.component'
       align-items: center;
       gap: var(--space-2);
       /* The window draws its close and minimise buttons over the top-left of
-         the content, so the strip starts clear of them. */
-      padding: 0 var(--space-3) 0 72px;
-      border-bottom: 1px solid var(--surface-raised);
+         the content, so the strip starts clear of them. The room on the right
+         is for a screw, and it is kept in both skins so that changing skin
+         does not move the glyph beside it. */
+      padding: 0 26px 0 72px;
+      border-bottom: 1px solid var(--chrome-edge);
+      box-shadow: 0 1px 0 var(--chrome-lip);
     }
 
     .name { font-weight: 600; }

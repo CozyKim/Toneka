@@ -18,8 +18,11 @@ import { UIService } from '../../services/ui.service'
       display: flex;
       align-items: center;
       gap: var(--space-3);
-      padding: 0 var(--space-3);
-      border-top: 1px solid var(--surface-raised);
+      /* Room on the right for a screw, kept in both skins so the version does
+         not shift when the skin changes. */
+      padding: 0 26px 0 var(--space-3);
+      border-top: 1px solid var(--chrome-edge);
+      box-shadow: 0 -1px 0 var(--chrome-lip);
       font-size: 11px;
       color: var(--text-secondary);
     }

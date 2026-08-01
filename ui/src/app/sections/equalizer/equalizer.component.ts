@@ -57,8 +57,21 @@ export type EqualizerMode = 'off' | 'basic' | 'advanced'
        plus a name leave the name nothing to be read in. */
     .presets { display: flex; align-items: center; }
 
-    /* The bands take whatever is left, which is what a taller window buys. */
-    .body { flex: 1; min-height: 0; }
+    /* The bands take whatever is left, which is what a taller window buys.
+       The recess they sit in is the skin's: a milled well in one and nothing
+       at all in the other, where the equaliser sits on the window's material
+       like everything around it. */
+    .body {
+      flex: 1;
+      min-height: 0;
+      /* Or the padding lands outside the height flex worked out and the last
+         row of the window is pushed off the bottom. */
+      box-sizing: border-box;
+      padding: var(--space-2) var(--space-1);
+      border-radius: 3px;
+      background: var(--well);
+      box-shadow: var(--well-inset);
+    }
   `],
   changeDetection: ChangeDetectionStrategy.OnPush
 })

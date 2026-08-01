@@ -3,13 +3,11 @@ import {
   OnInit,
   Input,
   ViewEncapsulation,
-  ChangeDetectionStrategy,
-  inject
+  ChangeDetectionStrategy
 } from '@angular/core'
 import { NgStyle } from '@angular/common'
 import { svgs, IconName } from './icons'
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser'
-import { ColorsService } from '../services/colors.service'
 
 @Component({
   selector: 'eqm-icon',
@@ -21,10 +19,6 @@ import { ColorsService } from '../services/colors.service'
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class IconComponent implements OnInit {
-  // Declared first because the colour fields below read it while they
-  // initialise, and fields initialise in the order they are written.
-  private readonly colors = inject(ColorsService)
-
   @Input() width = 20
   @Input() height = 20
   svg?: SafeHtml
@@ -35,9 +29,11 @@ export class IconComponent implements OnInit {
     this.height = newSize
   }
 
-  // The unset colour is a value, not a var(), because it ends up in an inline
-  // fill on the container that the SVG inherits from.
-  private readonly defaultColor = this.colors.textSecondary
+  // Named rather than resolved. It ends up in an inline fill on the container
+  // that the SVG inherits from, and fill takes a var() like any other property
+  // -- while a value read here would be read once and outlive the skin that
+  // declared it.
+  private readonly defaultColor = 'var(--text-secondary)'
 
   _color = this.defaultColor
   @Input()

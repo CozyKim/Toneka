@@ -4,12 +4,13 @@ import { ButtonComponent } from '../../../lib/button/button.component'
 import { FlatSliderComponent } from '../../../lib/flat-slider/flat-slider.component'
 import { IconComponent } from '../../../lib/icon/icon.component'
 import { ToggleComponent } from '../../../lib/toggle/toggle.component'
+import { ValueScreenComponent } from '../../../lib/value-screen/value-screen.component'
 import { VolumeService } from '../../services/volume.service'
 
 @Component({
   selector: 'eqm-volume',
   standalone: true,
-  imports: [ ButtonComponent, FlatSliderComponent, IconComponent, ToggleComponent ],
+  imports: [ ButtonComponent, FlatSliderComponent, IconComponent, ToggleComponent, ValueScreenComponent ],
   template: `
     <div class="row">
       <span class="label">볼륨</span>
@@ -17,12 +18,14 @@ import { VolumeService } from '../../services/volume.service'
         class="field"
         [value]="gain()"
         [min]="0" [max]="ceiling()"
+        [thickness]="6"
+        [thumbRadius]="7"
         [stickToMiddle]="false"
         [showMiddleNotch]="false"
         [enabled]="!muted()"
         (userChangedValue)="setGain($event.value)">
       </eqm-flat-slider>
-      <span class="readout">{{ percent() }}</span>
+      <eqm-value-screen class="readout" [fontSize]="11" [enabled]="!muted()">{{ percent() }}</eqm-value-screen>
 
       <eqm-button
         type="circle"
@@ -44,10 +47,12 @@ import { VolumeService } from '../../services/volume.service'
         class="field"
         [value]="balance()"
         [min]="-1" [max]="1"
+        [thickness]="6"
+        [thumbRadius]="7"
         [stickToMiddle]="true"
         (userChangedValue)="setBalance($event.value)">
       </eqm-flat-slider>
-      <span class="readout">{{ side() }}</span>
+      <eqm-value-screen class="readout" [fontSize]="11">{{ side() }}</eqm-value-screen>
     </div>
   `,
   styles: [`
@@ -58,7 +63,8 @@ import { VolumeService } from '../../services/volume.service'
       justify-content: center;
       gap: var(--space-1);
       padding: var(--space-2) var(--space-3);
-      border-bottom: 1px solid var(--surface-raised);
+      border-bottom: 1px solid var(--chrome-edge);
+      box-shadow: 0 1px 0 var(--chrome-lip);
     }
 
     .row {
@@ -78,15 +84,9 @@ import { VolumeService } from '../../services/volume.service'
 
     .field { flex: 1; }
 
-    /* Fixed width and tabular figures so the slider beside it does not shift
-       as the number grows a digit. */
-    .readout {
-      flex: 0 0 26px;
-      text-align: right;
-      font-size: 11px;
-      font-variant-numeric: tabular-nums;
-      color: var(--text-secondary);
-    }
+    /* Fixed width so the slider beside it does not shift as the number grows
+       a digit. Wide enough for three, which is what boost reaches. */
+    .readout { flex: 0 0 34px; }
   `],
   changeDetection: ChangeDetectionStrategy.OnPush
 })

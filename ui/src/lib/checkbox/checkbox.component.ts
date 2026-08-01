@@ -1,6 +1,5 @@
 import { Component, Input, Output, EventEmitter, HostBinding, HostListener, ViewChild, ElementRef, ContentChild, ChangeDetectionStrategy, ChangeDetectorRef, inject } from '@angular/core'
 import { NgTemplateOutlet } from '@angular/common'
-import { ColorsService } from '../services/colors.service'
 import { ContainerComponent } from '../container/container.component'
 import { IconComponent } from '../icon/icon.component'
 import { LabelComponent } from '../label/label.component'
@@ -14,17 +13,15 @@ import { LabelComponent } from '../label/label.component'
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CheckboxComponent {
-  // Declared first because the colour inputs below read it while they
-  // initialise, and fields initialise in the order they are written.
-  private readonly colors = inject(ColorsService)
-
   @Input() labelSide!: 'left' | 'right'
-  @Input() labelColor = this.colors.textPrimary
+  // Named rather than resolved: a value read here is read once, and the skin
+  // can change while the checkbox is on screen.
+  @Input() labelColor = 'var(--text-primary)'
   @Input() interactive: boolean = true
   @Input() checked: boolean = false
   @Output() checkedChange = new EventEmitter<boolean>()
-  @Input() color = this.colors.accent
-  @Input() bgColor = this.colors.controlSunken
+  @Input() color = 'var(--accent)'
+  @Input() bgColor = 'var(--control-sunken)'
   @HostBinding('class.enabled') @Input() enabled = true
 
   constructor (

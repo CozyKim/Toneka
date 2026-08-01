@@ -10,8 +10,7 @@ import {
   OnInit,
   OnDestroy,
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  inject
+  ChangeDetectorRef
 } from '@angular/core'
 import { NgStyle } from '@angular/common'
 import {
@@ -19,7 +18,6 @@ import {
 } from '../services/utilities.service'
 import { FadeInOutAnimation } from '../animations'
 import { DomSanitizer } from '@angular/platform-browser'
-import { ColorsService } from '../services/colors.service'
 
 /// The properties this slider paints itself with. Spelled out rather than
 /// left as an index signature so a mistyped key is caught and the ones that
@@ -31,7 +29,9 @@ interface SliderStyle {
   left?: string
   width?: string
   height?: string
+  background?: string
   backgroundColor?: string
+  boxShadow?: string
   border?: string
   borderRadius?: string
 }
@@ -51,10 +51,6 @@ export interface FlatSliderValueChangedEvent {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FlatSliderComponent implements OnInit, OnDestroy {
-  // Declared first because the colour fields below read it while they
-  // initialise, and fields initialise in the order they are written.
-  public colors = inject(ColorsService)
-
   constructor (
     public utils: UtilitiesService,
     public elem: ElementRef<HTMLElement>,
@@ -89,36 +85,10 @@ export class FlatSliderComponent implements OnInit, OnDestroy {
     return typeof this.middle === 'number' ? this.middle : (this.min + this.max) / 2
   }
 
-  public defaultColor = this.colors.accent
-  public disabledColor = this.colors.textSecondary
-  public _enabled = true
-
-  @HostBinding('class.enabled')
-  @Input()
-  set enabled (shouldBeEnabled) {
-    this._enabled = shouldBeEnabled
-    this._color = this._enabled ? this.defaultColor : this.disabledColor
-  }
-
-  get enabled () { return this._enabled }
-
-  public _color = this.defaultColor
-  @Input()
-  set color (newColor) {
-    this.defaultColor = newColor
-    this._color = this._enabled ? this.defaultColor : this.disabledColor
-  }
-
-  get color () {
-    return this._color
-  }
-
-  get darkerColor () {
-    // Eight tenths of each channel, which is what the hex arithmetic here used
-    // to compute. Expressed as a mix because the colour now arrives as rgb()
-    // from a token, and a hex parser turns anything else into black.
-    return `color-mix(in srgb, ${this.color} 80%, black)`
-  }
+  // A disabled slider is greyed by the host stylesheet rather than by swapping
+  // the colours out here, which is why nothing on this class holds one: the
+  // groove and the thumb name skin tokens and let the skin answer.
+  @HostBinding('class.enabled') @Input() enabled = true
 
   public dragging = false
 
@@ -382,7 +352,13 @@ export class FlatSliderComponent implements OnInit, OnDestroy {
       style.height = `calc(100% - ${this.thumbRadius * 2}px)`
       style.width = `${this.thickness}px`
     }
-    style.backgroundColor = this.darkerColor
+    // Named rather than resolved. These are written from here because the
+    // geometry is worked out here, but the paint belongs to the skin, and a
+    // value read once at construction would keep the colours of whichever
+    // skin was on when the widget was built.
+    style.background = 'var(--track)'
+    style.boxShadow = 'var(--track-inset)'
+    style.borderRadius = `${this.thickness}px`
     return style
   }
 
@@ -402,7 +378,8 @@ export class FlatSliderComponent implements OnInit, OnDestroy {
       style.height = `calc(${this.progress * 100}% - ${this.thumbRadius * 2}px)`
       style.width = `${this.thickness}px`
     }
-    style.backgroundColor = this.color
+    style.background = 'var(--track-fill)'
+    style.borderRadius = `${this.thickness}px`
     return style
   }
 
@@ -410,7 +387,7 @@ export class FlatSliderComponent implements OnInit, OnDestroy {
     const style: SliderStyle = {}
     style.width = `${this.thumbRadius * 2}px`
     style.height = style.width
-    style.backgroundColor = this.value >= this.middleValue ? this.color : this.darkerColor
+    style.background = this.value >= this.middleValue ? 'var(--track-fill)' : 'var(--track)'
 
     style.borderRadius = '100%'
     const center = `calc(50% - ${this.thumbRadius}px)`
@@ -437,7 +414,7 @@ export class FlatSliderComponent implements OnInit, OnDestroy {
     style.height = style.width
     // Only ever reached from the loop over `notches`, so it is there.
     const notchValue = this.notches![index]
-    style.backgroundColor = this.value >= notchValue ? this.color : this.darkerColor
+    style.background = this.value >= notchValue ? 'var(--track-fill)' : 'var(--track)'
 
     style.borderRadius = '100%'
     const center = `calc(50% - ${this.thumbRadius}px)`
@@ -453,10 +430,14 @@ export class FlatSliderComponent implements OnInit, OnDestroy {
     const style: SliderStyle = {}
     style.width = `${this.thumbRadius * 2}px`
     style.height = style.width
-    style.border = `${this.thumbBorderSize}px solid rgb(0 0 0)`
-    style.backgroundColor = this.color
+    // The border stays as a transparent one: the travel below is worked out
+    // from it, and a thumb that stopped reserving the room would answer the
+    // pointer a pixel away from where it is drawn.
+    style.border = `${this.thumbBorderSize}px solid transparent`
+    style.background = 'var(--thumb)'
+    style.boxShadow = 'var(--thumb-edge)'
+    style.borderRadius = 'var(--thumb-radius)'
 
-    style.borderRadius = '100%'
     if (this.orientation === 'horizontal') {
       const left = this.mapValue({
         value: this.value,

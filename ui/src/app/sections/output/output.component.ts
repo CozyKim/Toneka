@@ -31,7 +31,8 @@ interface DeviceItem extends Device {
       align-items: center;
       gap: var(--space-3);
       padding: var(--space-2) var(--space-3);
-      border-bottom: 1px solid var(--surface-raised);
+      border-bottom: 1px solid var(--chrome-edge);
+      box-shadow: 0 1px 0 var(--chrome-lip);
     }
 
     .label {
