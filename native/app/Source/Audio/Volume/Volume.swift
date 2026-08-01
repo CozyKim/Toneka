@@ -180,8 +180,15 @@ class Volume: StoreSubscriber {
     }
   }
 
+  /// Re-applies the current state to `mixer`. Attaching a node to an
+  /// AVAudioEngine resets its outputVolume to 1, so whatever was applied while
+  /// building this object is gone by the time the graph is running.
+  ///
+  /// Assigning `muted` covers both cases: muted silences the mixer outright,
+  /// unmuted re-runs the gain path that decides between hardware volume and
+  /// the mixer.
   func postSetup () {
-    (gain = gain)
+    (muted = muted)
   }
 
   deinit {

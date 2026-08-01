@@ -76,6 +76,9 @@ final class TapEngine {
     self.outputDevice = outputDevice
 
     guard buildGraph() else { return nil }
+
+    // The mixer only holds a volume once it belongs to a running graph.
+    volume.postSetup()
   }
 
   // MARK: - Graph

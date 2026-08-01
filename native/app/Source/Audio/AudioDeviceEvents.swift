@@ -69,7 +69,16 @@ class AudioDeviceEvents {
   // MARK: - CoreAudio plumbing
 
   private static let systemObject = AudioObjectID(kAudioObjectSystemObject)
-  private static let listenerQueue = DispatchQueue.main
+
+  /// CoreAudio delivers property notifications by dispatching *synchronously*
+  /// onto this queue, so it must never be a queue that itself makes blocking
+  /// CoreAudio calls. The main queue does: tearing the pipeline down calls
+  /// AudioDeviceStop and AudioHardwareDestroyAggregateDevice from there, and
+  /// destroying a device we hold listeners on makes CoreAudio wait for this
+  /// queue while this queue waits for CoreAudio. That deadlock only breaks on
+  /// an internal timeout, after which creating the replacement tap returns
+  /// noErr with no object and the pipeline is silently lost.
+  private static let listenerQueue = DispatchQueue(label: "audio-device-events")
 
   /// Device-scoped properties we forward as events.
   private static let deviceSelectors: [(AudioObjectPropertySelector, AudioDeviceEventType)] = [
@@ -110,7 +119,12 @@ class AudioDeviceEvents {
       mElement: kAudioObjectPropertyElementWildcard
     )
 
-    let block: AudioObjectPropertyListenerBlock = { _, _ in handler() }
+    // Handlers reach Application state, the store and the UI, so they stay on
+    // the main queue; hopping asynchronously is what keeps CoreAudio from
+    // waiting on it.
+    let block: AudioObjectPropertyListenerBlock = { _, _ in
+      DispatchQueue.main.async { handler() }
+    }
 
     guard AudioObjectAddPropertyListenerBlock(
       objectID, &address, AudioDeviceEvents.listenerQueue, block
