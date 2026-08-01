@@ -1,6 +1,3 @@
-# Node 14 (the previous pin) has no darwin-arm64 build, so it cannot run
-# natively on Apple Silicon. Angular CLI 12 declares node ">=14.0.0" with no
-# upper bound, and 16 is the newest release still on OpenSSL 1.1 -- which
-# matters because webpack 4 uses md4 hashing that OpenSSL 3 removed.
+# Angular 22 requires ^22.22.3 || ^24.15.0 || >=26.0.0. 24 is the current LTS.
 [tools]
-node = "16.20.2"
+node = "24.18.1"

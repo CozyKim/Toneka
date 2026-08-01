@@ -8,7 +8,7 @@
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-NODE_VERSION="16.20.2"
+NODE_VERSION="24.18.1"
 BUNDLE_ID="com.bitgapp.eqmac.debug"
 UI_CACHE="$HOME/Library/Application Support/$BUNDLE_ID"
 
@@ -47,7 +47,7 @@ if $build_ui; then
     echo "mise is not installed. Install it, or put Node $NODE_VERSION on PATH yourself." >&2
     exit 1
   fi
-  # Angular 12's toolchain needs Node 16; the system Node is usually much newer.
+  # Angular's toolchain pins the Node major; keep this in step with .mise.toml.
   PATH="$(mise where "node@$NODE_VERSION")/bin:$PATH"
   export PATH
   ( cd "$ROOT/ui" && yarn build )

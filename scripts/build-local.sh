@@ -21,10 +21,10 @@ fi
 
 echo "==> Building UI"
 if ! command -v mise >/dev/null 2>&1; then
-  echo "mise is not installed. Install it, or put Node 16.20.2 on PATH yourself." >&2
+  echo "mise is not installed. Install it, or put Node 24.18.1 on PATH yourself." >&2
   exit 1
 fi
-PATH="$(mise where node@16.20.2)/bin:$PATH"
+PATH="$(mise where node@24.18.1)/bin:$PATH"
 export PATH
 ( cd "$ROOT/ui" && yarn build )
 
