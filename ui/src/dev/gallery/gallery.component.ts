@@ -6,12 +6,15 @@ import { CheckboxComponent } from '../../lib/checkbox/checkbox.component'
 import { ContainerComponent } from '../../lib/container/container.component'
 import { DividerComponent } from '../../lib/divider/divider.component'
 import { DropdownComponent } from '../../lib/dropdown/dropdown.component'
+import { FlatSliderComponent } from '../../lib/flat-slider/flat-slider.component'
 import { IconComponent } from '../../lib/icon/icon.component'
+import { KnobComponent } from '../../lib/knob/knob.component'
 import { InputFieldComponent } from '../../lib/input-field/input-field.component'
 import { LabelComponent } from '../../lib/label/label.component'
 import { LoadingComponent } from '../../lib/loading/loading.component'
 import { ScrewComponent } from '../../lib/screw/screw.component'
 import { SelectBoxComponent } from '../../lib/select-box/select-box.component'
+import { SkeuomorphSliderComponent } from '../../lib/skeuomorph-slider/skeuomorph-slider.component'
 import { ToggleComponent } from '../../lib/toggle/toggle.component'
 import { ValueScreenComponent } from '../../lib/value-screen/value-screen.component'
 import { VentComponent } from '../../lib/vent/vent.component'
@@ -28,12 +31,15 @@ import { VentComponent } from '../../lib/vent/vent.component'
     ContainerComponent,
     DividerComponent,
     DropdownComponent,
+    FlatSliderComponent,
     IconComponent,
     InputFieldComponent,
+    KnobComponent,
     LabelComponent,
     LoadingComponent,
     ScrewComponent,
     SelectBoxComponent,
+    SkeuomorphSliderComponent,
     ToggleComponent,
     ValueScreenComponent,
     VentComponent
@@ -141,6 +147,32 @@ import { VentComponent } from '../../lib/vent/vent.component'
         </div>
         <span>{{ selected.text }}</span>
       </section>
+
+      <section>
+        <h2>knob</h2>
+        <div class="row">
+          <eqm-knob [(value)]="knobValue" [min]="-24" [max]="24"></eqm-knob>
+          <span>{{ knobValue }}</span>
+          <eqm-knob size="large" [(value)]="knobValue" [min]="-24" [max]="24"></eqm-knob>
+          <eqm-knob size="small" [(value)]="knobValue" [min]="-24" [max]="24"></eqm-knob>
+        </div>
+      </section>
+
+      <section>
+        <h2>flat-slider</h2>
+        <div class="narrow-column">
+          <eqm-flat-slider [(value)]="flatValue"></eqm-flat-slider>
+        </div>
+        <span>{{ flatValue }}</span>
+      </section>
+
+      <section>
+        <h2>skeuomorph-slider</h2>
+        <div class="row tall">
+          <eqm-skeuomorph-slider [(value)]="skeuoValue"></eqm-skeuomorph-slider>
+          <span>{{ skeuoValue }}</span>
+        </div>
+      </section>
     </div>
   `,
   styles: [`
@@ -182,6 +214,9 @@ import { VentComponent } from '../../lib/vent/vent.component'
        position, which blocks it; standing on its own here it needs saying. */
     .narrow-column eqm-select-box { display: block; }
 
+    /* The skeuomorph slider fills the height it is given, so it needs one. */
+    .row.tall { height: 160px; align-items: stretch; }
+
     h1 { font-size: 18px; margin: 0 0 var(--space-4); }
     h2 { font-size: 12px; margin: 0 0 var(--space-2); color: var(--text-secondary); font-weight: 400; }
   `]
@@ -209,4 +244,7 @@ export class GalleryComponent {
   checked = false
   typed = ''
   presses = 0
+  knobValue = 0
+  flatValue = 0.5
+  skeuoValue = 0
 }

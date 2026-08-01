@@ -8,16 +8,33 @@ import { Injectable } from '@angular/core'
 /// follow the system without anything here knowing which is in effect.
 @Injectable({ providedIn: 'root' })
 export class ColorsService {
+  // The tokens are declared on :root, so the element read through has to be in
+  // the document to inherit them. It is never painted.
+  private readonly probe = document.createElement('span')
+
+  constructor () {
+    this.probe.style.display = 'none'
+    this.probe.setAttribute('aria-hidden', 'true')
+    document.body.appendChild(this.probe)
+  }
+
   /// `name` is the custom property without the leading dashes, e.g. "accent".
   value (name: string): string {
-    const resolved = getComputedStyle(document.documentElement)
+    const declared = getComputedStyle(document.documentElement)
       .getPropertyValue(`--${name}`)
       .trim()
 
-    if (!resolved) {
+    if (!declared) {
       console.warn(`[colors] no token named --${name}`)
+      return declared
     }
-    return resolved
+
+    // Resolved through a real colour property rather than handed back as
+    // declared. A token may hold AccentColor or a color-mix(), and a canvas
+    // refuses both as text; reading it back off `color` yields plain rgb().
+    this.probe.style.color = ''
+    this.probe.style.color = `var(--${name})`
+    return getComputedStyle(this.probe).color
   }
 
   get accent () { return this.value('accent') }

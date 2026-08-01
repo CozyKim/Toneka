@@ -1,0 +1,183 @@
+:host {
+  filter: grayscale(80%)
+}
+
+:host.enabled {
+  filter: none;
+}
+
+@mixin center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, -50%);
+}
+
+@mixin size ($size) {
+  width: $size;
+  height: $size;
+}
+
+@mixin circle () {
+  border-radius: 50%;
+}
+
+// The knob is built out of stacked highlights and shadows. Those stay in plain
+// black and white with an alpha: they are light falling on the thing, not a
+// colour it has, and a token in their place would tint the whole knob.
+.container {
+
+  display: inline-block;
+  .knob {
+    position: relative;
+  }
+
+  .large {
+    @mixin shadow ($size: 0.5px, $blur: 5px) {
+      box-shadow: 0 1px $blur $size rgb(0 0 0),
+              0 -1px $blur $size rgb(255 255 255 / .6);
+    }
+    @include size(90px);
+
+    .scale {
+      @include size(80px);
+      @include center();
+      fill: var(--accent);
+      top: 43%;
+    }
+
+    .slot {
+      @include center();
+      @include size(70px);
+      @include circle();
+      box-shadow: 0 5px 5px rgb(0 0 0 / .67);
+      background-color: var(--surface-raised);
+      border: 2px solid rgb(0 0 0);
+    }
+
+    .body {
+      @include center();
+      @include size(64px);
+      @include shadow();
+      @include circle();
+
+      box-shadow:
+      0 -.5px 0px 0px rgb(255 255 255 / .2), // solid line top
+      0 -1px 5px 0.5px rgb(255 255 255 / .27), // diffused shadow top
+      0 .5px .5px 0.5px rgb(0 0 0), // solid line bottom
+      0 1px 5px 0.5px rgb(0 0 0); // diffused shadow bottom
+      ;
+      background-color: var(--surface-raised);
+    }
+
+    .cap {
+      @include center();
+      @include size(58px);
+
+      .cap-body {
+        @include center();
+        @include size(58px);
+        @include circle();
+        filter: drop-shadow(0 -1px 0px rgb(255 255 255 / .2))
+      drop-shadow(0 2px 5px rgb(0 0 0));
+
+        background-image: linear-gradient(to bottom, var(--surface-raised), var(--surface));
+      }
+
+      .indicator {
+        @include center();
+        @include size(40px);
+        .inner-line {
+          @include center();
+          @include size(40px);
+          fill: var(--surface-sunken);
+        }
+
+        .pointer {
+          @include size(5px);
+          @include circle();
+          position: absolute;
+          top: -4%;
+          left: 50%;
+          transform: translate(-50%, 0);
+          -webkit-transform: translate(-50%, 0);
+          background-color: var(--accent);
+        }
+      }
+
+    }
+  }
+
+  .medium {
+    @include size(70px);
+
+    .scale {
+      @include size(62px);
+      @include center();
+      fill: var(--accent);
+    }
+
+    .slot {
+      @include center();
+      @include size(48px);
+      @include circle();
+      background-color: var(--surface-raised);
+      box-shadow: 0 3px 5px 2px rgb(0 0 0 / .6);
+
+    }
+
+    .body {
+      @include center();
+      @include size(38px);
+      @include circle();
+
+      box-shadow: 0 0 2px 0.5px rgb(255 255 255 / .13);
+
+      background-color: var(--surface);
+    }
+
+    .cap {
+      @include center();
+      @include size(38px);
+      fill: var(--accent);
+    }
+
+  }
+
+  .small {
+    @include size(50px);
+
+    .scale {
+      @include size(40px);
+      @include center();
+      fill: var(--accent);
+    }
+
+    .slot {
+      @include center();
+      @include size(34px);
+      @include circle();
+      background-color: var(--surface-raised);
+      box-shadow: 0 2px 5px 2px rgb(0 0 0 / .6);
+
+    }
+
+    .body {
+      @include center();
+      @include size(27px);
+      @include circle();
+
+      box-shadow: 0 0 2px 0.5px rgb(255 255 255 / .13);
+
+      background-color: var(--surface);
+    }
+
+    .cap {
+      @include center();
+      @include size(24px);
+      fill: var(--accent);
+    }
+
+  }
+}

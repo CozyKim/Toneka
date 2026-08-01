@@ -1,0 +1,78 @@
+:host {
+  width: 31px;
+  height: 100%;
+  min-height: 100px;
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  transition-property: filter;
+  transition-duration: .5s;
+  filter: grayscale(80%);
+}
+
+.notches {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+}
+
+// The rings that carve out the groove and raise the thumb are light and
+// shadow rather than colour, so they stay black and white with an alpha.
+.groove {
+  flex: 1 1 0%;
+  height: 100%;
+  width: 7px;
+  margin: 8px 0;
+  background-color: var(--surface-sunken);
+  border-radius: 3px;
+  box-shadow:
+  0     0     0     1px  var(--surface-raised) inset,
+  0     2px   5px     1px rgb(0 0 0) inset,
+  -1px     -1px     0     1px  rgb(0 0 0 / .3) inset,
+  1px     1px     0     1px   rgb(0 0 0 / .6) inset;
+}
+
+.thumb {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 0;
+  left: calc(50% - 21px / 2);
+  width: 21px;
+  height: 25px;
+  background-color: var(--surface-raised);
+  border-radius: 3px;
+  box-shadow:
+  0     0     0     1px  rgb(0 0 0 / .5) inset,
+  1px     1px     0     1px  rgb(255 255 255 / .12) inset,
+  -1px    -1px     0     1px   rgb(0 0 0 / .25) inset,
+  0     3px     10px     -2px  rgb(0 0 0);
+
+  // Three lines across the thumb: the accent between a darker one above and a
+  // half-dark one below, which is what makes the ridge read as raised.
+  .line-group {
+    width: calc(100% - 2px);
+    height: 3px;
+    $first-line-color: color-mix(in srgb, var(--accent) 30%, black);
+    $second-line-color: var(--accent);
+    $third-line-color: color-mix(in srgb, var(--accent) 80%, black);
+    background: linear-gradient(
+      to bottom,
+      #{$first-line-color},
+      #{$first-line-color} 1px,
+      #{$second-line-color} 1px,
+      #{$second-line-color} 2px,
+      #{$third-line-color} 2px,
+      #{$third-line-color} 3px
+    )
+  }
+}
+
+:host.enabled {
+  filter: none;
+}
