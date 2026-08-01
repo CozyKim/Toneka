@@ -32,6 +32,7 @@
 		78F28AD6274D2A580005474D /* assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 785E4F86274D187D003D6DB0 /* assets.xcassets */; };
 		8CD92AD0B18DA31DE4FFD8CB /* CoreAudioDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89258104502A0565CC1B1533 /* CoreAudioDevice.swift */; };
 		1A7C4E92B03D5F6108A2C731 /* Materials.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E82D1A0C6B94F3701D5E8A2 /* Materials.swift */; };
+		2B9F1C34D07E4A8215C3E960 /* BundleSchemeHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D31E0A5B48C2F6903AD1E77 /* BundleSchemeHandler.swift */; };
 		9C30AA79EA467101A49B5BC4 /* VolumeHUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08D527A0DF998C2F77058CB3 /* VolumeHUD.swift */; };
 		AF8A81B1C07FEF2EE203BDA0 /* ProcessTap.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6E1ECF750ABA4A637998881 /* ProcessTap.swift */; };
 		E00618E220F14C08003BA0B0 /* UIState.swift in Sources */ = {isa = PBXBuildFile; fileRef = E00618E120F14C08003BA0B0 /* UIState.swift */; };
@@ -102,6 +103,7 @@
 /* Begin PBXFileReference section */
 		08D527A0DF998C2F77058CB3 /* VolumeHUD.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = VolumeHUD.swift; sourceTree = "<group>"; };
 		4E82D1A0C6B94F3701D5E8A2 /* Materials.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Materials.swift; sourceTree = "<group>"; };
+		7D31E0A5B48C2F6903AD1E77 /* BundleSchemeHandler.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BundleSchemeHandler.swift; sourceTree = "<group>"; };
 		33E1CA81523B2A768D5E742E /* AggregateDevice.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AggregateDevice.swift; sourceTree = "<group>"; };
 		454077A0596E209B8ABF4043 /* Pods-eqMac.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-eqMac.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-eqMac/Pods-eqMac.debug.xcconfig"; sourceTree = "<group>"; };
 		67955640E9DC25278A5D11A5 /* TapEngine.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TapEngine.swift; sourceTree = "<group>"; };
@@ -383,6 +385,7 @@
 				E0136BB222D9EC920048D5BC /* DraggableView.swift */,
 				08D527A0DF998C2F77058CB3 /* VolumeHUD.swift */,
 				4E82D1A0C6B94F3701D5E8A2 /* Materials.swift */,
+				7D31E0A5B48C2F6903AD1E77 /* BundleSchemeHandler.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -812,6 +815,7 @@
 				63CF9C5F616D1A56D59ED3DA /* TapEngine.swift in Sources */,
 				9C30AA79EA467101A49B5BC4 /* VolumeHUD.swift in Sources */,
 				1A7C4E92B03D5F6108A2C731 /* Materials.swift in Sources */,
+				2B9F1C34D07E4A8215C3E960 /* BundleSchemeHandler.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -402,7 +402,7 @@ class UI: StoreSubscriber {
     func loadBundled () {
       Console.log("Loading bundled UI")
       unarchiveZip()
-      startUILoad(URL(string: "\(localPath)/index.html")!)
+      startUILoad(BundleSchemeHandler.url(forPath: "index.html"))
     }
 
     #if DEBUG

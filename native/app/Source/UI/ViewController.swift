@@ -45,9 +45,32 @@ class ViewController: NSViewController, WKNavigationDelegate {
   // MARK: - Initialization
   override func viewDidLoad () {
     super.viewDidLoad()
+    useSchemeAwareWebView()
     installBackdrop()
     loadingSpinner.startAnimation(nil)
     loaded.emit()
+  }
+
+  /// Swaps the storyboard's web view for one whose configuration carries the
+  /// bundle scheme handler. A handler can only be registered before the web
+  /// view exists, and the storyboard builds its own.
+  private func useSchemeAwareWebView () {
+    let configuration = WKWebViewConfiguration()
+    configuration.setURLSchemeHandler(
+      BundleSchemeHandler(root: UI.localPath),
+      forURLScheme: BundleSchemeHandler.scheme
+    )
+    // Mirrors what the storyboard set on the view being replaced.
+    configuration.mediaTypesRequiringUserActionForPlayback = []
+    configuration.preferences.javaScriptCanOpenWindowsAutomatically = false
+
+    let replacement = WKWebView(frame: webView.frame, configuration: configuration)
+    replacement.autoresizingMask = webView.autoresizingMask
+    replacement.allowsLinkPreview = false
+    replacement.wantsLayer = true
+
+    webView.superview?.replaceSubview(webView, with: replacement)
+    webView = replacement
   }
 
   /// Moves the storyboard's subviews inside a material view so the window can
@@ -75,17 +98,11 @@ class ViewController: NSViewController, WKNavigationDelegate {
   }
 
   func load (_ url: URL) {
-    let request = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalAndRemoteCacheData)
     if self.webView.isLoading {
       self.webView.stopLoading()
     }
 
-    // Angular ships the app as ES modules, and a module script is fetched
-    // with CORS -- which a file:// page always fails. Nothing but the
-    // bundled interface is ever loaded here.
-    self.webView.configuration.preferences.setValue(true, forKey: "allowFileAccessFromFileURLs")
-
-    self.webView.load(request)
+    self.webView.load(URLRequest(url: url, cachePolicy: .reloadIgnoringLocalAndRemoteCacheData))
 
     
     Async.delay(1000) {
