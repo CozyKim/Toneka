@@ -23,19 +23,6 @@ class Window: NSWindow, NSWindowDelegate {
     // front of it and nothing behind the window could show through.
     self.isOpaque = false
     self.backgroundColor = .clear
-
-    Async.delay(1000, completion: {
-      for subview in self.contentView!.superview!.subviews {
-        if subview.isKind(of: NSClassFromString("NSTitlebarContainerView")!) {
-          let titleBarView = subview.subviews[0]
-          for button in titleBarView.subviews {
-            if button.isKind(of: NSButton.self) {
-              button.isHidden = true
-            }
-          }
-        }
-      }
-    })
   }
   
   func windowDidChangeOcclusionState(_ notification: Notification) {
@@ -128,7 +115,10 @@ class Window: NSWindow, NSWindowDelegate {
         .fullSizeContentView,
         .hudWindow,
         .titled,
-        .miniaturizable
+        .miniaturizable,
+        // Without this there is no close button and no ⌘W, and the only way
+        // out of the window is the status item that opened it.
+        .closable
       ]
 
       if UI.isResizable {

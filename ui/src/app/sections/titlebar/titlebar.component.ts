@@ -22,7 +22,9 @@ import { ToggleComponent } from '../../../lib/toggle/toggle.component'
       display: flex;
       align-items: center;
       gap: var(--space-2);
-      padding: 0 var(--space-3);
+      /* The window draws its close and minimise buttons over the top-left of
+         the content, so the strip starts clear of them. */
+      padding: 0 var(--space-3) 0 72px;
       border-bottom: 1px solid var(--surface-raised);
     }
 
