@@ -6,6 +6,7 @@ import { OutputComponent } from './sections/output/output.component'
 import { VolumeComponent } from './sections/volume/volume.component'
 import { EqualizerComponent } from './sections/equalizer/equalizer.component'
 import { SettingsComponent } from './sections/settings/settings.component'
+import { SkinService } from './services/skin.service'
 import { UIService } from './services/ui.service'
 
 @Component({
@@ -51,10 +52,16 @@ import { UIService } from './services/ui.service'
 })
 export class AppComponent implements OnInit {
   private readonly ui = inject(UIService)
+  private readonly skins = inject(SkinService)
 
   readonly settingsShown = signal(false)
 
   async ngOnInit () {
+    // Before anything else it could be seen through: the window is painted the
+    // moment it is sized, and a frame drawn in the wrong skin and corrected
+    // afterwards is a flash the user notices.
+    await this.skins.sync()
+
     // Height is the only dimension the user gets. Ten bands read as ten bands
     // only if their spacing is the same in every window, so width is pinned.
     await Promise.all([

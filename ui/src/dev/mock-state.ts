@@ -41,6 +41,7 @@ const state = {
     settings: {
       replaceKnobsWithSliders: false,
       knobControlStyle: 'directional',
+      skin: 'rack',
       volumeFeatureEnabled: true,
       balanceFeatureEnabled: true,
       equalizersFeatureEnabled: true,

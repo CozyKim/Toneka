@@ -1,0 +1,87 @@
+// Hands the window back to macOS: the material behind the webview provides the
+// background, the accent comes from System Settings, and light and dark both
+// follow whatever is in effect.
+:root[data-skin="system"] {
+  // Without this the system colours stay on their light values even when the
+  // window is dark: Canvas comes back white and CanvasText black, and the form
+  // controls and scrollbars the engine draws for us follow them.
+  color-scheme: light dark;
+
+  --text-primary: rgb(255 255 255 / 0.92);
+  --text-secondary: rgb(255 255 255 / 0.55);
+
+  // The interface sits on the window's material, so surfaces are tints over
+  // whatever is behind rather than opaque fills. These are for panels.
+  --surface: rgb(255 255 255 / 0.06);
+  --surface-raised: rgb(255 255 255 / 0.12);
+  --surface-sunken: rgb(0 0 0 / 0.22);
+
+  // A control is an object you reach for, so its body is solid. The knob is
+  // built out of stacked greys and a tint would let all of them composite
+  // against the same backdrop -- and the desktop would show through the face.
+  //
+  // Derived from the system pair so light and dark follow along. The body sits
+  // a little away from Canvas towards CanvasText so it reads against the
+  // window in either mode; the lit and recessed faces then move towards white
+  // and black rather than towards the text, because in light mode the text is
+  // black and a raised face mixed towards it would come out darker than the
+  // recess it is supposed to stand above.
+  --control: color-mix(in srgb, Canvas 88%, CanvasText);
+  --control-raised: color-mix(in srgb, var(--control) 88%, white);
+  --control-sunken: color-mix(in srgb, var(--control) 84%, black);
+
+  --accent: #4f8d71;
+
+  // Nothing of its own behind the window: the material is the background, and
+  // a fill here would cover it.
+  --chrome: transparent;
+  --chrome-edge: rgb(255 255 255 / .12);
+  --chrome-lip: transparent;
+
+  --panel: rgb(255 255 255 / .08);
+  --panel-radius: 9px;
+
+  --well: transparent;
+  --well-inset: none;
+
+  --track: color-mix(in srgb, CanvasText 20%, transparent);
+  --track-inset: none;
+  --track-fill: var(--accent);
+
+  --thumb: white;
+  --thumb-edge: 0 1px 2px rgb(0 0 0 / .35), 0 0 0 0.5px rgb(0 0 0 / .14);
+  --thumb-radius: 50%;
+
+  // A number here is a number, not a lit display.
+  --readout-bg: transparent;
+  --readout-ink: var(--text-secondary);
+  --readout-glow: none;
+  --readout-inset: none;
+
+  --curve-line: var(--accent);
+  --curve-fill: color-mix(in srgb, var(--accent) 16%, transparent);
+  --grid-line: color-mix(in srgb, CanvasText 12%, transparent);
+
+  --decor: 0;
+}
+
+// Follows the accent colour chosen in System Settings where the engine
+// understands it, which is the point of delegating to the system at all.
+@supports (color: AccentColor) {
+  :root[data-skin="system"] {
+    --accent: AccentColor;
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  :root[data-skin="system"] {
+    --text-primary: rgb(0 0 0 / 0.92);
+    --text-secondary: rgb(0 0 0 / 0.55);
+    --surface: rgb(0 0 0 / 0.05);
+    --surface-raised: rgb(0 0 0 / 0.10);
+    --surface-sunken: rgb(0 0 0 / 0.16);
+
+    --chrome-edge: rgb(0 0 0 / .12);
+    --panel: rgb(255 255 255 / .72);
+  }
+}

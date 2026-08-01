@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, OnInit, Output, inject, signal } from '@angular/core'
+import { ChangeDetectionStrategy, Component, EventEmitter, OnInit, Output, computed, inject, signal } from '@angular/core'
 
 import { CheckboxComponent } from '../../../lib/checkbox/checkbox.component'
 import { ContainerComponent } from '../../../lib/container/container.component'
@@ -6,6 +6,7 @@ import { ClickedOutsideDirective } from '../../../lib/directives/clicked-outside
 import { DropdownComponent } from '../../../lib/dropdown/dropdown.component'
 import { KnobControlStyle } from '../../../lib/knob/knob.component'
 import { IconMode, SettingsService } from '../../services/settings.service'
+import { Skin, SkinNames, SkinService, Skins } from '../../services/skin.service'
 import { UIService } from '../../services/ui.service'
 
 interface Choice<T> { id: T, name: string }
@@ -21,6 +22,8 @@ const KNOB_STYLES: Array<Choice<KnobControlStyle>> = [
   { id: 'directional', name: '위아래로 끌기' },
   { id: 'rotational', name: '돌리기' }
 ]
+
+const SKINS: Array<Choice<Skin>> = Skins.map(skin => ({ id: skin, name: SkinNames[skin] }))
 
 @Component({
   selector: 'eqm-settings',
@@ -69,6 +72,19 @@ const KNOB_STYLES: Array<Choice<KnobControlStyle>> = [
           (selectedItemChange)="setKnobStyle($event)">
         </eqm-dropdown>
       </div>
+
+      <!-- No preview beside it: the whole window changes as soon as one is
+           picked, which is the preview. -->
+      <div class="row">
+        <span class="name">겉모습</span>
+        <eqm-dropdown
+          class="field"
+          labelParam="name"
+          [items]="skins"
+          [selectedItem]="skin()"
+          (selectedItemChange)="setSkin($event)">
+        </eqm-dropdown>
+      </div>
     </eqm-container>
   `,
   styles: [`
@@ -114,16 +130,22 @@ const KNOB_STYLES: Array<Choice<KnobControlStyle>> = [
 export class SettingsComponent implements OnInit {
   private readonly settings = inject(SettingsService)
   private readonly ui = inject(UIService)
+  private readonly skinService = inject(SkinService)
 
   @Output() closed = new EventEmitter<void>()
 
   readonly iconModes = ICON_MODES
   readonly knobStyles = KNOB_STYLES
+  readonly skins = SKINS
 
   readonly launchOnStartup = signal(false)
   readonly alwaysOnTop = signal(false)
   readonly iconMode = signal<Choice<IconMode> | undefined>(undefined)
   readonly knobStyle = signal<Choice<KnobControlStyle> | undefined>(undefined)
+
+  /// Read off the service rather than kept here as well, so the sheet shows
+  /// whatever the window is actually wearing.
+  readonly skin = computed(() => SKINS.find(skin => skin.id === this.skinService.skin()))
 
   async ngOnInit () {
     const [ launchOnStartup, iconMode, alwaysOnTop ] = await Promise.all([
@@ -155,5 +177,9 @@ export class SettingsComponent implements OnInit {
   setKnobStyle (style: Choice<KnobControlStyle>) {
     this.knobStyle.set(style)
     void this.ui.setSettings({ knobControlStyle: style.id })
+  }
+
+  setSkin (skin: Choice<Skin>) {
+    void this.skinService.set(skin.id)
   }
 }

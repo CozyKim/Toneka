@@ -1,40 +1,19 @@
-:root {
-  // Without this the system colours stay on their light values even when the
-  // window is dark: Canvas comes back white and CanvasText black, and the form
-  // controls and scrollbars the engine draws for us follow them.
-  color-scheme: light dark;
+// Which skin is in effect is a set of tokens on :root, not a component tree.
+// Everything below inherits the names; only the values move.
+@use './skins/rack';
+@use './skins/system';
 
-  --text-primary: rgb(255 255 255 / 0.92);
-  --text-secondary: rgb(255 255 255 / 0.55);
+:root {
   --font-body: 13px -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-numeric: 11px ui-monospace, "SF Mono", Menlo, monospace;
 
   --space-1: 4px;
   --space-2: 8px;
   --space-3: 12px;
   --space-4: 16px;
 
-  // The interface sits on the window's material, so surfaces are tints over
-  // whatever is behind rather than opaque fills. These are for panels.
-  --surface: rgb(255 255 255 / 0.06);
-  --surface-raised: rgb(255 255 255 / 0.12);
-  --surface-sunken: rgb(0 0 0 / 0.22);
-
-  // A control is an object you reach for, so its body is solid. The knob is
-  // built out of stacked greys and a tint would let all of them composite
-  // against the same backdrop -- and the desktop would show through the face.
-  //
-  // Derived from the system pair so light and dark follow along. The body sits
-  // a little away from Canvas towards CanvasText so it reads against the
-  // window in either mode; the lit and recessed faces then move towards white
-  // and black rather than towards the text, because in light mode the text is
-  // black and a raised face mixed towards it would come out darker than the
-  // recess it is supposed to stand above.
-  --control: color-mix(in srgb, Canvas 88%, CanvasText);
-  --control-raised: color-mix(in srgb, var(--control) 88%, white);
-  --control-sunken: color-mix(in srgb, var(--control) 84%, black);
-
-  // Fixed on purpose: danger must not follow the accent colour, or a user
-  // whose accent is red loses the distinction.
+  // Fixed in both skins: danger must not follow anything, or a user whose
+  // accent is red loses the distinction.
   --warning: #eb3f42;
   --caution: #ffd500;
 
@@ -43,24 +22,11 @@
   --icon-gradient-middle: #03f193;
   --icon-gradient-end: #04e2b5;
 
-  --accent: #4f8d71;
+  // Derived from whichever accent the skin in effect declares, so it does not
+  // need saying twice.
   --accent-bright: color-mix(in srgb, var(--accent) 80%, white);
-}
 
-// Follows the accent colour chosen in System Settings where the engine
-// understands it, which is the point of delegating to the system at all.
-@supports (color: AccentColor) {
-  :root {
-    --accent: AccentColor;
-  }
-}
-
-@media (prefers-color-scheme: light) {
-  :root {
-    --text-primary: rgb(0 0 0 / 0.92);
-    --text-secondary: rgb(0 0 0 / 0.55);
-    --surface: rgb(0 0 0 / 0.05);
-    --surface-raised: rgb(0 0 0 / 0.10);
-    --surface-sunken: rgb(0 0 0 / 0.16);
-  }
+  // A readout is monospaced in both skins; only its colour and its glass tell
+  // them apart.
+  --readout-font: var(--font-numeric);
 }

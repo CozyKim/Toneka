@@ -1,0 +1,52 @@
+// A rack unit is a dark box. Following the system into light would make it
+// white metal, which is not a thing.
+:root[data-skin="rack"] {
+  color-scheme: dark;
+
+  --chrome: linear-gradient(180deg, #34383e 0%, #2a2d33 42%, #232629 100%);
+  --chrome-edge: rgb(0 0 0 / .55);
+  --chrome-lip: rgb(255 255 255 / .05);
+
+  --text-primary: #d7dce3;
+  --text-secondary: #7f8894;
+
+  --accent: #46e08a;
+
+  // Films over the metal rather than over the window's material, so they are
+  // lighter than the system skin's: the face beneath them is already dark.
+  --surface: rgb(255 255 255 / .05);
+  --surface-raised: rgb(255 255 255 / .09);
+  --surface-sunken: rgb(0 0 0 / .55);
+
+  // The bodies the widgets reach for. Stated rather than mixed out of Canvas,
+  // because the panel behind them is this skin's metal and not the system's
+  // window, and a control has to sit against that instead.
+  --control: #3a3f45;
+  --control-raised: #4d545c;
+  --control-sunken: #1c1f23;
+
+  --panel: transparent;
+  --panel-radius: 0;
+
+  --well: linear-gradient(180deg, #15181b, #1b1f22);
+  --well-inset: inset 0 3px 7px rgb(0 0 0 / .9), 0 1px 0 rgb(255 255 255 / .06);
+
+  --track: #14171a;
+  --track-inset: inset 0 1px 3px rgb(0 0 0 / .9), 0 1px 0 rgb(255 255 255 / .06);
+  --track-fill: linear-gradient(90deg, #2f8f63, #46e08a);
+
+  --thumb: linear-gradient(180deg, #7e868f 0%, #4a5057 48%, #6c737b 52%, #3a3f45 100%);
+  --thumb-edge: 0 2px 4px rgb(0 0 0 / .75), inset 0 1px 0 rgb(255 255 255 / .3);
+  --thumb-radius: 3px;
+
+  --readout-bg: linear-gradient(180deg, #0a1512, #0d1a16);
+  --readout-ink: #4ef0a8;
+  --readout-glow: 0 0 7px rgb(78 240 168 / .65);
+  --readout-inset: inset 0 2px 4px rgb(0 0 0 / .9), 0 1px 0 rgb(255 255 255 / .07);
+
+  --curve-line: #46e08a;
+  --curve-fill: rgb(70 224 138 / .16);
+  --grid-line: rgb(255 255 255 / .07);
+
+  --decor: 1;
+}

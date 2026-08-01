@@ -2,11 +2,15 @@ import { EventEmitter, Injectable } from '@angular/core'
 import { DataService } from './data.service'
 import { Subject } from 'rxjs'
 import packageJson from '../../../package.json'
+import { Skin } from './skin.service'
 
 export interface UISettings {
   doCollectTelemetry?: boolean
   privacyFormSeen?: boolean
   knobControlStyle?: 'directional' | 'rotational'
+
+  /// Which visual language the window wears. See styles/skins.
+  skin?: Skin
 
   reverbsShownBefore?: boolean
 }
