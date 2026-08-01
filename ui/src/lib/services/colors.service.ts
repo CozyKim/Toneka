@@ -25,6 +25,7 @@ export class ColorsService {
   get warning () { return this.value('warning') }
   get caution () { return this.value('caution') }
   get textPrimary () { return this.value('text-primary') }
+  get textSecondary () { return this.value('text-secondary') }
   get surface () { return this.value('surface') }
   get surfaceRaised () { return this.value('surface-raised') }
   get surfaceSunken () { return this.value('surface-sunken') }

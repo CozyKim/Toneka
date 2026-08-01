@@ -1,0 +1,10 @@
+<div class="row">
+  @for (crumb of crumbs; track $index; let i = $index) {
+    <div class="row">
+      @if (i !== 0) {
+        <eqm-icon class="crumb-part" name="triangle" [rotate]="0" [width]="8" [height]="8"></eqm-icon>
+      }
+      <eqm-label [class]="'crumb-part pointer' + (underline ? ' underline' : '')" (click)="crumbClicked.emit({ crumb: crumb, index: i })">{{crumb}}</eqm-label>
+    </div>
+  }
+</div>
