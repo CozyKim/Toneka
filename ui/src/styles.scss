@@ -14,3 +14,30 @@ body {
 body::-webkit-scrollbar {
   display: none;
 }
+
+// Which sections are grouped together is a fact about the window rather than
+// about any one of them, so it is stated once here instead of three times.
+//
+// The card itself is a pseudo-element inset from the section, which means the
+// section keeps the box it always had: a skin that draws no card puts nothing
+// in the same place rather than laying the window out differently.
+eqm-output,
+eqm-volume,
+eqm-equalizer {
+  position: relative;
+  // Or a card behind the section would be behind the window's own face too,
+  // and the rack skin's metal would cover it.
+  isolation: isolate;
+}
+
+eqm-output::before,
+eqm-volume::before,
+eqm-equalizer::before {
+  content: "";
+  position: absolute;
+  inset: var(--space-1) var(--space-2);
+  z-index: -1;
+  border-radius: var(--panel-radius);
+  background: var(--panel);
+  box-shadow: 0 0 0 1px var(--panel-edge);
+}
