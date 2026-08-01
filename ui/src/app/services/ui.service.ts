@@ -4,18 +4,9 @@ import { Subject } from 'rxjs'
 import packageJson from '../../../package.json'
 
 export interface UISettings {
-  replaceKnobsWithSliders?: boolean
   doCollectTelemetry?: boolean
   privacyFormSeen?: boolean
-  // The knob widget that owns this type arrives in M3.
   knobControlStyle?: 'directional' | 'rotational'
-
-  volumeFeatureEnabled?: boolean
-  balanceFeatureEnabled?: boolean
-  equalizersFeatureEnabled?: boolean
-  outputFeatureEnabled?: boolean
-
-  showEqualizers?: boolean
 
   reverbsShownBefore?: boolean
 }
@@ -66,21 +57,8 @@ export class UIService extends DataService {
     this.settings = uiSettings
     if (!uiSettings.knobControlStyle) {
       this.settings.knobControlStyle = 'directional'
+      this.setSettings(this.settings)
     }
-    if (typeof uiSettings.volumeFeatureEnabled !== 'boolean') {
-      this.settings.volumeFeatureEnabled = true
-    }
-
-    if (typeof uiSettings.balanceFeatureEnabled !== 'boolean') {
-      this.settings.balanceFeatureEnabled = true
-    }
-    if (typeof uiSettings.equalizersFeatureEnabled !== 'boolean') {
-      this.settings.equalizersFeatureEnabled = true
-    }
-    if (typeof uiSettings.outputFeatureEnabled !== 'boolean') {
-      this.settings.outputFeatureEnabled = true
-    }
-    this.setSettings(this.settings)
 
     this.scale = uiScale
   }

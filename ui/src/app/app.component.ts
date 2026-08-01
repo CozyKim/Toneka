@@ -1,27 +1,33 @@
-import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core'
+import { ChangeDetectionStrategy, Component, OnInit, inject, signal } from '@angular/core'
 
 import { TitlebarComponent } from './sections/titlebar/titlebar.component'
 import { FooterComponent } from './sections/footer/footer.component'
 import { OutputComponent } from './sections/output/output.component'
 import { VolumeComponent } from './sections/volume/volume.component'
 import { EqualizerComponent } from './sections/equalizer/equalizer.component'
+import { SettingsComponent } from './sections/settings/settings.component'
 import { UIService } from './services/ui.service'
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [ TitlebarComponent, FooterComponent, OutputComponent, VolumeComponent, EqualizerComponent ],
+  imports: [ TitlebarComponent, FooterComponent, OutputComponent, VolumeComponent, EqualizerComponent, SettingsComponent ],
   template: `
-    <eqm-titlebar></eqm-titlebar>
+    <eqm-titlebar (settingsRequested)="settingsShown.set(true)"></eqm-titlebar>
     <main>
       <eqm-output></eqm-output>
       <eqm-volume></eqm-volume>
       <eqm-equalizer></eqm-equalizer>
     </main>
     <eqm-footer></eqm-footer>
+
+    @if (settingsShown()) {
+      <eqm-settings (closed)="settingsShown.set(false)"></eqm-settings>
+    }
   `,
   styles: [`
     :host {
+      position: relative;
       display: flex;
       flex-direction: column;
       width: 100vw;
@@ -45,6 +51,8 @@ import { UIService } from './services/ui.service'
 })
 export class AppComponent implements OnInit {
   private readonly ui = inject(UIService)
+
+  readonly settingsShown = signal(false)
 
   async ngOnInit () {
     // Height is the only dimension the user gets. Ten bands read as ten bands

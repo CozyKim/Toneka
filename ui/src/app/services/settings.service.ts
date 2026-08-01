@@ -1,0 +1,34 @@
+import { Injectable } from '@angular/core'
+import { DataService } from './data.service'
+
+export enum IconMode {
+  both = 'both',
+  dock = 'dock',
+  statusBar = 'statusBar',
+  neither = 'neither'
+}
+
+@Injectable({
+  providedIn: 'root'
+})
+export class SettingsService extends DataService {
+  override route = '/settings'
+
+  async getLaunchOnStartup (): Promise<boolean> {
+    const { state } = await this.request({ method: 'GET', endpoint: '/launch-on-startup' })
+    return state
+  }
+
+  setLaunchOnStartup (state: boolean) {
+    return this.request({ method: 'POST', endpoint: '/launch-on-startup', data: { state } })
+  }
+
+  async getIconMode (): Promise<IconMode> {
+    const { mode } = await this.request({ method: 'GET', endpoint: '/icon-mode' })
+    return mode
+  }
+
+  setIconMode (mode: IconMode) {
+    return this.request({ method: 'POST', endpoint: '/icon-mode', data: { mode } })
+  }
+}

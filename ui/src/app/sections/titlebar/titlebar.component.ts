@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit, inject, signal } from '@angular/core'
+import { ChangeDetectionStrategy, Component, EventEmitter, OnInit, Output, inject, signal } from '@angular/core'
 
 import { ApplicationService } from '../../services/app.service'
 import { IconComponent } from '../../../lib/icon/icon.component'
@@ -12,7 +12,7 @@ import { ToggleComponent } from '../../../lib/toggle/toggle.component'
     <eqm-toggle [state]="enabled()" (stateChange)="setEnabled($event)"></eqm-toggle>
     <span class="name">eqMac</span>
     <span class="spacer"></span>
-    <button class="glyph" type="button" (click)="settingsRequested()" aria-label="설정">
+    <button class="glyph" type="button" (click)="settingsRequested.emit()" aria-label="설정">
       <eqm-icon name="cog" [size]="14"></eqm-icon>
     </button>
   `,
@@ -50,6 +50,10 @@ import { ToggleComponent } from '../../../lib/toggle/toggle.component'
 export class TitlebarComponent implements OnInit {
   private readonly app = inject(ApplicationService)
 
+  // The sheet covers the whole window, so it belongs to whoever owns the
+  // window rather than to this strip.
+  @Output() settingsRequested = new EventEmitter<void>()
+
   // Held in a signal rather than read off the service: the service fills its
   // own field from an asynchronous reply, and a plain field settling later
   // leaves an OnPush view showing whatever it guessed first.
@@ -62,9 +66,5 @@ export class TitlebarComponent implements OnInit {
   setEnabled (enabled: boolean) {
     this.enabled.set(enabled)
     void this.app.setEnabled(enabled)
-  }
-
-  settingsRequested () {
-    // Task 7 opens the sheet from here.
   }
 }

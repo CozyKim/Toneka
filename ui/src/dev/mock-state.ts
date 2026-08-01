@@ -57,6 +57,7 @@ const state = {
     selected: 51
   },
   volume: { gain: 0.62, muted: false, balance: 0, boost: false },
+  settings: { launchOnStartup: false, iconMode: 'statusBar' },
   equalizers: {
     enabled: true,
     // 'Basic' and 'Advanced' with a capital: the native enum's raw values.
@@ -209,6 +210,11 @@ const routes: Record<string, (data: MockRequest) => MockReply> = {
   'GET /effects/equalizers/advanced/presets/import-legacy/available': () => read('available', false),
   'GET /effects/equalizers/advanced/settings/show-default-presets': () => read('show', true),
   'POST /effects/equalizers/advanced/settings/show-default-presets': () => ({}),
+
+  'GET /settings/launch-on-startup': () => read('state', state.settings.launchOnStartup),
+  'POST /settings/launch-on-startup': data => { state.settings.launchOnStartup = Boolean(data?.['state']); return {} },
+  'GET /settings/icon-mode': () => read('mode', state.settings.iconMode),
+  'POST /settings/icon-mode': data => { state.settings.iconMode = String(data?.['mode']); return {} },
 
   'GET /ui/close': () => { console.info('[harness] close'); return {} },
   'GET /ui/hide': () => { console.info('[harness] hide'); return {} },
