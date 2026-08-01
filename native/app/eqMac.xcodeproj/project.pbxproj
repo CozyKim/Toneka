@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		0EEE0796D03B512F922F9E35 /* CoreAudioProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC1F5D06CB10F17AE7548425 /* CoreAudioProperty.swift */; };
+		2113D76260A1C12F96946C41 /* AggregateDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33E1CA81523B2A768D5E742E /* AggregateDevice.swift */; };
+		63CF9C5F616D1A56D59ED3DA /* TapEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67955640E9DC25278A5D11A5 /* TapEngine.swift */; };
 		78048A62265041600020AAD9 /* DateExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78048A61265041600020AAD9 /* DateExtensions.swift */; };
 		7810723826112C2B005DB609 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7810723726112C2B005DB609 /* Security.framework */; };
 		78242E96261A8AEE00058ADE /* Connectivity in Frameworks */ = {isa = PBXBuildFile; productRef = 78242E95261A8AEE00058ADE /* Connectivity */; };
@@ -29,6 +31,7 @@
 		78F28AD5274D25580005474D /* Shared in Frameworks */ = {isa = PBXBuildFile; productRef = 78F28AD4274D25580005474D /* Shared */; };
 		78F28AD6274D2A580005474D /* assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 785E4F86274D187D003D6DB0 /* assets.xcassets */; };
 		8CD92AD0B18DA31DE4FFD8CB /* CoreAudioDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89258104502A0565CC1B1533 /* CoreAudioDevice.swift */; };
+		AF8A81B1C07FEF2EE203BDA0 /* ProcessTap.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6E1ECF750ABA4A637998881 /* ProcessTap.swift */; };
 		E00618E220F14C08003BA0B0 /* UIState.swift in Sources */ = {isa = PBXBuildFile; fileRef = E00618E120F14C08003BA0B0 /* UIState.swift */; };
 		E00618EB20F22BD1003BA0B0 /* Effect.swift in Sources */ = {isa = PBXBuildFile; fileRef = E00618EA20F22BD1003BA0B0 /* Effect.swift */; };
 		E00618ED20F292B9003BA0B0 /* Networking.swift in Sources */ = {isa = PBXBuildFile; fileRef = E00618EC20F292B9003BA0B0 /* Networking.swift */; };
@@ -102,7 +105,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		33E1CA81523B2A768D5E742E /* AggregateDevice.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AggregateDevice.swift; sourceTree = "<group>"; };
 		454077A0596E209B8ABF4043 /* Pods-eqMac.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-eqMac.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-eqMac/Pods-eqMac.debug.xcconfig"; sourceTree = "<group>"; };
+		67955640E9DC25278A5D11A5 /* TapEngine.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TapEngine.swift; sourceTree = "<group>"; };
 		78048A61265041600020AAD9 /* DateExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtensions.swift; sourceTree = "<group>"; };
 		7810723726112C2B005DB609 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		783A6F9F2670225C00A96B42 /* Benchmark.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Benchmark.swift; sourceTree = "<group>"; };
@@ -123,6 +128,7 @@
 		9C0FBD24DF0BA400D806B8AC /* Pods_eqMac.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_eqMac.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A3D606D740D37C93ABA157E7 /* Pods-eqMac.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-eqMac.release.xcconfig"; path = "../Pods/Target Support Files/Pods-eqMac/Pods-eqMac.release.xcconfig"; sourceTree = "<group>"; };
 		AC1F5D06CB10F17AE7548425 /* CoreAudioProperty.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CoreAudioProperty.swift; sourceTree = "<group>"; };
+		D6E1ECF750ABA4A637998881 /* ProcessTap.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ProcessTap.swift; sourceTree = "<group>"; };
 		E00618E120F14C08003BA0B0 /* UIState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIState.swift; sourceTree = "<group>"; };
 		E00618EA20F22BD1003BA0B0 /* Effect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Effect.swift; sourceTree = "<group>"; };
 		E00618EC20F292B9003BA0B0 /* Networking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Networking.swift; sourceTree = "<group>"; };
@@ -412,6 +418,7 @@
 				E057A636227032EC0019D13C /* EngineDataBus.swift */,
 				E0FFB704200679DD0003EC9E /* Engine.swift */,
 				FA55FAC388EF89710157EFC1 /* CoreAudio */,
+				67955640E9DC25278A5D11A5 /* TapEngine.swift */,
 			);
 			path = Audio;
 			sourceTree = "<group>";
@@ -542,6 +549,8 @@
 			children = (
 				AC1F5D06CB10F17AE7548425 /* CoreAudioProperty.swift */,
 				89258104502A0565CC1B1533 /* CoreAudioDevice.swift */,
+				D6E1ECF750ABA4A637998881 /* ProcessTap.swift */,
+				33E1CA81523B2A768D5E742E /* AggregateDevice.swift */,
 			);
 			name = CoreAudio;
 			path = CoreAudio;
@@ -869,6 +878,9 @@
 				E012A4702044C4DA0029C800 /* Sysctl.swift in Sources */,
 				0EEE0796D03B512F922F9E35 /* CoreAudioProperty.swift in Sources */,
 				8CD92AD0B18DA31DE4FFD8CB /* CoreAudioDevice.swift in Sources */,
+				AF8A81B1C07FEF2EE203BDA0 /* ProcessTap.swift in Sources */,
+				2113D76260A1C12F96946C41 /* AggregateDevice.swift in Sources */,
+				63CF9C5F616D1A56D59ED3DA /* TapEngine.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
