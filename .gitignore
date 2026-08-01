@@ -12,3 +12,6 @@ dist
 **/package-lock.json
 
 native/app/Sandbox.playground/Resources/track.mp3
+
+# Design specs and implementation plans stay local to the working tree.
+docs/
