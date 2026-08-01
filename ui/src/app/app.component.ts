@@ -10,7 +10,6 @@ import { UIService } from './services/ui.service'
 import { FadeInOutAnimation, FromTopAnimation } from '@eqmac/components'
 import { MatDialog, MatDialogRef } from '@angular/material/dialog'
 import { TransitionService } from './services/transitions.service'
-import { AnalyticsService } from './services/analytics.service'
 import { ApplicationService } from './services/app.service'
 import { SettingsService, IconMode } from './sections/settings/settings.service'
 import { ToastService } from './services/toast.service'
@@ -65,7 +64,6 @@ export class AppComponent implements OnInit, AfterContentInit {
     public ui: UIService,
     public dialog: MatDialog,
     public transitions: TransitionService,
-    public analytics: AnalyticsService,
     public app: ApplicationService,
     public settings: SettingsService,
     public toast: ToastService
@@ -228,10 +226,6 @@ This data would help us improve and grow the product.`
           doCollectCrashReports
         })
       ])
-    }
-
-    if (uiSettings.doCollectTelemetry) {
-      await this.analytics.init()
     }
   }
 

@@ -5,7 +5,6 @@ import { ApplicationService } from '../../services/app.service'
 import { MatDialog } from '@angular/material/dialog'
 import { ConfirmDialogComponent } from '../../components/confirm-dialog/confirm-dialog.component'
 import { StatusItemIconType, UIService } from '../../services/ui.service'
-import { AnalyticsService } from '../../services/analytics.service'
 import { SemanticVersion } from '../../services/semantic-version.service'
 import { OptionsDialogComponent } from '../../components/options-dialog/options-dialog.component'
 import { KnobControlStyle } from '../../../../../modules/components/src'
@@ -73,11 +72,6 @@ This helps us understand distribution of our users.
     value: false,
     toggled: doCollectTelemetry => {
       this.ui.setSettings({ doCollectTelemetry })
-      if (doCollectTelemetry) {
-        this.analytics.init()
-      } else {
-        this.analytics.deinit()
-      }
     }
   }
 
@@ -347,7 +341,6 @@ before they go out to all users.
     public app: ApplicationService,
     public dialog: MatDialog,
     public ui: UIService,
-    public analytics: AnalyticsService,
     private readonly changeRef: ChangeDetectorRef
   ) {
   }
