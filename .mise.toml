@@ -1,0 +1,6 @@
+# Node 14 (the previous pin) has no darwin-arm64 build, so it cannot run
+# natively on Apple Silicon. Angular CLI 12 declares node ">=14.0.0" with no
+# upper bound, and 16 is the newest release still on OpenSSL 1.1 -- which
+# matters because webpack 4 uses md4 hashing that OpenSSL 3 removed.
+[tools]
+node = "16.20.2"

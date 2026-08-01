@@ -16,6 +16,14 @@
       "node_modules/@types",
       "../node_modules/@types"
     ],
+    // Without this every @types package pulled in transitively is loaded as a
+    // global type library, and the stub packages among them (@types/minimatch
+    // ships no declarations) fail the build. Only the globals this app uses
+    // belong here: `ga` from google.analytics, `NodeJS.Timer` from node.
+    "types": [
+      "google.analytics",
+      "node"
+    ],
     "lib": [
       "es2018",
       "dom"

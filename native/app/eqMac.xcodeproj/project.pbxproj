@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0EEE0796D03B512F922F9E35 /* CoreAudioProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC1F5D06CB10F17AE7548425 /* CoreAudioProperty.swift */; };
+		1ADD5FCD5D55F07001F5BAB4 /* Embedded in Resources */ = {isa = PBXBuildFile; fileRef = C682EA453BF803939C38362F /* Embedded */; };
 		2113D76260A1C12F96946C41 /* AggregateDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33E1CA81523B2A768D5E742E /* AggregateDevice.swift */; };
 		63CF9C5F616D1A56D59ED3DA /* TapEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67955640E9DC25278A5D11A5 /* TapEngine.swift */; };
 		78048A62265041600020AAD9 /* DateExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78048A61265041600020AAD9 /* DateExtensions.swift */; };
@@ -122,6 +123,7 @@
 		9C0FBD24DF0BA400D806B8AC /* Pods_eqMac.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_eqMac.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A3D606D740D37C93ABA157E7 /* Pods-eqMac.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-eqMac.release.xcconfig"; path = "../Pods/Target Support Files/Pods-eqMac/Pods-eqMac.release.xcconfig"; sourceTree = "<group>"; };
 		AC1F5D06CB10F17AE7548425 /* CoreAudioProperty.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CoreAudioProperty.swift; sourceTree = "<group>"; };
+		C682EA453BF803939C38362F /* Embedded */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder; name = Embedded; path = ../Embedded; sourceTree = "<group>"; };
 		D6E1ECF750ABA4A637998881 /* ProcessTap.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ProcessTap.swift; sourceTree = "<group>"; };
 		E00618E120F14C08003BA0B0 /* UIState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIState.swift; sourceTree = "<group>"; };
 		E00618EA20F22BD1003BA0B0 /* Effect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Effect.swift; sourceTree = "<group>"; };
@@ -485,6 +487,7 @@
 				785E4F86274D187D003D6DB0 /* assets.xcassets */,
 				E086B0071FCCB8E700CF9F0D /* eqMacAudio.entitlements */,
 				E086B0061FCCB8E700CF9F0D /* Info.plist */,
+				C682EA453BF803939C38362F /* Embedded */,
 			);
 			path = "Supporting Files";
 			sourceTree = "<group>";
@@ -639,6 +642,7 @@
 				789F83CF250E20A8004F871D /* restart_coreaudio.sh in Resources */,
 				78F28AD6274D2A580005474D /* assets.xcassets in Resources */,
 				7858FBC224A9630800637941 /* restart_mac.scpt in Resources */,
+				1ADD5FCD5D55F07001F5BAB4 /* Embedded in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
