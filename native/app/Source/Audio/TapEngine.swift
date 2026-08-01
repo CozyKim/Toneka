@@ -95,7 +95,16 @@ final class TapEngine {
     self.volume = volume
     self.outputDevice = outputDevice
 
-    SpectrumRing.shared.sampleRate = tap.format.mSampleRate
+    // The aggregate's rate rather than the tap's. Manual rendering hands frames
+    // straight through without resampling them, so what leaves the graph is
+    // clocked by the device the IOProc drives, and the two do not have to agree.
+    if let rate = CAProperty.value(
+      aggregate.objectID,
+      CAProperty.address(kAudioDevicePropertyNominalSampleRate),
+      default: Double(0)
+    ), rate > 0 {
+      SpectrumRing.shared.sampleRate = rate
+    }
 
     guard buildGraph() else { return nil }
 
