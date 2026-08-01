@@ -5,13 +5,15 @@
 node_modules
 .env
 dist
-!modules/**/dist
 # yarn.lock is committed on purpose: without it an install resolves fresh
 # versions, and that is how a deprecated @types stub with no declarations
 # broke the UI build.
 **/package-lock.json
 
 native/app/Sandbox.playground/Resources/track.mp3
+
+# Screenshots and page dumps from driving the harness in a browser.
+.playwright-mcp/
 
 # Design specs and implementation plans stay local to the working tree.
 docs/
