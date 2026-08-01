@@ -71,6 +71,10 @@ export class ApplicationService extends DataService {
     return this.request({ method: 'GET', endpoint: '/quit' })
   }
 
+  openFAQ () {
+    return this.request({ method: 'GET', endpoint: '/faq' })
+  }
+
   openURL (url: URL) {
     return this.request({ method: 'POST', endpoint: '/open-url', data: { url: url.href } })
   }

@@ -1,42 +1,54 @@
-import { Component, OnInit, inject, signal } from '@angular/core'
+import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core'
 
-import { ApplicationService } from './services/app.service'
+import { TitlebarComponent } from './sections/titlebar/titlebar.component'
+import { FooterComponent } from './sections/footer/footer.component'
+import { UIService } from './services/ui.service'
 
 @Component({
   selector: 'app-root',
   standalone: true,
+  imports: [ TitlebarComponent, FooterComponent ],
   template: `
-    <main class="shell">
-      <p class="shell__placeholder">{{ status() }}</p>
-    </main>
+    <eqm-titlebar></eqm-titlebar>
+    <main></main>
+    <eqm-footer></eqm-footer>
   `,
   styles: [`
-    .shell {
+    :host {
       display: flex;
-      align-items: center;
-      justify-content: center;
+      flex-direction: column;
       width: 100vw;
       height: 100vh;
-    }
-
-    .shell__placeholder {
+      overflow: hidden;
       color: var(--text-primary);
       font: var(--font-body);
-      margin: 0;
     }
-  `]
+
+    /* Everything a taller window gains lands here, and nowhere else: the bars
+       above and below are fixed, and the equaliser inside this box stretches. */
+    main {
+      flex: 1;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+  `],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AppComponent implements OnInit {
-  private readonly app = inject(ApplicationService)
-  readonly status = signal('connecting')
+  private readonly ui = inject(UIService)
 
   async ngOnInit () {
-    try {
-      const info = await this.app.getInfo()
-      this.status.set(`eqMac ${info.version}`)
-    } catch (err) {
-      this.status.set('bridge unavailable')
-      console.error(err)
-    }
+    // Height is the only dimension the user gets. Ten bands read as ten bands
+    // only if their spacing is the same in every window, so width is pinned.
+    await Promise.all([
+      this.ui.setMinWidth({ minWidth: 400 }),
+      this.ui.setMaxWidth({ maxWidth: 400 }),
+      this.ui.setMinHeight({ minHeight: 400 }),
+      this.ui.setMaxHeight({}),
+      this.ui.setResizable(true)
+    ])
+    await this.ui.loaded()
   }
 }

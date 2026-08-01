@@ -63,6 +63,8 @@ const routes: Record<string, (data: MockRequest) => MockReply> = {
   'GET /enabled': () => read('enabled', state.enabled),
   'POST /enabled': data => { state.enabled = Boolean(data?.['enabled']); return {} },
   'GET /quit': () => ({}),
+  'GET /faq': () => { console.info('[harness] faq'); return {} },
+  'POST /bug': () => { console.info('[harness] bug'); return {} },
   'GET /haptic': () => ({}),
   'GET /update': () => ({ data: 'Updates are not available in this build.' }),
   'GET /alert-sound': () => ({}),
