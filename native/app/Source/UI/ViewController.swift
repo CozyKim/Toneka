@@ -54,6 +54,12 @@ class ViewController: NSViewController, WKNavigationDelegate {
     if self.webView.isLoading {
       self.webView.stopLoading()
     }
+
+    // Angular ships the app as ES modules, and a module script is fetched
+    // with CORS -- which a file:// page always fails. Nothing but the
+    // bundled interface is ever loaded here.
+    self.webView.configuration.preferences.setValue(true, forKey: "allowFileAccessFromFileURLs")
+
     self.webView.load(request)
 
     

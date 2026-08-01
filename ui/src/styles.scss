@@ -1,41 +1,16 @@
-/* You can add global styles to this file, and also import other style files */
-@import '~@angular/cdk/overlay-prebuilt.css';
-@import "~@angular/material/prebuilt-themes/pink-bluegrey.css";
+@use './styles/tokens';
 
-.w-100 {
-  width: 100%;
+html,
+body {
+  margin: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  // No background here. The window behind this webview provides the material,
+  // and anything painted here would cover it.
+  background: transparent;
 }
 
-.h-100 {
-  height: 100%;
-}
-
-.mat-dialog-container {
-  padding: 12px !important;
-}
-
-.mat-menu-panel {
-  min-height: 0px !important;
-}
-
-.underline {
-  text-decoration: underline;
-}
-
-.clickable {
-  cursor: pointer !important;
-
-  * {
-    cursor: pointer !important;
-  }
-}
-
-.not-available-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%; 
-  height: 100%; 
-  background-color: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(10px);
+body::-webkit-scrollbar {
+  display: none;
 }

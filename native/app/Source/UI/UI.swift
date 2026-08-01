@@ -100,15 +100,21 @@ class UI: StoreSubscriber {
     return state.resizable
   }
   
+  /// Unpacks the bundled UI on every launch, clearing the previous copy first
+  /// so files that no longer exist in the bundle do not linger.
+  ///
+  /// Nothing is cached. The archive used to be kept in Application Support and
+  /// the copy skipped when it was already there, which is how a downloaded UI
+  /// was retained. With no remote UI left, that check only pinned the first
+  /// build's interface for the life of an app version: a freshly built ui.zip
+  /// was ignored until someone deleted the file by hand.
   static func unarchiveZip () {
-    let fs = FileManager.default
+    let bundleUIZipPath = Bundle.main.url(
+      forResource: "ui", withExtension: "zip", subdirectory: "Embedded"
+    )!
 
-    if !fs.fileExists(atPath: localZipPath.path) {
-      Console.log("\(localZipPath.path) doesnt exist")
-      let bundleUIZipPath = Bundle.main.url(forResource: "ui", withExtension: "zip", subdirectory: "Embedded")!
-      try! fs.copyItem(at: bundleUIZipPath, to: localZipPath)
-    }
-    try! unzip(localZipPath, into: localPath)
+    try? FileManager.default.removeItem(at: localPath)
+    try! unzip(bundleUIZipPath, into: localPath)
   }
 
   /// Extraction via ditto, which ships with macOS and overwrites in place.
@@ -125,13 +131,6 @@ class UI: StoreSubscriber {
     guard process.terminationStatus == 0 else {
       throw "Failed to extract \(archive.lastPathComponent): ditto exited \(process.terminationStatus)"
     }
-  }
-  
-  static var localZipPath: URL {
-    return Application.supportPath.appendingPathComponent(
-      "ui-\(Application.version) (Local).zip",
-      isDirectory: false
-    )
   }
   
   static var localPath: URL {

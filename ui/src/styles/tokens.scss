@@ -1,0 +1,17 @@
+:root {
+  --text-primary: rgb(255 255 255 / 0.92);
+  --text-secondary: rgb(255 255 255 / 0.55);
+  --font-body: 13px -apple-system, BlinkMacSystemFont, sans-serif;
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --text-primary: rgb(0 0 0 / 0.92);
+    --text-secondary: rgb(0 0 0 / 0.55);
+  }
+}
