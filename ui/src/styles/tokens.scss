@@ -1,4 +1,9 @@
 :root {
+  // Without this the system colours stay on their light values even when the
+  // window is dark: Canvas comes back white and CanvasText black, and the form
+  // controls and scrollbars the engine draws for us follow them.
+  color-scheme: light dark;
+
   --text-primary: rgb(255 255 255 / 0.92);
   --text-secondary: rgb(255 255 255 / 0.55);
   --font-body: 13px -apple-system, BlinkMacSystemFont, sans-serif;
@@ -9,10 +14,24 @@
   --space-4: 16px;
 
   // The interface sits on the window's material, so surfaces are tints over
-  // whatever is behind rather than opaque fills.
+  // whatever is behind rather than opaque fills. These are for panels.
   --surface: rgb(255 255 255 / 0.06);
   --surface-raised: rgb(255 255 255 / 0.12);
   --surface-sunken: rgb(0 0 0 / 0.22);
+
+  // A control is an object you reach for, so its body is solid. The knob is
+  // built out of stacked greys and a tint would let all of them composite
+  // against the same backdrop -- and the desktop would show through the face.
+  //
+  // Derived from the system pair so light and dark follow along. The body sits
+  // a little away from Canvas towards CanvasText so it reads against the
+  // window in either mode; the lit and recessed faces then move towards white
+  // and black rather than towards the text, because in light mode the text is
+  // black and a raised face mixed towards it would come out darker than the
+  // recess it is supposed to stand above.
+  --control: color-mix(in srgb, Canvas 88%, CanvasText);
+  --control-raised: color-mix(in srgb, var(--control) 88%, white);
+  --control-sunken: color-mix(in srgb, var(--control) 84%, black);
 
   // Fixed on purpose: danger must not follow the accent colour, or a user
   // whose accent is red loses the distinction.

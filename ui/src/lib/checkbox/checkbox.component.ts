@@ -24,7 +24,7 @@ export class CheckboxComponent {
   @Input() checked: boolean = false
   @Output() checkedChange = new EventEmitter<boolean>()
   @Input() color = this.colors.accent
-  @Input() bgColor = this.colors.surfaceSunken
+  @Input() bgColor = this.colors.controlSunken
   @HostBinding('class.enabled') @Input() enabled = true
 
   constructor (

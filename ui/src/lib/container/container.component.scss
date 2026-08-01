@@ -5,8 +5,8 @@
   border-radius: 2px;
   // Two rings instead of a border: a dark one that reads as the edge and a
   // lighter one just outside it, which together give the box its depth.
-  box-shadow: 0 0 0 1px var(--surface-sunken),
-              0 0 0 2px var(--surface-raised);
+  box-shadow: 0 0 0 1px var(--control-sunken),
+              0 0 0 2px var(--control-raised);
   background-size: 6px 6px;
   filter: grayscale(80%);
 }

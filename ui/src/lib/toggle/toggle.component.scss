@@ -1,14 +1,14 @@
 .container {
   height: 18px;
   width: 42px;
-  background-color: var(--surface-sunken);
+  background-color: var(--control-sunken);
   border-radius: 9px;
   position: relative;
   cursor: pointer;
   filter: grayscale(0.7);
 
   box-shadow:
-  0     0     0     1px  var(--surface-raised) inset,
+  0     0     0     1px  var(--control-raised) inset,
   1px     1px     2px     1px   rgb(0 0 0) inset;
 
   .indicator {
@@ -36,7 +36,7 @@
     width: 14px;
     left: 1px;
     border-radius: 8px;
-    background-color: var(--surface-raised);
+    background-color: var(--control-raised);
     border: 1px solid rgb(0 0 0);
     top: 1px;
     transition-property: all;

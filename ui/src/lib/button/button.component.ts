@@ -22,7 +22,7 @@ export class ButtonComponent implements OnInit {
   @Input() toggle = false
   @Input() depressable = true
   @Input() hoverable = true
-  @Input() backgroundColor = 'var(--surface-raised)'
+  @Input() backgroundColor = 'var(--control-raised)'
   @Input() color = this.colors.textPrimary
   @Output() pressed = new EventEmitter<MouseEvent>()
   @Input() enabled = true

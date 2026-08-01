@@ -8,7 +8,7 @@ import { Component, OnInit, HostBinding, Input, ChangeDetectionStrategy } from '
 })
 export class ContainerComponent implements OnInit {
   @HostBinding('class.enabled') @Input() enabled = true
-  @Input() @HostBinding('style.background-color') color = 'var(--surface-sunken)'
+  @Input() @HostBinding('style.background-color') color = 'var(--control-sunken)'
   ngOnInit () {
   }
 }

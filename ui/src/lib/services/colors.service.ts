@@ -46,6 +46,9 @@ export class ColorsService {
   get surface () { return this.value('surface') }
   get surfaceRaised () { return this.value('surface-raised') }
   get surfaceSunken () { return this.value('surface-sunken') }
+  get control () { return this.value('control') }
+  get controlRaised () { return this.value('control-raised') }
+  get controlSunken () { return this.value('control-sunken') }
   get iconGradientStart () { return this.value('icon-gradient-start') }
   get iconGradientMiddle () { return this.value('icon-gradient-middle') }
   get iconGradientEnd () { return this.value('icon-gradient-end') }

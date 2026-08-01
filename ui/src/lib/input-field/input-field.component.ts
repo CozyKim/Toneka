@@ -25,7 +25,7 @@ export class InputFieldComponent implements OnInit {
   @Input() fontSize = 12
   @Input() type: string = 'text'
   @Input() color = this.colors.accent
-  @Input() bgColor = this.colors.surfaceSunken
+  @Input() bgColor = this.colors.controlSunken
   @ViewChild('container', { static: true }) container!: ElementRef
   ngOnInit () {
   }

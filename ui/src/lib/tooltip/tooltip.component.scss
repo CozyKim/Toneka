@@ -33,8 +33,8 @@
       width: $ratio;
       height: $ratio;
       transform: rotate(45deg);
-      background-color: var(--surface-sunken);
-      box-shadow: 0 0 0 1px var(--surface-sunken), 0 0 0 2px var(--surface-raised);
+      background-color: var(--control-sunken);
+      box-shadow: 0 0 0 1px var(--control-sunken), 0 0 0 2px var(--control-raised);
       border-radius: 10%;
     }
   }

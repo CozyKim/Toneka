@@ -20,17 +20,18 @@
   width: 100%;
 }
 
-// The rings that carve out the groove and raise the thumb are light and
-// shadow rather than colour, so they stay black and white with an alpha.
+// The groove and the thumb are solid control fills; the rings on top of them
+// are light and shadow rather than colour, so those stay black and white with
+// an alpha. The one lit edge is the raised fill, which is where it comes from.
 .groove {
   flex: 1 1 0%;
   height: 100%;
   width: 7px;
   margin: 8px 0;
-  background-color: var(--surface-sunken);
+  background-color: var(--control-sunken);
   border-radius: 3px;
   box-shadow:
-  0     0     0     1px  var(--surface-raised) inset,
+  0     0     0     1px  var(--control-raised) inset,
   0     2px   5px     1px rgb(0 0 0) inset,
   -1px     -1px     0     1px  rgb(0 0 0 / .3) inset,
   1px     1px     0     1px   rgb(0 0 0 / .6) inset;
@@ -45,7 +46,7 @@
   left: calc(50% - 21px / 2);
   width: 21px;
   height: 25px;
-  background-color: var(--surface-raised);
+  background-color: var(--control-raised);
   border-radius: 3px;
   box-shadow:
   0     0     0     1px  rgb(0 0 0 / .5) inset,

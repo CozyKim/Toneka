@@ -20,7 +20,7 @@ export class ProComponent {
   public colors = inject(ColorsService)
 
   @Input() color = this.colors.textPrimary
-  @Input() backgroundColor = this.colors.surfaceSunken
+  @Input() backgroundColor = this.colors.controlSunken
   @Input() fontSize = 14
 
   get style () {
