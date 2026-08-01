@@ -23,6 +23,12 @@ import CoreAudio
 /// enough — the pointer is only valid for the duration of one callback.
 private final class TapInputHandoff {
   var bufferList: UnsafePointer<AudioBufferList>?
+
+  // Counters for diagnosing a silent pipeline: a stopped engine that saw no
+  // cycles points at the IOProc, one with cycles but no signal at the tap.
+  var cycles = 0
+  var renderFailures = 0
+  var peak: Float = 0
 }
 
 final class TapEngine {
@@ -172,6 +178,12 @@ final class TapEngine {
     AudioDeviceDestroyIOProcID(aggregate.objectID, procID)
     self.procID = nil
     running = false
+
+    Console.log(
+      "Tap pipeline stopped after \(handoff.cycles) cycles,",
+      "\(handoff.renderFailures) render failures,",
+      "peak \(handoff.peak)"
+    )
   }
 
   // MARK: - Realtime
@@ -239,7 +251,10 @@ final class TapEngine {
     var status: OSStatus = noErr
     let result = renderBlock(AVAudioFrameCount(frames), renderBuffer.mutableAudioBufferList, &status)
 
+    handoff.cycles += 1
+
     guard result == .success else {
+      handoff.renderFailures += 1
       memset(targetData, 0, Int(target.mDataByteSize))
       return
     }
@@ -249,7 +264,10 @@ final class TapEngine {
       if channel < rendered.count,
          let source = rendered[channel].mData?.assumingMemoryBound(to: Float.self) {
         for frame in 0 ..< frames {
-          targetData[frame * channels + channel] = source[frame]
+          let value = source[frame]
+          targetData[frame * channels + channel] = value
+          let magnitude = abs(value)
+          if magnitude > handoff.peak { handoff.peak = magnitude }
         }
       } else {
         for frame in 0 ..< frames { targetData[frame * channels + channel] = 0 }

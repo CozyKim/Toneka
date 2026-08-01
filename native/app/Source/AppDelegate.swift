@@ -31,7 +31,10 @@ class AppDelegate: NSObject, NSApplicationDelegate, SUUpdaterDelegate {
       Application.start()
     }
 
-    if (Application.store.state.settings.doAutoCheckUpdates) {
+    // Debug builds skip the update check entirely: Sparkle 1.x can leave the
+    // callback pending against the live appcast, and start() is gated behind
+    // it, so the app would never finish launching.
+    if (!Constants.DEBUG && Application.store.state.settings.doAutoCheckUpdates) {
       var stillCheckingConnection = true
       Networking.checkConnected { connected in
         stillCheckingConnection = false
