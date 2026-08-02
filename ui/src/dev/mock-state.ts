@@ -84,14 +84,6 @@ const state = {
   }
 }
 
-/// What the native side takes back off the whole output so that a boosted band
-/// does not leave full scale: the largest boost, negated.
-function advancedHeadroom () {
-  const { presets, selected } = state.equalizers.advanced
-  const bands: number[] = presets.find(preset => preset.id === selected)?.gains?.bands ?? []
-  return -Math.max(0, ...bands)
-}
-
 /// A GET that reads one field, paired with the key the caller destructures.
 function read (key: string, value: unknown): MockReply {
   return { data: { [key]: value } }
@@ -108,19 +100,12 @@ function write<K extends keyof typeof state.ui> (key: K, value: (typeof state.ui
 /// routes, so they are described once. Each one pushes the new list and the new
 /// selection after it changes them, which is what the native side does and what
 /// the sections listen for -- they never re-read after a write.
-function presetRoutes (
-  route: string,
-  store: { presets: any[], selected: string },
-  /// Pushed with the selection whenever it changes, for whatever the native
-  /// side works out from the chosen preset instead of storing beside it.
-  derived?: () => { event: string, data: unknown }
-) {
+function presetRoutes (route: string, store: { presets: any[], selected: string }) {
   const list = () => ({ event: `${route}/presets`, data: store.presets })
   const chosen = () => ({
     event: `${route}/presets/selected`,
     data: store.presets.find(preset => preset.id === store.selected)
   })
-  const selection = () => (derived ? [ chosen(), derived() ] : [ chosen() ])
 
   return {
     [`GET ${route}/presets`]: () => ({ data: store.presets }),
@@ -129,7 +114,7 @@ function presetRoutes (
     }),
     [`POST ${route}/presets/select`]: (data: MockRequest) => {
       store.selected = String(data?.['id'])
-      return { events: selection() }
+      return { events: [ chosen() ] }
     },
     // An id means update and no id means create, the way the native route
     // reads it.
@@ -141,12 +126,12 @@ function presetRoutes (
       if (at >= 0) store.presets[at] = preset
       else store.presets.push(preset)
       if (preset.select) store.selected = preset.id
-      return { data: preset, events: preset.select ? [ list(), ...selection() ] : [ list() ] }
+      return { data: preset, events: preset.select ? [ list(), chosen() ] : [ list() ] }
     },
     [`DELETE ${route}/presets`]: (data: MockRequest) => {
       store.presets = store.presets.filter(preset => preset.id !== String(data?.['id']))
       store.selected = 'flat'
-      return { events: [ list(), ...selection() ] }
+      return { events: [ list(), chosen() ] }
     }
   }
 }
@@ -223,13 +208,8 @@ const routes: Record<string, (data: MockRequest) => MockReply> = {
   'GET /effects/equalizers/type': () => read('type', state.equalizers.type),
   'POST /effects/equalizers/type': data => { state.equalizers.type = String(data?.['type']); return {} },
 
-  ...presetRoutes('/effects/equalizers/advanced', state.equalizers.advanced, () => ({
-    event: '/effects/equalizers/advanced/headroom',
-    data: { headroom: advancedHeadroom() }
-  })),
+  ...presetRoutes('/effects/equalizers/advanced', state.equalizers.advanced),
   ...presetRoutes('/effects/equalizers/basic', state.equalizers.basic),
-
-  'GET /effects/equalizers/advanced/headroom': () => read('headroom', advancedHeadroom()),
 
   // Native file dialogs, which a browser has no counterpart for.
   'GET /effects/equalizers/advanced/presets/import': () => { console.info('[harness] preset import dialog'); return {} },
