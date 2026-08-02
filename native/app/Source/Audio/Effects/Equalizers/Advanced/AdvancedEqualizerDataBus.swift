@@ -43,6 +43,14 @@ class AdvancedEqualizerDataBus: DataBus {
     self.on(.GET, "/presets") { _, _ in
       return JSON(AdvancedEqualizer.presets.map { $0.dictionary })
     }
+
+    // What the equaliser is taking back off the output. It is not a warning and
+    // there is no switch for it; the interface shows it because an attenuation
+    // that happened silently would read as the equaliser being quieter than the
+    // one beside it.
+    self.on(.GET, "/headroom") { _, _ in
+      return [ "headroom": self.headroom ]
+    }
     
     self.on(.GET, "/presets/selected") { _, _ in
       let preset = AdvancedEqualizer.getPreset(id: self.state.selectedPresetId)
@@ -178,10 +186,21 @@ class AdvancedEqualizerDataBus: DataBus {
     // the bands stayed where they were.
     selectedPresetChangedListener = AdvancedEqualizer.selectedPresetChanged.on { preset in
       self.send(to: "/presets/selected", data: JSON(preset.dictionary))
+      // The bands are the only thing headroom is drawn from, so the moment they
+      // land is the moment it can have moved.
+      self.send(to: "/headroom", data: [ "headroom": AdvancedEqualizer.headroom(forBands: preset.gains.bands) ])
     }
-    
+
   }
-  
+
+  /// Read from the selected preset rather than from the equaliser, so that it
+  /// answers the same while the pipeline is being rebuilt around a device
+  /// change and there is no equaliser to ask.
+  private var headroom: Double {
+    let preset = AdvancedEqualizer.getPreset(id: state.selectedPresetId)
+    return AdvancedEqualizer.headroom(forBands: preset?.gains.bands ?? [])
+  }
+
   private func getPreset (_ data: JSON?) throws -> AdvancedEqualizerPreset {
     if let id = data["id"] as? String {
       if let preset = AdvancedEqualizer.getPreset(id: id) {

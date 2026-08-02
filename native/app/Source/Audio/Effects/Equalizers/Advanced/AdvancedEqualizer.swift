@@ -14,7 +14,21 @@ import Shared
 
 class AdvancedEqualizer: Equalizer, StoreSubscriber {
   static let frequencies: [Double] = [32, 64, 125, 250, 500, 1_000, 2_000, 4_000, 8_000, 16_000]
-  
+
+  /// The loudest boost, to be taken back off the whole output. Zero or below.
+  ///
+  /// Ten bands can each be pushed twenty-four decibels and nothing downstream
+  /// stops the sum from leaving full scale, which arrives at the ear as
+  /// distortion rather than as loudness. The basic equaliser has done this
+  /// since it was written; the advanced one never did, and it is the one with
+  /// ten places to push from.
+  ///
+  /// Stated here rather than at the two places that need it, so that what the
+  /// interface displays cannot drift from what the filters are doing.
+  static func headroom (forBands gains: [Double]) -> Double {
+    return -max(0, gains.max() ?? 0)
+  }
+
   static let defaultPresets: [AdvancedEqualizerPreset] = ADVANCED_EQUALIZER_DEFAULT_PRESETS.map { preset in
     let (name, bands) = preset
     return AdvancedEqualizerPreset(
@@ -101,15 +115,31 @@ class AdvancedEqualizer: Equalizer, StoreSubscriber {
   static var selectedPresetChanged = Event<AdvancedEqualizerPreset>()
   
   var transition = false
-  
+
+  /// Where the whole output was asked to sit, which is the preset's own and
+  /// nobody else's. The headroom comes off on top of it rather than in place of
+  /// it, so a preset written quiet stays quiet.
+  private var userGlobalGain: Double = 0 {
+    didSet { applyHeadroom() }
+  }
+
+  private func applyHeadroom () {
+    globalGain = userGlobalGain + AdvancedEqualizer.headroom(forBands: gains)
+  }
+
+  override func setGain (index: Int, gain: Double) {
+    super.setGain(index: index, gain: gain)
+    applyHeadroom()
+  }
+
   var selectedPreset: AdvancedEqualizerPreset = AdvancedEqualizer.getPreset(id: "flat")! {
     didSet {
       if (transition) {
-        Transition.perform(from: globalGain, to: selectedPreset.gains.global) { gainStep in
-          self.globalGain = gainStep
+        Transition.perform(from: userGlobalGain, to: selectedPreset.gains.global) { gainStep in
+          self.userGlobalGain = gainStep
         }
       } else {
-        globalGain = selectedPreset.gains.global
+        userGlobalGain = selectedPreset.gains.global
       }
       for (index, gain) in selectedPreset.gains.bands.enumerated() {
         if (transition) {
