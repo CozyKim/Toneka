@@ -33,7 +33,11 @@ class Equalizer: Effect {
     eq.globalGain = 0
     for band in eq.bands {
       band.filterType = .parametric
-      band.bandwidth = 0.5
+      // Octaves, and the same distance the band centres sit apart, so that
+      // neighbouring filters meet at their half-power points. Narrower and
+      // there is a trough between every pair of centres that no band reaches:
+      // a curve asked for on the sliders came out rippled.
+      band.bandwidth = 1.0
       band.bypass = false
     }
   }
