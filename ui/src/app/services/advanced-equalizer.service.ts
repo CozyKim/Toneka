@@ -73,6 +73,21 @@ export class AdvancedEqualizerService extends EqualizersService {
     return this.request({ method: 'POST', endpoint: '/settings/show-default-presets', data: { show } })
   }
 
+  /// How much the equaliser is taking back off the whole output so that the
+  /// bands it is boosting do not leave full scale. Zero or below.
+  async getHeadroom (): Promise<number> {
+    const { headroom } = await this.request({ method: 'GET', endpoint: '/headroom' })
+    return headroom
+  }
+
+  onHeadroomChanged (callback: HeadroomChangedEventCallback) {
+    this.on('/headroom', callback)
+  }
+
+  offHeadroomChanged (callback: HeadroomChangedEventCallback) {
+    this.off('/headroom', callback)
+  }
+
   onPresetsChanged (callback: PresetsChangedEventCallback) {
     this.on('/presets', callback)
   }
@@ -90,5 +105,6 @@ export class AdvancedEqualizerService extends EqualizersService {
   }
 }
 
+export type HeadroomChangedEventCallback = (data: { headroom: number }) => void
 export type PresetsChangedEventCallback = (presets: AdvancedEqualizerPreset[]) => void
 export type SelectedPresetChangedEventCallback = (preset: AdvancedEqualizerPreset) => void

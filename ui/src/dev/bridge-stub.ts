@@ -40,10 +40,16 @@ function driveSpectrum (on: boolean) {
   let phase = 0
   spectrumTimer = window.setInterval(() => {
     phase += 0.06
-    emit('/analyzer/volumes', Array.from(
-      { length: SPECTRUM_BANDS },
-      (_, band) => 0.5 + 0.42 * Math.sin(phase - band * 0.55)
-    ))
+    emit('/analyzer/volumes', {
+      bands: Array.from(
+        { length: SPECTRUM_BANDS },
+        (_, band) => 0.5 + 0.42 * Math.sin(phase - band * 0.55)
+      ),
+      // A wave of its own, slow enough that it crosses full scale every few
+      // seconds rather than every frame: the clip lamp has to be seen coming on
+      // and going off again, and one that is always lit says nothing.
+      peak: 0.75 + 0.35 * Math.sin(phase * 0.35)
+    })
   }, 1000 / 30)
 }
 

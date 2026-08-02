@@ -70,6 +70,10 @@
   --spectrum-bar: color-mix(in srgb, var(--accent) 13%, transparent);
   --spectrum-peak: color-mix(in srgb, var(--accent) 42%, transparent);
 
+  // The one the rest of the window already uses for danger, which does not
+  // follow the accent and so cannot collide with it.
+  --clip: var(--warning);
+
   --decor: 0;
 }
 

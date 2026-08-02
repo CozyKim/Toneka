@@ -26,6 +26,14 @@ export class SpectrumService extends DataService {
   }
 }
 
-/// One value per band between nothing and full scale, in the order the band
-/// frequencies are given in.
-export type VolumesEventCallback = (volumes: number[]) => void
+/// One reading of the output, taken from a single window of it.
+export interface Spectrum {
+  /// One value per band between nothing and full scale, in the order the band
+  /// frequencies are given in.
+  bands: number[]
+  /// The loudest sample in the same window. At or above one it is at the
+  /// ceiling and what reaches the device is being cut off.
+  peak: number
+}
+
+export type VolumesEventCallback = (spectrum: Spectrum) => void

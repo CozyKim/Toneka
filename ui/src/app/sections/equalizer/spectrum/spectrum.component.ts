@@ -1,9 +1,13 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, inject, signal } from '@angular/core'
 
-import { SpectrumService } from '../../../services/spectrum.service'
+import { Spectrum, SpectrumService } from '../../../services/spectrum.service'
 import { UIService } from '../../../services/ui.service'
 
 const BANDS = 10
+
+/// A single window at the ceiling lasts a thirtieth of a second, which the eye
+/// does not catch. Held instead, the way the lamp on a mixing desk is.
+const CLIP_HOLD = 1500
 
 /// What is actually coming out, one bar per equaliser band and standing behind
 /// them. It shows and does not control: the sliders in front of it are what the
@@ -16,6 +20,9 @@ const BANDS = 10
       <div class="band">
         <div class="bar" [style.height.%]="level * 100"></div>
       </div>
+    }
+    @if (clipping()) {
+      <div class="clip" title="출력이 한계에 닿았습니다"></div>
     }
   `,
   styles: [`
@@ -48,6 +55,20 @@ const BANDS = 10
       background: var(--spectrum-bar);
       box-shadow: inset 0 2px 0 var(--spectrum-peak);
     }
+
+    /* In the corner of the box this component is stretched across, which is the
+       same box the bars stand in. Out of the flow, so it appears and goes
+       without any of the ten columns moving. */
+    .clip {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--clip);
+      box-shadow: 0 0 4px var(--clip);
+    }
   `],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -59,6 +80,10 @@ export class SpectrumComponent implements OnInit, OnDestroy {
   /// through an input the change would be detected up the whole tree above.
   readonly levels = signal<number[]>(Array(BANDS).fill(0))
 
+  /// Whether the output has been at the ceiling recently enough to still say so.
+  readonly clipping = signal(false)
+  private clipTimer?: number
+
   ngOnInit () {
     this.spectrum.onVolumes(this.receive)
     this.ui.onShownChanged(this.windowShown)
@@ -69,18 +94,36 @@ export class SpectrumComponent implements OnInit, OnDestroy {
     this.spectrum.offVolumes(this.receive)
     this.ui.offShownChanged(this.windowShown)
     void this.spectrum.setEnabled(false)
+    this.clear()
   }
 
   /// Bound rather than methods so they can be handed to on and off as the same
   /// reference.
-  private readonly receive = (volumes: number[]) => {
-    this.levels.set(volumes)
+  private readonly receive = ({ bands, peak }: Spectrum) => {
+    this.levels.set(bands)
+    // Full scale is the ceiling: past it the samples reaching the device are
+    // cut off rather than made louder.
+    if (peak < 1) return
+    this.clipping.set(true)
+    // Restarted rather than left to run out, so a passage that keeps arriving
+    // at the ceiling keeps the lamp on instead of blinking it.
+    clearTimeout(this.clipTimer)
+    this.clipTimer = window.setTimeout(() => this.clipping.set(false), CLIP_HOLD)
   }
 
   /// A hidden window is still a live component, and a transform running behind
   /// one nobody can see is battery spent on nothing.
   private readonly windowShown = ({ isShown }: { isShown: boolean }) => {
     void this.spectrum.setEnabled(isShown)
-    if (!isShown) this.levels.set(Array(BANDS).fill(0))
+    if (!isShown) {
+      this.levels.set(Array(BANDS).fill(0))
+      this.clear()
+    }
+  }
+
+  private clear () {
+    clearTimeout(this.clipTimer)
+    this.clipTimer = undefined
+    this.clipping.set(false)
   }
 }

@@ -54,5 +54,9 @@
   --spectrum-bar: rgb(70 224 138 / .14);
   --spectrum-peak: rgb(70 224 138 / .45);
 
+  // Its own red rather than the shared one: beside phosphor green a colder red
+  // vibrates against it, and this lamp has to be read at a glance.
+  --clip: #ff5f4a;
+
   --decor: 1;
 }

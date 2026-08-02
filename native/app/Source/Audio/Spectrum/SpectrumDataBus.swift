@@ -11,7 +11,7 @@ class SpectrumDataBus: DataBus {
   /// The analyser belongs to the route because the route is the only thing that
   /// ever asks for it, and its lifetime is exactly the route's.
   private let analyser = SpectrumAnalyser()
-  private var volumesListener: EventListener<[Double]>?
+  private var volumesListener: EventListener<Spectrum>?
 
   required init (route: String, bridge: Bridge) {
     super.init(route: route, bridge: bridge)
@@ -39,11 +39,17 @@ class SpectrumDataBus: DataBus {
       return JSON(SpectrumAnalyser.frequencies)
     }
 
-    volumesListener = analyser.volumes.on { volumes in
+    volumesListener = analyser.volumes.on { spectrum in
       // The bridge hands its calls to a web view, which only accepts them on
       // the main thread, and the analyser measures on a queue of its own.
       DispatchQueue.main.async {
-        self.send(to: "/volumes", data: JSON(volumes))
+        // Both readings travel in the one event rather than in two: at thirty
+        // frames a second a second event would double the trips across the
+        // bridge to say something measured in the same window.
+        self.send(to: "/volumes", data: JSON([
+          "bands": spectrum.bands,
+          "peak": spectrum.peak
+        ] as [String: Any]))
       }
     }
   }

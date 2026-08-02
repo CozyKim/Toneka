@@ -10,14 +10,22 @@ import Foundation
 import Accelerate
 import EmitterKit
 
+/// One reading of the output: what each band is carrying, and how close the
+/// loudest sample in the same window came to full scale.
+struct Spectrum {
+  let bands: [Double]
+  let peak: Double
+}
+
 final class SpectrumAnalyser {
   /// The bands are the equaliser's own. The bars are drawn behind its sliders,
   /// and one that did not line up with the handle above it would say nothing
   /// about that handle.
   static let frequencies = AdvancedEqualizer.frequencies
 
-  /// One value per band, between nothing and full scale. Silent while stopped.
-  let volumes = EmitterKit.Event<[Double]>()
+  /// One value per band between nothing and full scale, and the window's peak.
+  /// Silent while stopped.
+  let volumes = EmitterKit.Event<Spectrum>()
 
   /// Bins are 11.7Hz apart at 48kHz with this many samples, which leaves the
   /// lowest band a couple of them. Fewer and the bottom of the range collapses
@@ -132,6 +140,13 @@ final class SpectrumAnalyser {
 
     mapBands(for: ring.sampleRate)
 
+    // Taken from the copy already in hand rather than on the audio thread,
+    // which does nothing for the analyser but fill the ring. The window is what
+    // left for the device, after the equaliser and after the volume, so a
+    // ceiling reached here is a ceiling reached there.
+    var peak: Float = 0
+    vDSP_maxmgv(samples, 1, &peak, vDSP_Length(n))
+
     vDSP_vmul(samples, 1, hann, 1, windowed, 1, vDSP_Length(n))
 
     // A real signal packed as half as many complex numbers, which is the form
@@ -172,7 +187,7 @@ final class SpectrumAnalyser {
         : levels[band] + (value - levels[band]) * SpectrumAnalyser.fall
     }
 
-    volumes.emit(levels)
+    volumes.emit(Spectrum(bands: levels, peak: Double(peak)))
   }
 
   /// Which bins fall inside each band. The edges are the geometric means
