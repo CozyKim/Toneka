@@ -17,3 +17,7 @@ native/app/Sandbox.playground/Resources/track.mp3
 
 # Design specs and implementation plans stay local to the working tree.
 docs/
+
+# Scratch space for multi-agent plan execution: ledgers, briefs, review
+# packages. Regenerated on demand and meaningless outside the session.
+.superpowers/
