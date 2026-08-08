@@ -1,61 +1,155 @@
-<p align="center">
-  <img width="400" src="https://github.com/bitgapp/eqMac/raw/master/assets/logos/promo-dark.png"/>
-</p>
+[English](README.md) | [한국어](README.ko.md)
 
-<p align="center">
-  <img width="1024" src="https://github.com/bitgapp/eqMac/raw/master/assets/screenshots/autoeq-promo.png"/>
-</p>
+# Toneka
 
-<p align="center">
-  <a href="https://discord.eqmac.app"><img src="https://img.shields.io/badge/chat-discord-black?style=flat&logo=discord" alt="discord chat"></a>
-</p>
+A system-wide audio equaliser for macOS. Toneka captures whatever your Mac is
+playing through a Core Audio process tap, applies its effects, and plays the
+result back through the output device you choose. There is no audio driver to
+install.
 
-**Notice: Currently the code in this repository corresponds to v1.3.2 of eqMac without any Pro Features and all the newer releases are done on a private fork. Having the Free parts of the app open sourced required too much time to maintain and split off.**
+Toneka is an independent hard fork of [eqMac](https://github.com/bitgapp/eqMac).
+It is not affiliated with, endorsed by, or supported by the eqMac authors — see
+[Acknowledgements](#acknowledgements) and [NOTICE](NOTICE).
+
+The application's interface is in Korean.
 
 ## Features
-### Current
-* `Free` System Audio Processing
-* `Free` Volume Booster
-* `Free` HDMI Volume Support
-* `Free` Volume Balance support for all devices (including HDMI)
-* `Free` Basic EQ - Bass, Mids, Treble control
-* `Free` Advanced EQ - Fixed 10 bands
-* `Pro` Expert EQ - Unlimited bands, fully customizable (Filter Type, Frequency, Gain, Bandwidth)
-* `Pro` Spectrum analyzer
-* `Free/Pro` [AutoEQ](https://github.com/jaakkopasanen/AutoEq?referrer=eqMac&referer=eqMac&utm_source=eqMac) Integration - Automatic Headphone Equalization from frequency responses. `Free` for Advanced EQ and `Pro` as part of the Expert EQ
-* `Pro` AudioUnit (AU) Hosting - add 3rd party effects to the Audio Pipeline
-* `Pro` Spatial Audio - simulate different listening environments like Concert Halls or Different sized Rooms.
-* `Pro` Volume Mixer - Apply different volume levels per each application
-* Custom UI - Fully customize the look and feel of eqMac by changing the User Interface Colors (`Pro`), Feature visibility (`Free`) and arrangement (Soon).
 
-### Roadmap
-Idea is to become the ultimate Audio toolbox for macOS
-* Input Audio Source - Apply effects to any device: guitar, microphone etc.
-* Virtual Output - Export the Adjusted audio to any application
-* Hotkeys - Control eqMac with Keyboard Shortcuts
-* Recorder - save any audio playback (System, Input device, File)
-* Remote control from your phone
-* Separate L/R Channel EQ - Fix hearing impairements 
-* API - Control all aspects of eqMac through a WebSocket API. Works with any programming language that supports WebSockets.
-* File playback and rendering - Apply effects to audio files and instantly render them
-* and more...
+- **No driver.** System audio is captured with a Core Audio process tap. The tap
+  and your output device are paired inside a private aggregate device that
+  exists only while Toneka is running, so one clock drives capture and playback.
+- **Output selection.** Choose which device the processed audio plays through.
+- **Volume.** Gain, mute and left/right balance, plus a boost that lets the gain
+  go past unity. Each output device remembers its own level.
+- **Basic equaliser.** Bass, mids and treble, with presets.
+- **Advanced equaliser.** Ten fixed bands from 32 Hz to 16 kHz, with presets. You
+  can save your own and delete them again.
+- **Spectrum analyser.** A live spectrum and the current response curve are drawn
+  behind the advanced equaliser.
+- **Settings.** Launch at login, always on top, menu bar or Dock icon, knob
+  behaviour (drag or rotate), and a choice of skins.
 
-[Vote on the Features you want to see sooner](https://eqmac.app/#coming-soon)
+## Requirements
 
-## User support
-If you are a `Pro` customer I provide Customer Support through the Contact form on the website :)
-This project is heavily reliant on the whole community helping each other out. If you have an issue with eqMac please go through [Issues](https://github.com/bitgapp/eqMac/issues) to see if it's already being discussed, if not create a new one. Also you can [join our Discord](https://discord.eqmac.app), I'm there all the time and I like to chat with people. 
+To run it:
 
-## Technology
-eqMac was built using these technologies:
-* [App](https://github.com/bitgapp/eqMac/tree/master/native/app) - Native backend to the whole app. Responsible for audio processing, filesystem access, window management, API and general lifecycle of eqMac.
-* [UI](https://github.com/bitgapp/eqMac/tree/master/ui) - Web based user interface that is hosted remotely and thus allows for Over the Air (OTA) updates & bug fixes. Built with [Angular](https://angular.io/) + [TypeScript](https://www.typescriptlang.org/) and is cached for offline availability.
-* [Driver](https://github.com/bitgapp/eqMac/tree/master/native/driver) - System Audio loopback/passthrough device based on [Apple's Null Audio Server Driver Plug-in](https://developer.apple.com/documentation/coreaudio/creating_an_audio_server_driver_plug-in) example. One of the first Examples of a macOS System Capture drivers written in Swift. The driver grabs the system audio stream and sends it to the app through a secure memory tunnel. eqMac can grab this stream, process it and send to the appropriate audio device. The driver runs in User space instead of Kernel like the previous drivers (i.e SoundFlower), which means it's much more secure and stable.
+- macOS 14.2 or later. Toneka is built on the Core Audio process tap API, which
+  earlier versions of macOS do not have.
+- Audio Recording permission, granted under System Settings > Privacy &
+  Security. See the [FAQ](#faq) for why.
 
-## Credits
+To build it:
 
-[@nodeful](https://github.com/nodeful) - Creator and Developer of eqMac
+- Xcode, and [CocoaPods](https://cocoapods.org) for the native dependencies
+- Node 24.18.1, pinned in `.mise.toml` and most easily installed with
+  [mise](https://mise.jdx.dev)
+- Yarn v1
 
-[@titanicbobo](https://github.com/titanicbobo) - For the [Big Sur icon design](https://github.com/bitgapp/eqMac/blob/master/assets/icon/icon.svg)
+## Build
 
-[Max Heim](https://github.com/0bmxa) - For his research and work on creating the first Swift based Audio Server Plug-in Driver - [Pancake](https://github.com/0bmxa/Pancake)
+There is no prebuilt download. Build it yourself:
+
+```bash
+git clone https://github.com/CozyKim/Toneka.git
+cd Toneka
+(cd native && pod install)
+(cd ui && yarn)
+scripts/build-local.sh
+```
+
+`scripts/build-local.sh` builds the web interface, builds the Release
+configuration of `native/Toneka.xcworkspace`, and copies the result to
+`/Applications/Toneka Local.app`. That build is ad-hoc signed and uses the
+bundle identifier `io.github.cozykim.toneka.local`, so it keeps its own
+preferences and permission grants instead of colliding with another build. Pass
+`--no-install` to build without copying anything into `/Applications`.
+
+For development, `scripts/run-debug.sh` builds and launches the Debug
+configuration with its logs on stdout; Ctrl-C quits. It uses
+`io.github.cozykim.toneka.debug`, again separate from anything installed. Pass
+`--ui` after changing anything under `ui/` — the interface is bundled into the
+app as a zip, so it has to be rebuilt and its unpacked copy cleared.
+
+## Usage
+
+Open Toneka. The first time it runs, macOS asks for permission to record system
+audio; Toneka cannot process anything without it. If you dismissed the prompt,
+grant it under System Settings > Privacy & Security and restart the app.
+
+The toggle at the top left turns processing on and off. Below it, pick the
+output device, set the volume, and switch between the basic and advanced
+equaliser. Presets are chosen from the row above the equaliser and can be saved
+and deleted there. The cog opens settings; the buttons at the bottom open this
+FAQ and quit the app.
+
+## FAQ
+
+**Does Toneka install an audio driver?**
+No. It uses the Core Audio process tap API that macOS 14.2 introduced. Nothing
+is written outside the application bundle and Toneka's own preferences. eqMac,
+which Toneka is forked from, used a HAL plug-in installed into
+`/Library/Audio/Plug-Ins/HAL`; that driver is gone.
+
+**Why does it ask for permission to record audio?**
+A process tap reads the audio that other applications are playing, and macOS
+classifies that as recording. Toneka uses it to read the system output stream
+and nothing else. Without the permission there is no audio to process.
+
+**Does Toneka leave an audio device behind?**
+No. The aggregate device it creates is private to the running process and is
+destroyed when Toneka quits, so it never appears in Audio MIDI Setup and there
+is nothing to clean up there.
+
+**Does Toneka update itself?**
+No. There is no updater and the app never phones home. To move to a newer
+version, pull this repository and build it again.
+
+**Is this eqMac? Can I ask the eqMac authors about it?**
+No, and please do not. Toneka is a separate project that happens to share
+history with eqMac. Problems with Toneka belong in
+[this repository's issues](https://github.com/CozyKim/Toneka/issues).
+
+## Uninstall
+
+1. Quit Toneka.
+2. Delete the application — `/Applications/Toneka Local.app`, or wherever you
+   put your build.
+3. Remove the data it stored:
+
+   ```bash
+   rm -rf ~/Library/Application\ Support/io.github.cozykim.toneka*
+   defaults delete io.github.cozykim.toneka.local
+   ```
+
+   The `defaults` line clears saved presets, volume levels and settings. If you
+   also ran a debug build, repeat it for `io.github.cozykim.toneka.debug`.
+4. If you had turned on "launch at login", check System Settings > General >
+   Login Items and remove any entry left behind.
+5. Optionally, revoke the Audio Recording permission under System Settings >
+   Privacy & Security.
+
+There is no driver, no kernel extension and no background service to remove, and
+no audio device is left in Audio MIDI Setup.
+
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for how to build and debug, and
+[CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md). Security reports go through
+[SECURITY.md](SECURITY.md) rather than a public issue.
+
+Toneka is a hobby project maintained by one person, so please allow some time
+for a response.
+
+## Acknowledgements
+
+Toneka is a hard fork of [eqMac](https://github.com/bitgapp/eqMac) by
+[Roman Kisil](https://github.com/nodeful) and Bitgapp, Copyright 2017-2021,
+used under the Apache License, Version 2.0. The audio pipeline, the state
+handling and much of the native application still descend from that work.
+
+[NOTICE](NOTICE) records the derivation and lists the changes made to the
+original.
+
+## License
+
+[Apache License, Version 2.0](LICENSE).

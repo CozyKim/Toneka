@@ -1,9 +1,10 @@
 # Security Policy
 
-## Supported Versions
-Currently only the latest releases will be fixed for vulnerabilities.
+## Reporting a Vulnerability
 
-## Reporting a Security Vulnerability
-Please contact me directly on Discord, here's my tag: `Roman Kisil#9006`
+Please report security issues through
+[GitHub Security Advisories](https://github.com/CozyKim/Toneka/security/advisories/new)
+rather than a public issue.
 
-If you don't want to do it through Discord then email me on security@eqmac.app
+Toneka is a hobby project maintained by one person, so please allow some
+time for a response.

@@ -1,0 +1,15 @@
+Toneka
+Copyright 2026 CozyKim
+
+This product includes software developed as part of eqMac
+(https://github.com/bitgapp/eqMac), Copyright 2017-2021 Roman Kisil and
+Bitgapp, licensed under the Apache License, Version 2.0.
+
+Toneka is an independent project and is not affiliated with, endorsed by,
+or supported by Bitgapp or the eqMac authors.
+
+Changes made to the original work include:
+  - Removal of the HAL audio driver; audio is captured through a Core
+    Audio process tap instead.
+  - Rewrite of the user interface.
+  - Removal of the automatic updater.
