@@ -157,18 +157,6 @@ class AdvancedEqualizerDataBus: DataBus {
       return nil
     }
     
-    self.on(.GET, "/presets/import-legacy/available") { data, _ in
-      return "Yes"
-    }
-
-    self.on(.GET, "/presets/import-legacy") { data, _ in
-      let presets = eqMac2.get10BandPresets()
-      for preset in presets {
-        _ = AdvancedEqualizer.createPreset(name: preset.name, gains: preset.gains)
-      }
-      return JSON("Imported \(presets.count) Presets")
-    }
-    
     presetsChangedListener = AdvancedEqualizer.presetsChanged.on { presets in
       self.send(to: "/presets", data: JSON(AdvancedEqualizer.presets.map { $0.dictionary }))
     }

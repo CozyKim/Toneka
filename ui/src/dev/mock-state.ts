@@ -214,8 +214,6 @@ const routes: Record<string, (data: MockRequest) => MockReply> = {
   // Native file dialogs, which a browser has no counterpart for.
   'GET /effects/equalizers/advanced/presets/import': () => { console.info('[harness] preset import dialog'); return {} },
   'GET /effects/equalizers/advanced/presets/export': () => { console.info('[harness] preset export dialog'); return {} },
-  'GET /effects/equalizers/advanced/presets/import-legacy': () => { console.info('[harness] legacy preset import'); return {} },
-  'GET /effects/equalizers/advanced/presets/import-legacy/available': () => read('available', false),
   'GET /effects/equalizers/advanced/settings/show-default-presets': () => read('show', true),
   'POST /effects/equalizers/advanced/settings/show-default-presets': () => ({}),
 

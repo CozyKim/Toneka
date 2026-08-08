@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import Version
 
 struct Constants {
   
@@ -23,10 +22,6 @@ struct Constants {
   static let WEBSITE_URL = URL(string: "https://\(Constants.DOMAIN)")!
   static let FAQ_URL = URL(string: "https://\(Constants.DOMAIN)/faq")!
   static let BUG_REPORT_URL = URL(string: "https://\(Constants.DOMAIN)/bug-report")!
-  static let DRIVER_DEVICE_UID = "EQMDevice"
-  static let DRIVER_MINIMUM_VERSION = Version(tolerant: "1.3")!
-  static let LEGACY_DRIVER_UIDS = ["EQMAC2.1_DRIVER_ENGINE", "EQMAC2_DRIVER_ENGINE"]
-  static let TOKEN_STORAGE_KEY = "eqMac Server Tokens"
   static let UI_SERVER_PREFERRED_PORT: UInt = 37628
   static let HTTP_SERVER_PREFERRED_PORT: UInt = 37624
   static let SOCKET_SERVER_PREFERRED_PORT: UInt = 37629

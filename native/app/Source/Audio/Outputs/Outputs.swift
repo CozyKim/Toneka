@@ -21,8 +21,6 @@ class Outputs {
       && SUPPORTED_TRANSPORT_TYPES.contains(device.transportType!)
       && !device.isInputOnlyDevice()
       && !device.name.contains("CADefaultDeviceAggregate")
-      && device.uid != Constants.DRIVER_DEVICE_UID
-      && !Constants.LEGACY_DRIVER_UIDS.contains(device.uid ?? "")
   }
   
   static func shouldAutoSelect (_ device: AudioDevice) -> Bool {
