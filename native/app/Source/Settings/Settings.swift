@@ -9,7 +9,6 @@
 import Foundation
 import Cocoa
 import ServiceManagement
-import LaunchAtLogin
 import SwiftyUserDefaults
 import ReSwift
 
@@ -72,20 +71,24 @@ class Settings: StoreSubscriber {
 
   static var launchOnStartup: Bool {
     get {
-      return LaunchAtLogin.isEnabled
+      return SMAppService.mainApp.status == .enabled
     }
     set {
-      LaunchAtLogin.isEnabled = newValue
+      do {
+        if newValue {
+          try SMAppService.mainApp.register()
+        } else {
+          try SMAppService.mainApp.unregister()
+        }
+      } catch {
+        Console.log("Could not \(newValue ? "register" : "unregister") the login item: \(error)")
+      }
     }
   }
 
   var launchOnStartup: Bool {
-    get {
-      return LaunchAtLogin.isEnabled
-    }
-    set {
-      LaunchAtLogin.isEnabled = newValue
-    }
+    get { return Settings.launchOnStartup }
+    set { Settings.launchOnStartup = newValue }
   }
   
   deinit {
