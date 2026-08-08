@@ -1,6 +1,6 @@
 //
 //  AudioDeviceEvents.swift
-//  eqMac
+//  Toneka
 //
 //  Created by Roman Kisil on 14/11/2018.
 //  Copyright © 2018 Roman Kisil. All rights reserved.

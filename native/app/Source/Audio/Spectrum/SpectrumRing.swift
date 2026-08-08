@@ -1,6 +1,6 @@
 //
 //  SpectrumRing.swift
-//  eqMac
+//  Toneka
 //
 //  The audio the analyser looks at, and the only thing the realtime thread
 //  does on its behalf.

@@ -1,6 +1,6 @@
 //
 //  VolumeHUD.swift
-//  eqMac
+//  Toneka
 //
 //  On-screen volume feedback for the cases macOS does not cover.
 //

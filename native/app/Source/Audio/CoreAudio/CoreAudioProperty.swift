@@ -1,6 +1,6 @@
 //
 //  CoreAudioProperty.swift
-//  eqMac
+//  Toneka
 //
 //  Thin CoreAudio property-access layer.
 //

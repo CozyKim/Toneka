@@ -1,6 +1,6 @@
 //
 //  NSImageExtensions.swift
-//  eqMac
+//  Toneka
 //
 //  Created by Nodeful on 11/07/2021.
 //  Copyright © 2021 Romans Kisils. All rights reserved.

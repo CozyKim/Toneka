@@ -1,6 +1,6 @@
 //
 //  SettingsRoute.swift
-//  eqMac
+//  Toneka
 //
 //  Created by Roman Kisil on 07/03/2019.
 //  Copyright © 2019 Roman Kisil. All rights reserved.

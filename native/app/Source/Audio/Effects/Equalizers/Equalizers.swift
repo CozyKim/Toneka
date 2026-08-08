@@ -1,6 +1,6 @@
 //
 //  Equalizers.swift
-//  eqMac
+//  Toneka
 //
 //  Created by Roman Kisil on 22/07/2018.
 //  Copyright © 2018 Roman Kisil. All rights reserved.
@@ -8,7 +8,7 @@
 
 //
 //  Equalizers.swift
-//  eqMac
+//  Toneka
 //
 //  Created by Roman Kisil on 16/05/2018.
 //  Copyright © 2018 Roman Kisil. All rights reserved.

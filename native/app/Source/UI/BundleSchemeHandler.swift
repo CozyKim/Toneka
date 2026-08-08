@@ -1,6 +1,6 @@
 //
 //  BundleSchemeHandler.swift
-//  eqMac
+//  Toneka
 //
 //  Serves the unpacked interface over a scheme of our own so the page gets a
 //  real origin.
@@ -18,7 +18,7 @@ import WebKit
 import Shared
 
 final class BundleSchemeHandler: NSObject, WKURLSchemeHandler {
-  static let scheme = "eqmac"
+  static let scheme = "toneka"
   static let host = "ui"
 
   /// Everything served comes from inside this directory.

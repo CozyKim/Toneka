@@ -1,6 +1,6 @@
 //
 //  DraggableView.swift
-//  eqMac
+//  Toneka
 //
 //  Created by Romans Kisils on 13/07/2019.
 //  Copyright © 2019 Romans Kisils. All rights reserved.

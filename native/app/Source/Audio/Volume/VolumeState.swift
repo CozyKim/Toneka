@@ -1,6 +1,6 @@
 //
 //  VolumeState.swift
-//  eqMac
+//  Toneka
 //
 //  Created by Roman Kisil on 29/06/2018.
 //  Copyright © 2018 Roman Kisil. All rights reserved.

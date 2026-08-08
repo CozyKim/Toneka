@@ -1,6 +1,6 @@
 //
 //  SpectrumDataBus.swift
-//  eqMac
+//  Toneka
 //
 
 import Foundation

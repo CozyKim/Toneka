@@ -1,6 +1,6 @@
 //
 //  Constants.swift
-//  eqMac
+//  Toneka
 //
 //  Created by Roman Kisil on 22/01/2018.
 //  Copyright © 2018 Roman Kisil. All rights reserved.
@@ -18,10 +18,9 @@ struct Constants {
   static let DEBUG = false
   #endif
   
-  static let DOMAIN = "eqmac.app"
-  static let WEBSITE_URL = URL(string: "https://\(Constants.DOMAIN)")!
-  static let FAQ_URL = URL(string: "https://\(Constants.DOMAIN)/faq")!
-  static let BUG_REPORT_URL = URL(string: "https://\(Constants.DOMAIN)/bug-report")!
+  static let WEBSITE_URL = URL(string: "https://github.com/CozyKim/Toneka")!
+  static let FAQ_URL = URL(string: "https://github.com/CozyKim/Toneka#faq")!
+  static let BUG_REPORT_URL = URL(string: "https://github.com/CozyKim/Toneka/issues/new")!
   static let UI_SERVER_PREFERRED_PORT: UInt = 37628
   static let HTTP_SERVER_PREFERRED_PORT: UInt = 37624
   static let SOCKET_SERVER_PREFERRED_PORT: UInt = 37629
@@ -35,11 +34,11 @@ struct Constants {
   static let TRANSITION_FRAME_DURATION: Double = 1000 / TRANSITION_FPS
   static let TRANSITION_FRAME_COUNT = UInt(round(TRANSITION_FPS * (Double(TRANSITION_DURATION) / 1000)))
   static let OPEN_SOURCE = true
-  static let OPEN_URL_TRUSTED_DOMAINS: [String] = ["eqmac.app", "github.com"]
+  static let OPEN_URL_TRUSTED_DOMAINS: [String] = ["github.com"]
   static let TRUSTED_URL_PREFIXES: [String] = [
-    "https://eqmac.app",
-    "https://github.com/bitgapp/",
-    "https://github.com/bitgapp/",
+    "https://github.com/CozyKim/Toneka",
+    "https://github.com/CozyKim/",
+    "https://github.com/CozyKim/",
     "https://github.com/jaakkopasanen/AutoEq"
   ]
 }

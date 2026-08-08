@@ -1,6 +1,6 @@
 //
 //  ProcessTap.swift
-//  eqMac
+//  Toneka
 //
 //  Owns the lifetime of a Core Audio process tap (macOS 14.2+).
 //
@@ -25,7 +25,7 @@ final class ProcessTap {
   ///   - muted: whether the original signal keeps playing alongside ours.
   init? (deviceUID: String, excludedProcesses: [AudioObjectID], muted: Bool = true) {
     let description = CATapDescription()
-    description.name = "eqMac System Capture"
+    description.name = "Toneka System Capture"
     description.isPrivate = true
     description.isMixdown = true
     description.isMono = false

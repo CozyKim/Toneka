@@ -1,6 +1,6 @@
 //
 //  DateExtensions.swift
-//  eqMac
+//  Toneka
 //
 //  Created by Nodeful on 15/05/2021.
 //  Copyright © 2021 Romans Kisils. All rights reserved.

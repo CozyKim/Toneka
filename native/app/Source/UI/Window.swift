@@ -1,6 +1,6 @@
 //
 //  Popover.swift
-//  eqMac
+//  Toneka
 //
 //  Created by Roman Kisil on 25/12/2018.
 //  Copyright © 2018 Roman Kisil. All rights reserved.

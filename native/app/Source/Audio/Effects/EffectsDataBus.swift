@@ -1,6 +1,6 @@
 //
 //  EffectsDataBus.swift
-//  eqMac
+//  Toneka
 //
 //  Created by Romans Kisils on 19/10/2019.
 //  Copyright © 2019 Romans Kisils. All rights reserved.

@@ -1,6 +1,6 @@
 //
 //  Application.swift
-//  eqMac
+//  Toneka
 //
 //  Created by Roman Kisil on 22/01/2018.
 //  Copyright © 2018 Roman Kisil. All rights reserved.
@@ -354,8 +354,8 @@ class Application {
     warnedAudioCaptureUnavailable = true
 
     Alert.confirm(
-      title: "eqMac can't process your audio",
-      message: "eqMac captures system audio in order to equalize it, which requires permission.\n\nOpen System Settings > Privacy & Security > Audio Recording and allow eqMac, then restart the app.",
+      title: "Toneka can't process your audio",
+      message: "Toneka captures system audio in order to equalize it, which requires permission.\n\nOpen System Settings > Privacy & Security > Audio Recording and allow Toneka, then restart the app.",
       okText: "Open System Settings",
       cancelText: "Later"
     ) { openSettings in

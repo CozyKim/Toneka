@@ -1,6 +1,6 @@
 //
 //  Materials.swift
-//  eqMac
+//  Toneka
 //
 
 import Cocoa

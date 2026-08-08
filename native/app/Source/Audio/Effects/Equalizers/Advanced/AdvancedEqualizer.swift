@@ -1,6 +1,6 @@
 //
 //  AdvancedEqualizer.swift
-//  eqMac
+//  Toneka
 //
 //  Created by Roman Kisil on 06/01/2019.
 //  Copyright © 2019 Roman Kisil. All rights reserved.

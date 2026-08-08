@@ -1,6 +1,6 @@
 //
 //  EventInterceptor.swift
-//  eqMac
+//  Toneka
 //
 //  Created by Roman Kisil on 18/01/2019.
 //  Copyright © 2019 Roman Kisil. All rights reserved.

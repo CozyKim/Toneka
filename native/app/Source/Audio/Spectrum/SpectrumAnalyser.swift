@@ -1,6 +1,6 @@
 //
 //  SpectrumAnalyser.swift
-//  eqMac
+//  Toneka
 //
 //  Turns the ring the audio thread fills into one number per equaliser band.
 //  Everything here runs on a queue of its own; none of it is realtime.
@@ -42,7 +42,7 @@ final class SpectrumAnalyser {
   private static let fall = 0.35
 
   private let ring = SpectrumRing.shared
-  private let queue = DispatchQueue(label: "eqMac.spectrum", qos: .utility)
+  private let queue = DispatchQueue(label: "Toneka.spectrum", qos: .utility)
   private var timer: DispatchSourceTimer?
 
   // Everything the transform touches, taken once. A body that runs thirty times

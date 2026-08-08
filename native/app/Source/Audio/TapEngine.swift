@@ -1,6 +1,6 @@
 //
 //  TapEngine.swift
-//  eqMac
+//  Toneka
 //
 //  Audio pipeline built on a Core Audio process tap instead of a HAL driver.
 //

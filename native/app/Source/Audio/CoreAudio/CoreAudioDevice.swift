@@ -1,6 +1,6 @@
 //
 //  AudioDevice.swift
-//  eqMac
+//  Toneka
 //
 //  Drop-in replacement for AMCoreAudio's AudioDevice.
 //

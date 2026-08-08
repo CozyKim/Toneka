@@ -1,6 +1,6 @@
 //
 // StringExtensions.swift
-// eqMac
+// Toneka
 //
 // Created by Roman Kisil on 26/02/2018.
 // Copyright © 2018 Roman Kisil. All rights reserved.

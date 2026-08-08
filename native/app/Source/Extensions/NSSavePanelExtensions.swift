@@ -1,6 +1,6 @@
 //
 //  NSSavePanelExtensions.swift
-//  eqMac
+//  Toneka
 //
 //  Created by Romans Kisils on 20/06/2019.
 //  Copyright © 2019 Romans Kisils. All rights reserved.

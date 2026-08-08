@@ -1,6 +1,6 @@
 //
 //  MiscRoute.swift
-//  eqMac
+//  Toneka
 //
 //  Created by Roman Kisil on 30/04/2018.
 //  Copyright © 2018 Roman Kisil. All rights reserved.

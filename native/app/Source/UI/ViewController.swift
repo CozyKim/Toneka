@@ -1,6 +1,6 @@
 //
 //  ViewController.swift
-//  eqMac
+//  Toneka
 //
 //  Created by Roman Kisil on 10/12/2017.
 //  Copyright © 2017 Roman Kisil. All rights reserved.

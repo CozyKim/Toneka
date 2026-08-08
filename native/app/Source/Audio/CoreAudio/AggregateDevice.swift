@@ -1,6 +1,6 @@
 //
 //  AggregateDevice.swift
-//  eqMac
+//  Toneka
 //
 //  Owns the lifetime of a private aggregate device that pairs a process tap
 //  (input) with a real output device.
@@ -16,13 +16,13 @@ import CoreAudio
 final class AggregateDevice {
   /// Identifies eqMac's own aggregate so it can be filtered out of the device
   /// lists we show to the user.
-  static let uid = "com.bitgapp.eqmac.aggregate"
+  static let uid = "io.github.cozykim.toneka.aggregate"
 
   let objectID: AudioObjectID
 
   init? (tapUID: String, outputDeviceUID: String) {
     let composition: [String: Any] = [
-      kAudioAggregateDeviceNameKey: "eqMac",
+      kAudioAggregateDeviceNameKey: "Toneka",
       kAudioAggregateDeviceUIDKey: AggregateDevice.uid,
       kAudioAggregateDeviceIsPrivateKey: true,
       kAudioAggregateDeviceIsStackedKey: false,

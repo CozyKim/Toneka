@@ -1,6 +1,6 @@
 //
 //  Benchmark.swift
-//  eqMac
+//  Toneka
 //
 //  Created by Nodeful on 09/06/2021.
 //  Copyright © 2021 Romans Kisils. All rights reserved.

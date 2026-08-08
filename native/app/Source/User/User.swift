@@ -1,6 +1,6 @@
 //
 //  User.swift
-//  eqMac
+//  Toneka
 //
 //  Created by Roman Kisil on 24/12/2017.
 //  Copyright © 2017 Roman Kisil. All rights reserved.

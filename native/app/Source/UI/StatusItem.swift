@@ -115,7 +115,7 @@ class StatusItem {
     
     let quitMenuItem = NSMenuItem()
     quitMenuItem.target = self
-    quitMenuItem.title = "Quit eqMac"
+    quitMenuItem.title = "Quit Toneka"
     quitMenuItem.action = #selector(StatusItem.quit(sender:))
     quitMenuItem.isEnabled = true
     rightClickMenu.addItem(quitMenuItem)

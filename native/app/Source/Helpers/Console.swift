@@ -1,6 +1,6 @@
 //
 //  Console.swift
-//  eqMac
+//  Toneka
 //
 //  Created by Roman Kisil on 29/04/2018.
 //  Copyright © 2018 Roman Kisil. All rights reserved.
@@ -15,7 +15,7 @@ class Console {
   static func log (_ somethings: Any..., fileAbsolutePath: String = #file, line: Int = #line) {
     let file = fileAbsolutePath[fileAbsolutePath.range(of: "/app/")!.upperBound...]
     let message = somethings.map { ($0 as AnyObject).debugDescription }.joined(separator: " ")
-    NSLog("eqMac (%@:%d) %@", String(file), line, message)
+    NSLog("Toneka (%@:%d) %@", String(file), line, message)
   }
 }
 

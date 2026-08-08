@@ -1,6 +1,6 @@
 //
 //  BasicEqualizerPreset.swift
-//  eqMac
+//  Toneka
 //
 //  Created by Romans Kisils on 10/04/2019.
 //  Copyright © 2019 Romans Kisils. All rights reserved.
