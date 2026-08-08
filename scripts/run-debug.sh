@@ -2,14 +2,14 @@
 #
 # Builds and launches the debug app, optionally rebuilding the web UI first.
 #
-# Debug builds use com.bitgapp.eqmac.debug so they never share UserDefaults,
-# TCC grants or the unpacked UI cache with an installed release of eqMac.
+# Debug builds use io.github.cozykim.toneka.debug so they never share
+# UserDefaults, TCC grants or the unpacked UI cache with an installed release.
 
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 NODE_VERSION="24.18.1"
-BUNDLE_ID="com.bitgapp.eqmac.debug"
+BUNDLE_ID="io.github.cozykim.toneka.debug"
 UI_CACHE="$HOME/Library/Application Support/$BUNDLE_ID"
 
 usage () {
@@ -62,8 +62,8 @@ fi
 
 echo "==> Building app"
 xcodebuild \
-  -workspace "$ROOT/native/eqMac.xcworkspace" \
-  -scheme eqMac \
+  -workspace "$ROOT/native/Toneka.xcworkspace" \
+  -scheme Toneka \
   -configuration Debug \
   -destination 'platform=macOS,arch=arm64' \
   -quiet \
@@ -74,13 +74,13 @@ xcodebuild \
 # directory, and the bundle's timestamp does not always move when the binary
 # inside it does, so the guess can hand back a stale build.
 products="$(xcodebuild \
-  -workspace "$ROOT/native/eqMac.xcworkspace" \
-  -scheme eqMac \
+  -workspace "$ROOT/native/Toneka.xcworkspace" \
+  -scheme Toneka \
   -configuration Debug \
   -showBuildSettings 2>/dev/null \
   | awk -F' = ' '/ BUILT_PRODUCTS_DIR = /{print $2; exit}')"
 
-app="$products/eqMac.app"
+app="$products/Toneka.app"
 if [ ! -d "$app" ]; then
   echo "Could not find the built app at $app" >&2
   exit 1
@@ -92,5 +92,5 @@ if ! $launch; then
 fi
 
 echo "==> Running $app"
-pkill -f "Debug/eqMac.app" 2>/dev/null || true
-exec "$app/Contents/MacOS/eqMac"
+pkill -f "Debug/Toneka.app" 2>/dev/null || true
+exec "$app/Contents/MacOS/Toneka"

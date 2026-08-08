@@ -13,9 +13,9 @@
                 <application id="hnw-xV-0zn" sceneMemberID="viewController">
                     <menu key="mainMenu" title="Main Menu" systemMenu="main" id="AYu-sK-qS6">
                         <items>
-                            <menuItem title="eqMac" id="1Xt-HY-uBw">
+                            <menuItem title="Toneka" id="1Xt-HY-uBw">
                                 <modifierMask key="keyEquivalentModifierMask"/>
-                                <menu key="submenu" title="eqMac" systemMenu="apple" id="uQy-DD-JDr">
+                                <menu key="submenu" title="Toneka" systemMenu="apple" id="uQy-DD-JDr">
                                     <items>
                                         <menuItem title="Close" keyEquivalent="w" id="Vbd-XB-xjd" userLabel="Close">
                                             <connections>
@@ -69,7 +69,7 @@
                         <outlet property="delegate" destination="Voe-Tx-rLC" id="PrD-fu-P6m"/>
                     </connections>
                 </application>
-                <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="eqMac" customModuleProvider="target"/>
+                <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="Toneka" customModuleProvider="target"/>
                 <customObject id="Ady-hI-5gd" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="75" y="0.0"/>
@@ -79,7 +79,7 @@
             <objects>
                 <customObject id="gb2-cM-2ZO" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
                 <windowController storyboardIdentifier="EQMWindowController" showSeguePresentationStyle="single" id="eW3-cT-cmJ" sceneMemberID="viewController">
-                    <window key="window" title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="default" titlebarAppearsTransparent="YES" id="nPg-tC-SwO" customClass="Window" customModule="eqMac" customModuleProvider="target">
+                    <window key="window" title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="default" titlebarAppearsTransparent="YES" id="nPg-tC-SwO" customClass="Window" customModule="Toneka" customModuleProvider="target">
                         <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES" fullSizeContentView="YES"/>
                         <rect key="contentRect" x="2447" y="1070" width="400" height="500"/>
                         <rect key="screenRect" x="0.0" y="0.0" width="3008" height="1669"/>
@@ -93,8 +93,8 @@
         <scene sceneID="wlU-YY-QfK">
             <objects>
                 <customObject id="6Lc-6c-oFU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
-                <viewController storyboardIdentifier="EQMViewController" id="Wg1-es-IGc" customClass="ViewController" customModule="eqMac" sceneMemberID="viewController">
-                    <view key="view" id="eMQ-jC-nnX" customClass="View" customModule="eqMac" customModuleProvider="target">
+                <viewController storyboardIdentifier="EQMViewController" id="Wg1-es-IGc" customClass="ViewController" customModule="Toneka" sceneMemberID="viewController">
+                    <view key="view" id="eMQ-jC-nnX" customClass="View" customModule="Toneka" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="400" height="400"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
@@ -116,7 +116,7 @@
                                     <wkPreferences key="preferences" javaScriptCanOpenWindowsAutomatically="NO"/>
                                 </wkWebViewConfiguration>
                             </wkWebView>
-                            <customView autoresizesSubviews="NO" wantsLayer="YES" appearanceType="darkAqua" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bLB-gh-lJZ" customClass="DraggableView" customModule="eqMac" customModuleProvider="target">
+                            <customView autoresizesSubviews="NO" wantsLayer="YES" appearanceType="darkAqua" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bLB-gh-lJZ" customClass="DraggableView" customModule="Toneka" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="377" width="400" height="23"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                             </customView>

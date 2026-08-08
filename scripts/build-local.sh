@@ -2,13 +2,13 @@
 #
 # Builds the release configuration and installs it to /Applications.
 #
-# This build is ad-hoc signed and uses com.bitgapp.eqmac.local, so it lives
-# alongside an installed official eqMac instead of replacing it.
+# This build is ad-hoc signed and uses io.github.cozykim.toneka.local, so it
+# lives alongside an installed release of Toneka instead of replacing it.
 
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-APP_NAME="eqMac Local.app"
+APP_NAME="Toneka Local.app"
 DESTINATION="/Applications/$APP_NAME"
 
 install=true
@@ -30,8 +30,8 @@ export PATH
 
 echo "==> Building app"
 xcodebuild \
-  -workspace "$ROOT/native/eqMac.xcworkspace" \
-  -scheme eqMac \
+  -workspace "$ROOT/native/Toneka.xcworkspace" \
+  -scheme Toneka \
   -configuration Release \
   -destination 'platform=macOS,arch=arm64' \
   -quiet \
@@ -40,8 +40,8 @@ xcodebuild \
 # See the note in run-debug.sh: the newest match under DerivedData can be a
 # stale build, so ask xcodebuild instead of guessing.
 products="$(xcodebuild \
-  -workspace "$ROOT/native/eqMac.xcworkspace" \
-  -scheme eqMac \
+  -workspace "$ROOT/native/Toneka.xcworkspace" \
+  -scheme Toneka \
   -configuration Release \
   -showBuildSettings 2>/dev/null \
   | awk -F' = ' '/ BUILT_PRODUCTS_DIR = /{print $2; exit}')"

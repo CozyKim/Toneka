@@ -47,7 +47,7 @@
 		E0241AA5225E9FB700748656 /* BasicEqualizerPreset.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0241AA4225E9FB700748656 /* BasicEqualizerPreset.swift */; };
 		E02662F022BC3239006B486C /* NSSavePanelExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E02662EF22BC3239006B486C /* NSSavePanelExtensions.swift */; };
 		E0267AFD218AE39500FB2E5A /* Script.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0267AFC218AE39500FB2E5A /* Script.swift */; };
-		E02ACA982459EF3B00754204 /* Pods_eqMac.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C0FBD24DF0BA400D806B8AC /* Pods_eqMac.framework */; };
+		E02ACA982459EF3B00754204 /* Pods_Toneka.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C0FBD24DF0BA400D806B8AC /* Pods_Toneka.framework */; };
 		E02B922E219CBCD800AC130B /* AudioDeviceEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = E02B922D219CBCD800AC130B /* AudioDeviceEvents.swift */; };
 		E02FF91622C7EC6C0051342A /* Transition.swift in Sources */ = {isa = PBXBuildFile; fileRef = E02FF91522C7EC6C0051342A /* Transition.swift */; };
 		E02FF91822C8E87D0051342A /* Time.swift in Sources */ = {isa = PBXBuildFile; fileRef = E02FF91722C8E87D0051342A /* Time.swift */; };
@@ -106,7 +106,7 @@
 		4E82D1A0C6B94F3701D5E8A2 /* Materials.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Materials.swift; sourceTree = "<group>"; };
 		7D31E0A5B48C2F6903AD1E77 /* BundleSchemeHandler.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BundleSchemeHandler.swift; sourceTree = "<group>"; };
 		33E1CA81523B2A768D5E742E /* AggregateDevice.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AggregateDevice.swift; sourceTree = "<group>"; };
-		454077A0596E209B8ABF4043 /* Pods-eqMac.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-eqMac.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-eqMac/Pods-eqMac.debug.xcconfig"; sourceTree = "<group>"; };
+		454077A0596E209B8ABF4043 /* Pods-Toneka.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Toneka.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-Toneka/Pods-Toneka.debug.xcconfig"; sourceTree = "<group>"; };
 		D60DC35A7756074209281062 /* SpectrumRing.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SpectrumRing.swift; sourceTree = "<group>"; };
 		E8B6FA263E16EAF69B98DFA9 /* SpectrumAnalyser.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SpectrumAnalyser.swift; sourceTree = "<group>"; };
 		F9E701DF022A4D627735BEA6 /* SpectrumDataBus.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SpectrumDataBus.swift; sourceTree = "<group>"; };
@@ -120,7 +120,7 @@
 		785E4F86274D187D003D6DB0 /* assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = assets.xcassets; sourceTree = "<group>"; };
 		7860D7DB2703C1F700D1347B /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		787474A825336D9200FF4A95 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
-		788732FA266700DF0093CBB5 /* eqMac.debug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = eqMac.debug.entitlements; sourceTree = "<group>"; };
+		788732FA266700DF0093CBB5 /* Toneka.debug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Toneka.debug.entitlements; sourceTree = "<group>"; };
 		789B5F72269A45C400C72029 /* NSImageExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSImageExtensions.swift; sourceTree = "<group>"; };
 		789F83CE250E20A8004F871D /* restart_coreaudio.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = restart_coreaudio.sh; sourceTree = "<group>"; };
 		78AA48F627038093007CDE89 /* BetterCodableExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BetterCodableExtensions.swift; sourceTree = "<group>"; };
@@ -128,8 +128,8 @@
 		78D8C3462569B7980084739C /* AudioUnit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioUnit.framework; path = System/Library/Frameworks/AudioUnit.framework; sourceTree = SDKROOT; };
 		78E562F226139ACF00BF3F19 /* Data+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+extensions.swift"; sourceTree = "<group>"; };
 		89258104502A0565CC1B1533 /* CoreAudioDevice.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CoreAudioDevice.swift; sourceTree = "<group>"; };
-		9C0FBD24DF0BA400D806B8AC /* Pods_eqMac.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_eqMac.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		A3D606D740D37C93ABA157E7 /* Pods-eqMac.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-eqMac.release.xcconfig"; path = "../Pods/Target Support Files/Pods-eqMac/Pods-eqMac.release.xcconfig"; sourceTree = "<group>"; };
+		9C0FBD24DF0BA400D806B8AC /* Pods_Toneka.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Toneka.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A3D606D740D37C93ABA157E7 /* Pods-Toneka.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Toneka.release.xcconfig"; path = "../Pods/Target Support Files/Pods-Toneka/Pods-Toneka.release.xcconfig"; sourceTree = "<group>"; };
 		AC1F5D06CB10F17AE7548425 /* CoreAudioProperty.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CoreAudioProperty.swift; sourceTree = "<group>"; };
 		C682EA453BF803939C38362F /* Embedded */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder; name = Embedded; path = ../Embedded; sourceTree = "<group>"; };
 		D6E1ECF750ABA4A637998881 /* ProcessTap.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ProcessTap.swift; sourceTree = "<group>"; };
@@ -175,16 +175,16 @@
 		E07A6EE022B6BA4E00DE7B16 /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		E07B45A520FBA4990086AA7E /* Encodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Encodable.swift; sourceTree = "<group>"; };
 		E083214620715BBA0038ED1A /* NSOpenPanelExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSOpenPanelExtensions.swift; sourceTree = "<group>"; };
-		E086AFFC1FCCB8E700CF9F0D /* eqMac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = eqMac.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E086AFFC1FCCB8E700CF9F0D /* Toneka.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Toneka.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E086AFFF1FCCB8E700CF9F0D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E086B0061FCCB8E700CF9F0D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		E086B0071FCCB8E700CF9F0D /* eqMacAudio.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = eqMacAudio.entitlements; sourceTree = "<group>"; };
+		E086B0071FCCB8E700CF9F0D /* TonekaAudio.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TonekaAudio.entitlements; sourceTree = "<group>"; };
 		E089AC482095E0B1005B72E5 /* Console.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Console.swift; sourceTree = "<group>"; };
 		E090AD5720A9725F003BE5FF /* Volume.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Volume.swift; sourceTree = "<group>"; };
 		E090AD5920A972DE003BE5FF /* BasicEqualizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicEqualizer.swift; sourceTree = "<group>"; };
 		E09C171F1FEC1969008E65A4 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		E0A3B96220DF992600E46908 /* Buffer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Buffer.swift; sourceTree = "<group>"; };
-		E0A48D6123C5FB6B00700C39 /* eqMac.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = eqMac.entitlements; sourceTree = "<group>"; };
+		E0A48D6123C5FB6B00700C39 /* Toneka.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Toneka.entitlements; sourceTree = "<group>"; };
 		E0A9A90D22D24A6200EB1E49 /* Window.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Window.swift; sourceTree = "<group>"; };
 		E0AD99D42251022700D893F7 /* AdvancedEqualizerDefaultPresets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvancedEqualizerDefaultPresets.swift; sourceTree = "<group>"; };
 		E0C5629220A39651000902ED /* Bridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bridge.swift; sourceTree = "<group>"; };
@@ -211,7 +211,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				787474A925336D9200FF4A95 /* CoreFoundation.framework in Frameworks */,
-				E02ACA982459EF3B00754204 /* Pods_eqMac.framework in Frameworks */,
+				E02ACA982459EF3B00754204 /* Pods_Toneka.framework in Frameworks */,
 				7893D5752674F6B100F3815B /* Version in Frameworks */,
 				E0453056245A03E800CDB1BF /* Foundation.framework in Frameworks */,
 				78D8C3332569B3000084739C /* AudioToolbox.framework in Frameworks */,
@@ -252,8 +252,8 @@
 		A433E835860EBA2247574C67 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				454077A0596E209B8ABF4043 /* Pods-eqMac.debug.xcconfig */,
-				A3D606D740D37C93ABA157E7 /* Pods-eqMac.release.xcconfig */,
+				454077A0596E209B8ABF4043 /* Pods-Toneka.debug.xcconfig */,
+				A3D606D740D37C93ABA157E7 /* Pods-Toneka.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -322,8 +322,8 @@
 			isa = PBXGroup;
 			children = (
 				785E4F83274C74A2003D6DB0 /* Packages */,
-				E0A48D6123C5FB6B00700C39 /* eqMac.entitlements */,
-				788732FA266700DF0093CBB5 /* eqMac.debug.entitlements */,
+				E0A48D6123C5FB6B00700C39 /* Toneka.entitlements */,
+				788732FA266700DF0093CBB5 /* Toneka.debug.entitlements */,
 				E05901ED2221F21E006B93A5 /* Sandbox.playground */,
 				E0F661751FDCA05F00252923 /* Source */,
 				E0F661741FDCA01F00252923 /* Supporting Files */,
@@ -338,7 +338,7 @@
 		E086AFFD1FCCB8E700CF9F0D /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				E086AFFC1FCCB8E700CF9F0D /* eqMac.app */,
+				E086AFFC1FCCB8E700CF9F0D /* Toneka.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -494,7 +494,7 @@
 			isa = PBXGroup;
 			children = (
 				785E4F86274D187D003D6DB0 /* assets.xcassets */,
-				E086B0071FCCB8E700CF9F0D /* eqMacAudio.entitlements */,
+				E086B0071FCCB8E700CF9F0D /* TonekaAudio.entitlements */,
 				E086B0061FCCB8E700CF9F0D /* Info.plist */,
 				C682EA453BF803939C38362F /* Embedded */,
 			);
@@ -532,7 +532,7 @@
 				E0453055245A03E800CDB1BF /* Foundation.framework */,
 				E0370EB0200D68AB00DF4DBF /* AudioToolbox.framework */,
 				E0F661701FDC38B600252923 /* WebKit.framework */,
-				9C0FBD24DF0BA400D806B8AC /* Pods_eqMac.framework */,
+				9C0FBD24DF0BA400D806B8AC /* Pods_Toneka.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -562,12 +562,12 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		E086AFFB1FCCB8E700CF9F0D /* eqMac */ = {
+		E086AFFB1FCCB8E700CF9F0D /* Toneka */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = E086B00A1FCCB8E700CF9F0D /* Build configuration list for PBXNativeTarget "eqMac" */;
+			buildConfigurationList = E086B00A1FCCB8E700CF9F0D /* Build configuration list for PBXNativeTarget "Toneka" */;
 			buildPhases = (
 				AFDFF826F547656CFBBD1F8A /* [CP] Check Pods Manifest.lock */,
-				E057A635226F9F710019D13C /* Run Script - Kill eqMac (DEBUG) */,
+				E057A635226F9F710019D13C /* Run Script - Kill Toneka (DEBUG) */,
 				E00C596723BBBF7500C7B8B6 /* Headers */,
 				E086AFF81FCCB8E700CF9F0D /* Sources */,
 				E086AFFA1FCCB8E700CF9F0D /* Resources */,
@@ -578,14 +578,14 @@
 			);
 			dependencies = (
 			);
-			name = eqMac;
+			name = Toneka;
 			packageProductDependencies = (
 				7893D5742674F6B100F3815B /* Version */,
 				78AA48F3270362AA007CDE89 /* BetterCodable */,
 				78F28AD4274D25580005474D /* Shared */,
 			);
-			productName = eqMacAudio;
-			productReference = E086AFFC1FCCB8E700CF9F0D /* eqMac.app */;
+			productName = TonekaAudio;
+			productReference = E086AFFC1FCCB8E700CF9F0D /* Toneka.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -611,7 +611,7 @@
 					};
 				};
 			};
-			buildConfigurationList = E086AFF71FCCB8E700CF9F0D /* Build configuration list for PBXProject "eqMac" */;
+			buildConfigurationList = E086AFF71FCCB8E700CF9F0D /* Build configuration list for PBXProject "Toneka" */;
 			compatibilityVersion = "Xcode 8.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -628,7 +628,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				E086AFFB1FCCB8E700CF9F0D /* eqMac */,
+				E086AFFB1FCCB8E700CF9F0D /* Toneka */,
 			);
 		};
 /* End PBXProject section */
@@ -656,7 +656,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-eqMac/Pods-eqMac-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-Toneka/Pods-Toneka-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/EmitterKit/EmitterKit.framework",
 				"${BUILT_PRODUCTS_DIR}/KeychainSwift/KeychainSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/ReSwift/ReSwift.framework",
@@ -679,7 +679,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-eqMac/Pods-eqMac-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Toneka/Pods-Toneka-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		AFDFF826F547656CFBBD1F8A /* [CP] Check Pods Manifest.lock */ = {
@@ -693,26 +693,26 @@
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-eqMac-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-Toneka-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		E057A635226F9F710019D13C /* Run Script - Kill eqMac (DEBUG) */ = {
+		E057A635226F9F710019D13C /* Run Script - Kill Toneka (DEBUG) */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Run Script - Kill eqMac (DEBUG)";
+			name = "Run Script - Kill Toneka (DEBUG)";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/zsh;
-			shellScript = "if [[ $CONFIGURATION == \"Debug\" ]]; then\n    pkill -f eqMac.app || true\nfi\n";
+			shellScript = "if [[ $CONFIGURATION == \"Debug\" ]]; then\n    pkill -f Toneka.app || true\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -925,7 +925,7 @@
 		};
 		E086B00B1FCCB8E700CF9F0D /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 454077A0596E209B8ABF4043 /* Pods-eqMac.debug.xcconfig */;
+			baseConfigurationReference = 454077A0596E209B8ABF4043 /* Pods-Toneka.debug.xcconfig */;
 			buildSettings = {
 				ARCHS = (
 					x86_64,
@@ -933,7 +933,7 @@
 				);
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_MODULES_AUTOLINK = NO;
-				CODE_SIGN_ENTITLEMENTS = eqMac.debug.entitlements;
+				CODE_SIGN_ENTITLEMENTS = Toneka.debug.entitlements;
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -975,7 +975,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 14.2;
 				MARKETING_VERSION = v1.3.2;
 				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.bitgapp.eqmac.debug;
+				PRODUCT_BUNDLE_IDENTIFIER = io.github.cozykim.toneka.debug;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = macosx;
@@ -990,7 +990,7 @@
 		};
 		E086B00C1FCCB8E700CF9F0D /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A3D606D740D37C93ABA157E7 /* Pods-eqMac.release.xcconfig */;
+			baseConfigurationReference = A3D606D740D37C93ABA157E7 /* Pods-Toneka.release.xcconfig */;
 			buildSettings = {
 				ARCHS = (
 					x86_64,
@@ -998,7 +998,7 @@
 				);
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_MODULES_AUTOLINK = NO;
-				CODE_SIGN_ENTITLEMENTS = eqMac.entitlements;
+				CODE_SIGN_ENTITLEMENTS = Toneka.entitlements;
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -1039,9 +1039,9 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.2;
 				MARKETING_VERSION = v1.3.2;
-				PRODUCT_BUNDLE_IDENTIFIER = com.bitgapp.eqmac.local;
-				PRODUCT_MODULE_NAME = eqMac;
-				PRODUCT_NAME = "eqMac Local";
+				PRODUCT_BUNDLE_IDENTIFIER = io.github.cozykim.toneka.local;
+				PRODUCT_MODULE_NAME = Toneka;
+				PRODUCT_NAME = "Toneka Local";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = macosx;
 				SWIFT_COMPILATION_MODE = wholemodule;
@@ -1056,7 +1056,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		E086AFF71FCCB8E700CF9F0D /* Build configuration list for PBXProject "eqMac" */ = {
+		E086AFF71FCCB8E700CF9F0D /* Build configuration list for PBXProject "Toneka" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				E086B0081FCCB8E700CF9F0D /* Debug */,
@@ -1065,7 +1065,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		E086B00A1FCCB8E700CF9F0D /* Build configuration list for PBXNativeTarget "eqMac" */ = {
+		E086B00A1FCCB8E700CF9F0D /* Build configuration list for PBXNativeTarget "Toneka" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				E086B00B1FCCB8E700CF9F0D /* Debug */,

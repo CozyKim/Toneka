@@ -38,9 +38,9 @@
 		<dict/>
 	</dict>
 	<key>NSAppleEventsUsageDescription</key>
-	<string>eqMac uses AppleEvents to automate some aspects of the setup process</string>
+	<string>Toneka uses AppleEvents to automate some aspects of the setup process</string>
 	<key>NSAudioCaptureUsageDescription</key>
-	<string>eqMac needs to capture system audio in order to apply equalization to it.</string>
+	<string>Toneka needs to capture system audio in order to apply equalization to it.</string>
 	<key>NSHumanReadableCopyright</key>
 	<string>Copyright © 2017 Roman Kisil. All rights reserved.</string>
 	<key>NSMainStoryboardFile</key>

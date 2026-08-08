@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "E086AFFB1FCCB8E700CF9F0D"
-               BuildableName = "eqMac.app"
-               BlueprintName = "eqMac"
-               ReferencedContainer = "container:eqMac.xcodeproj">
+               BuildableName = "Toneka.app"
+               BlueprintName = "Toneka"
+               ReferencedContainer = "container:Toneka.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -45,9 +45,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "E086AFFB1FCCB8E700CF9F0D"
-            BuildableName = "eqMac.app"
-            BlueprintName = "eqMac"
-            ReferencedContainer = "container:eqMac.xcodeproj">
+            BuildableName = "Toneka.app"
+            BlueprintName = "Toneka"
+            ReferencedContainer = "container:Toneka.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -62,9 +62,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "E086AFFB1FCCB8E700CF9F0D"
-            BuildableName = "eqMac.app"
-            BlueprintName = "eqMac"
-            ReferencedContainer = "container:eqMac.xcodeproj">
+            BuildableName = "Toneka.app"
+            BlueprintName = "Toneka"
+            ReferencedContainer = "container:Toneka.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

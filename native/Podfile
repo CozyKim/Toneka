@@ -4,7 +4,7 @@ source 'https://cdn.cocoapods.org/'
 
 # Uncomment the next line to define a global platform for your project
 platform :osx, '14.2'
-workspace 'eqMac.xcworkspace'
+workspace 'Toneka.xcworkspace'
 use_frameworks!
 
 post_install do |installer|
@@ -22,10 +22,10 @@ def shared_pods
   pod 'STPrivilegedTask', :git => 'https://github.com/sveinbjornt/STPrivilegedTask.git', :commit => 'fdca677c77adb166a2be4c5ea9c7580a738c49c9'
 end
 
-project 'app/eqMac.xcodeproj'
+project 'app/Toneka.xcodeproj'
 
-target 'eqMac' do
-  project 'app/eqMac.xcodeproj'
+target 'Toneka' do
+  project 'app/Toneka.xcodeproj'
 
   pod 'SwiftHTTP', '~> 3.0'
   # AMCoreAudio is gone: the bitgapp fork was deleted (404) and upstream was
