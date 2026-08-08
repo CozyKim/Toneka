@@ -7,7 +7,7 @@
 //  The system HUD only appears when CoreAudio changes a hardware volume
 //  control. Devices without one (HDMI and DisplayPort displays) therefore get
 //  no feedback at all, and even on devices that have one the system stops at
-//  100% and cannot show eqMac's boost range.
+//  100% and cannot show Toneka's boost range.
 //
 
 import Cocoa
@@ -63,7 +63,7 @@ final class VolumeHUD {
   }
 
   /// - Parameters:
-  ///   - gain: 0...1 is normal range, above 1 is eqMac's boost.
+  ///   - gain: 0...1 is normal range, above 1 is Toneka's boost.
   func show (gain: Double, muted: Bool) {
     DispatchQueue.main.async {
       self.icon.image = VolumeHUD.symbol(gain: gain, muted: muted)

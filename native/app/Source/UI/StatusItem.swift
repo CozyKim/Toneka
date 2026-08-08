@@ -138,7 +138,7 @@ class StatusItem {
     // only when a press is what got us here. An assistive technology or a
     // script activating the item leaves something unrelated there, and testing
     // for a left click would drop those on the floor. Anything that is not a
-    // right click means "open eqMac".
+    // right click means "open Toneka".
     if NSApp.currentEvent?.type == .rightMouseDown {
       rightClickMenu.popUp(positioning: nil, at: origin, in: button)
       rightClicked.emit()

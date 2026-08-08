@@ -57,7 +57,7 @@ class Alert {
   /// Driven as a modal session rather than `runModal`, which runs an event loop
   /// of its own and never yields the main queue. CoreAudio device notifications
   /// are handled there, so a blocking alert leaves the app deaf to output
-  /// changes until someone dismisses it -- and the one alert eqMac raises
+  /// changes until someone dismisses it -- and the one alert Toneka raises
   /// reports a broken audio pipeline, so that is precisely when it has to keep
   /// listening.
   static func withButtons (

@@ -14,7 +14,7 @@ import Foundation
 import CoreAudio
 
 final class AggregateDevice {
-  /// Identifies eqMac's own aggregate so it can be filtered out of the device
+  /// Identifies Toneka's own aggregate so it can be filtered out of the device
   /// lists we show to the user.
   static let uid = "io.github.cozykim.toneka.aggregate"
 

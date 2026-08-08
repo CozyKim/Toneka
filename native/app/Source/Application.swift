@@ -123,7 +123,7 @@ class Application {
   static var ignoreNextVolumeEvent = false
   static var ignoreNextMuteEvent = false
 
-  /// UID of the output device whose gain eqMac has to remember on its own,
+  /// UID of the output device whose gain Toneka has to remember on its own,
   /// or nil while the device has a volume control and macOS remembers it.
   static var volumeMemoryUID: String?
 
@@ -137,7 +137,7 @@ class Application {
         Console.log("outputChanged: ", device, " starting PlayThrough")
         startPassthrough()
       } else {
-        // TODO: Tell the user eqMac doesn't support this device
+        // TODO: Tell the user Toneka doesn't support this device
       }
     }
     
@@ -201,7 +201,7 @@ class Application {
         // notification, and `outputChanged` is the only thing that builds the
         // pipeline back up. When a device disappears macOS promotes a
         // replacement default output on its own, so the device being selected
-        // here is usually already the default -- leaving eqMac with no
+        // here is usually already the default -- leaving Toneka with no
         // pipeline at all, and the volume keys, the HUD and the equalizer with
         // nothing behind them.
         if AudioDevice.defaultOutputDevice()?.id == device.id {
@@ -346,7 +346,7 @@ class Application {
   }
 
   /// Without the audio capture permission the tap cannot be created, and the
-  /// only symptom is that eqMac appears to run while doing nothing at all.
+  /// only symptom is that Toneka appears to run while doing nothing at all.
   /// Shown once per launch so switching devices does not repeat it.
   private static var warnedAudioCaptureUnavailable = false
   private static func warnAudioCaptureUnavailable () {
@@ -389,7 +389,7 @@ class Application {
     // Devices with their own volume control are driven by the system, so we
     // only take over above 1.0 where hardware volume cannot reach. Devices
     // without one -- HDMI and DisplayPort displays -- get nothing from the
-    // media keys at all, so eqMac has to apply the step itself. The driver
+    // media keys at all, so Toneka has to apply the step itself. The driver
     // used to paper over this by always exposing a volume control.
     let deviceHasVolumeControl = selectedDevice?.outputVolumeSupported ?? false
     if (deviceHasVolumeControl && gain < 1) { return }
@@ -429,7 +429,7 @@ class Application {
 
     // Same split as the volume keys: a device with a mute control is handled
     // by the system, and our state follows its mute-changed event. One without
-    // it -- HDMI and DisplayPort displays -- never sees the key, so eqMac has
+    // it -- HDMI and DisplayPort displays -- never sees the key, so Toneka has
     // to toggle its own state and let Volume silence the mixer.
     if (selectedDevice?.outputVolumeSupported ?? false) { return }
 
