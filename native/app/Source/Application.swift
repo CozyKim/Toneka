@@ -193,7 +193,18 @@ class Application {
     stopRemoveEngines {
       Async.delay(500) {
         ignoreEvents = false
-        AudioDevice.currentOutputDevice = device
+        // Writing a property the value it already holds produces no CoreAudio
+        // notification, and `outputChanged` is the only thing that builds the
+        // pipeline back up. When a device disappears macOS promotes a
+        // replacement default output on its own, so the device being selected
+        // here is usually already the default -- leaving eqMac with no
+        // pipeline at all, and the volume keys, the HUD and the equalizer with
+        // nothing behind them.
+        if AudioDevice.defaultOutputDevice()?.id == device.id {
+          startPassthrough()
+        } else {
+          AudioDevice.currentOutputDevice = device
+        }
       }
     }
   }
