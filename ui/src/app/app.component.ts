@@ -42,6 +42,14 @@ import { UIService } from './services/ui.service'
          is transparent and the window's own material shows through, which is
          what the native side went to the trouble of putting there. */
       background: var(--chrome);
+      /* Each section draws its card on a pseudo-element behind itself, and
+         without a stacking context somewhere above them that card falls behind
+         the face drawn just above -- the rack skin's metal would cover it.
+         It is made here rather than on each section because a section that is
+         its own stacking context traps the popovers opened inside it: a
+         dropdown list would be painted under the sections that follow it, and
+         they would take its clicks. */
+      isolation: isolate;
     }
 
     /* Everything a taller window gains lands here, and nowhere else: the bars

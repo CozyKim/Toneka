@@ -25,9 +25,6 @@ eqm-output,
 eqm-volume,
 eqm-equalizer {
   position: relative;
-  // Or a card behind the section would be behind the window's own face too,
-  // and the rack skin's metal would cover it.
-  isolation: isolate;
 }
 
 eqm-output::before,
