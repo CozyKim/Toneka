@@ -123,6 +123,10 @@ class Application {
   static var ignoreNextVolumeEvent = false
   static var ignoreNextMuteEvent = false
 
+  /// UID of the output device whose gain eqMac has to remember on its own,
+  /// or nil while the device has a volume control and macOS remembers it.
+  static var volumeMemoryUID: String?
+
   static func setupDeviceEvents () {
     AudioDeviceEvents.on(.outputChanged) { device in
       if Outputs.isDeviceAllowed(device) {
@@ -227,6 +231,15 @@ class Application {
     if (selectedDevice!.outputVolumeSupported) {
       volume = Double(selectedDevice!.virtualMasterVolume(direction: .playback)!)
       muted = selectedDevice!.mute
+      volumeMemoryUID = nil
+    } else {
+      // A device with no volume control gives macOS nothing to remember, so
+      // its gain lives here or nowhere: without this every such device shares
+      // whichever gain was left behind by the one used before it.
+      volumeMemoryUID = selectedDevice!.uid
+      if let uid = volumeMemoryUID, let remembered = store.state.volume.gainPerDevice[uid] {
+        volume = remembered
+      }
     }
 
     if (selectedDevice!.outputBalanceSupported) {

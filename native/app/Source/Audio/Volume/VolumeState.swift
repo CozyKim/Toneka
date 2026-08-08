@@ -9,6 +9,7 @@
 import Foundation
 import ReSwift
 import SwiftyUserDefaults
+import BetterCodable
 
 struct VolumeState: State {
   var gain: Double = 0.5
@@ -16,6 +17,10 @@ struct VolumeState: State {
   var balance: Double = 0
   var transition: Bool = false
   var boostEnabled: Bool = true
+  /// Gain per output device, keyed by device UID. Only devices with no volume
+  /// control of their own are kept here: macOS already remembers one per device
+  /// for the rest, and a second answer could only disagree with it.
+  @DefaultEmptyDictionary<String, Double> var gainPerDevice: [String: Double] = [:]
 }
 
 enum VolumeAction: Action {
@@ -32,6 +37,9 @@ func VolumeStateReducer(action: Action, state: VolumeState?) -> VolumeState {
   case .setGain(let gain, let transition)?:
     state.gain = gain
     state.transition = transition == true
+    if let uid = Application.volumeMemoryUID {
+      state.gainPerDevice[uid] = gain
+    }
   case .setBalance(let balance, let transition)?:
     state.balance = balance
     state.transition = transition == true
