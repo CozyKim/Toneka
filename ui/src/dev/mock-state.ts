@@ -21,7 +21,7 @@ export type MockRequest = Record<string, any> | undefined
 const state = {
   enabled: true,
   info: {
-    name: 'eqMac',
+    name: 'Toneka',
     model: 'MacBookPro18,3',
     version: '1.3.2',
     isOpenSource: true

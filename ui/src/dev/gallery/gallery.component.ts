@@ -59,7 +59,7 @@ import { VentComponent } from '../../lib/vent/vent.component'
   ],
   template: `
     <div class="gallery">
-      <h1>eqMac widgets</h1>
+      <h1>Toneka widgets</h1>
 
       <section>
         <h2>label</h2>

@@ -1,21 +1,20 @@
 {
-  "name": "eqmac",
+  "name": "toneka",
   "version": "1.0.0",
-  "description": "eqMac",
+  "description": "macOS system-wide audio equalizer",
   "private": true,
   "scripts": {
     "lint": "npx eslint ."
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/bitgapp/eqMac.git"
+    "url": "git+https://github.com/CozyKim/Toneka.git"
   },
-  "author": "Roman Kisil <Nodeful>",
-  "license": "ISC",
+  "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/bitgapp/eqMac/issues"
+    "url": "https://github.com/CozyKim/Toneka/issues"
   },
-  "homepage": "https://github.com/bitgapp/eqMac#readme",
+  "homepage": "https://github.com/CozyKim/Toneka#readme",
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^4.19.0",
     "eslint": "^7.22.0",

@@ -80,7 +80,7 @@ export class ApplicationService extends DataService {
   }
 
   uninstall () {
-    return this.openURL(new URL(`https://${this.CONST.DOMAIN}#uninstall`))
+    return this.openURL(new URL('https://github.com/CozyKim/Toneka#uninstall'))
   }
 
   lastHaptic?: Date

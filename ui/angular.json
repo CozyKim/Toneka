@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "eqmac": {
+    "toneka": {
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
@@ -63,11 +63,11 @@
         "serve": {
           "builder": "@angular/build:dev-server",
           "options": {
-            "buildTarget": "eqmac:build:development"
+            "buildTarget": "toneka:build:development"
           },
           "configurations": {
             "harness": {
-              "buildTarget": "eqmac:build:harness"
+              "buildTarget": "toneka:build:harness"
             }
           }
         }

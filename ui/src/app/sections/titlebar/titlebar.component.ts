@@ -10,7 +10,7 @@ import { ToggleComponent } from '../../../lib/toggle/toggle.component'
   imports: [ IconComponent, ToggleComponent ],
   template: `
     <eqm-toggle [state]="enabled()" (stateChange)="setEnabled($event)"></eqm-toggle>
-    <span class="name">eqMac</span>
+    <span class="name">Toneka</span>
     <span class="spacer"></span>
     <button class="glyph" type="button" (click)="settingsRequested.emit()" aria-label="설정">
       <eqm-icon name="cog" [size]="14"></eqm-icon>

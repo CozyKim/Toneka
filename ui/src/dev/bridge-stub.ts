@@ -83,8 +83,8 @@ export function installBridgeStub () {
   }
 
   // Lets events that the native side would push be fired by hand from the
-  // browser console, e.g. eqmacHarness.emit('/error', { error: 'boom' })
-  window.eqmacHarness = {
+  // browser console, e.g. tonekaHarness.emit('/error', { error: 'boom' })
+  window.tonekaHarness = {
     emit (event: string, data?: unknown) {
       if (!eventHandlers.has(event)) {
         console.warn(`[harness] nothing is listening on "${event}"`)
@@ -100,7 +100,7 @@ export function installBridgeStub () {
 
 declare global {
   interface Window {
-    eqmacHarness?: {
+    tonekaHarness?: {
       emit: (event: string, data?: unknown) => void
       events: () => string[]
     }

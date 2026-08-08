@@ -4,9 +4,7 @@ import { Injectable } from '@angular/core'
   providedIn: 'root'
 })
 export class ConstantsService {
-  readonly DOMAIN = 'eqmac.app'
-  readonly FAQ_URL = new URL(`https://${this.DOMAIN}#faq`)
-  readonly FEATURES_URL = new URL(`https://${this.DOMAIN}#features`)
-  readonly ACCOUNT_URL = new URL(`https://${this.DOMAIN}/account`)
-  readonly BUG_REPORT_URL = new URL(`https://${this.DOMAIN}/report-bug`)
+  readonly FAQ_URL = new URL('https://github.com/CozyKim/Toneka#faq')
+  readonly FEATURES_URL = new URL('https://github.com/CozyKim/Toneka#features')
+  readonly BUG_REPORT_URL = new URL('https://github.com/CozyKim/Toneka/issues/new')
 }
