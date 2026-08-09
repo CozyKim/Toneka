@@ -20,12 +20,13 @@ elif [ $# -gt 0 ]; then
 fi
 
 echo "==> Building UI"
-if ! command -v mise >/dev/null 2>&1; then
-  echo "mise is not installed. Install it, or put Node 24.18.1 on PATH yourself." >&2
+if command -v mise >/dev/null 2>&1; then
+  PATH="$(mise where node@24.18.1)/bin:$PATH"
+  export PATH
+elif [ "$(node --version 2>/dev/null)" != "v24.18.1" ]; then
+  echo "mise is not installed and Node 24.18.1 is not on PATH. Install mise, or put Node 24.18.1 on PATH yourself." >&2
   exit 1
 fi
-PATH="$(mise where node@24.18.1)/bin:$PATH"
-export PATH
 ( cd "$ROOT/ui" && yarn build )
 
 echo "==> Building app"

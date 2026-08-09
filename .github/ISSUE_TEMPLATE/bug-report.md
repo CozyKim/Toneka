@@ -28,8 +28,7 @@ A clear and concise description of what you expected to happen.
  - Audio device used for playback: [eg AirPods or Macbook speaker or Bose QC32]
  - Audio transmission interface: [eq HDMI or Bluetooth or 3.5mm Jack]
  - macOS Version: [e.g. 10.15]
- - Toneka Version [e.g. 0.0.1] **(if audio related issue)**
- - Toneka UI Version [e.g. 0.0.4] **(if UI related issue)**
+ - Toneka Version [e.g. 0.0.1]
 
 **Screenshots or Console.app logs**
 If applicable, add screenshots to help explain your problem. Also you can run Console.app and apply filter for `Toneka` 

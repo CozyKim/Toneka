@@ -42,7 +42,7 @@
 	<key>NSAudioCaptureUsageDescription</key>
 	<string>Toneka needs to capture system audio in order to apply equalization to it.</string>
 	<key>NSHumanReadableCopyright</key>
-	<string>Copyright © 2017 Roman Kisil. All rights reserved.</string>
+	<string>Toneka, Copyright © 2026 CozyKim. Derived from eqMac, Copyright © 2017 Roman Kisil.</string>
 	<key>NSMainStoryboardFile</key>
 	<string>Main</string>
 	<key>NSPrincipalClass</key>

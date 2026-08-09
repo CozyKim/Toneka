@@ -43,13 +43,14 @@ done
 
 if $build_ui; then
   echo "==> Building UI"
-  if ! command -v mise >/dev/null 2>&1; then
-    echo "mise is not installed. Install it, or put Node $NODE_VERSION on PATH yourself." >&2
+  if command -v mise >/dev/null 2>&1; then
+    # Angular's toolchain pins the Node major; keep this in step with .mise.toml.
+    PATH="$(mise where "node@$NODE_VERSION")/bin:$PATH"
+    export PATH
+  elif [ "$(node --version 2>/dev/null)" != "v$NODE_VERSION" ]; then
+    echo "mise is not installed and Node $NODE_VERSION is not on PATH. Install mise, or put Node $NODE_VERSION on PATH yourself." >&2
     exit 1
   fi
-  # Angular's toolchain pins the Node major; keep this in step with .mise.toml.
-  PATH="$(mise where "node@$NODE_VERSION")/bin:$PATH"
-  export PATH
   ( cd "$ROOT/ui" && yarn build )
 fi
 
