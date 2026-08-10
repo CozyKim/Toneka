@@ -72,6 +72,13 @@ class Alert {
         alert.addButton(withTitle: text)
       }
 
+      // Sizing the window to its text and dropping the views it is not using --
+      // the spare buttons, the suppression checkbox, the help button -- happens
+      // as part of being displayed, which `runModal` does for you. Driving the
+      // window ourselves reaches it before any of that: the message field keeps
+      // its placeholder height of one line and the unused views stay on screen.
+      alert.layout()
+
       let session = NSApp.beginModalSession(for: alert.window)
 
       func pump () {
