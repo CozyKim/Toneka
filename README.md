@@ -45,9 +45,26 @@ To build it:
   [mise](https://mise.jdx.dev)
 - Yarn v1
 
+## Installing a release
+
+Releases carry a zipped `Toneka.app`. The build is ad-hoc signed rather than
+signed with an Apple Developer certificate, so macOS quarantines it on download
+and Gatekeeper refuses to open it — the warning claims the app is damaged, which
+it is not. Clear the quarantine flag after moving it into `/Applications`:
+
+```bash
+xattr -dr com.apple.quarantine /Applications/Toneka.app
+```
+
+Then open it. Grant Audio Recording permission when asked, or the equaliser has
+nothing to work on.
+
+If you would rather not run an unsigned binary — a reasonable position — build
+it yourself instead.
+
 ## Build
 
-There is no prebuilt download. Build it yourself:
+Build it yourself:
 
 ```bash
 git clone https://github.com/CozyKim/Toneka.git
@@ -59,10 +76,12 @@ scripts/build-local.sh
 
 `scripts/build-local.sh` builds the web interface, builds the Release
 configuration of `native/Toneka.xcworkspace`, and copies the result to
-`/Applications/Toneka Local.app`. That build is ad-hoc signed and uses the
-bundle identifier `io.github.cozykim.toneka.local`, so it keeps its own
-preferences and permission grants instead of colliding with another build. Pass
-`--no-install` to build without copying anything into `/Applications`.
+`/Applications/Toneka.app`. Pass `--no-install` to build without copying
+anything into `/Applications`.
+
+The build is ad-hoc signed, which is enough to run it on the machine that built
+it. It is not enough for a copy that arrives with a quarantine flag — see
+[Installing a release](#installing-a-release).
 
 For development, `scripts/run-debug.sh` builds and launches the Debug
 configuration with its logs on stdout; Ctrl-C quits. It uses
@@ -112,13 +131,13 @@ history with eqMac. Problems with Toneka belong in
 ## Uninstall
 
 1. Quit Toneka.
-2. Delete the application — `/Applications/Toneka Local.app`, or wherever you
-   put your build.
+2. Delete the application — `/Applications/Toneka.app`, or wherever you put
+   your build.
 3. Remove the data it stored:
 
    ```bash
    rm -rf ~/Library/Application\ Support/io.github.cozykim.toneka*
-   defaults delete io.github.cozykim.toneka.local
+   defaults delete io.github.cozykim.toneka
    ```
 
    The `defaults` line clears saved presets, volume levels and settings. If you

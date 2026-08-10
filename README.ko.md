@@ -44,9 +44,24 @@ Toneka는 [eqMac](https://github.com/bitgapp/eqMac)에서 갈라져 나온 독�
   설치하는 것이 가장 간단하다.
 - Yarn v1
 
-## 빌드
+## 릴리즈 설치
 
-미리 빌드된 배포본은 없다. 직접 빌드한다.
+릴리즈에는 압축된 `Toneka.app`이 들어 있다. Apple Developer 인증서가 아니라
+임시(ad-hoc) 서명이라, macOS가 내려받은 파일을 격리하고 Gatekeeper가 실행을
+막는다. 앱이 손상됐다는 경고가 뜨지만 손상된 것이 아니다. `/Applications`로
+옮긴 뒤 격리 속성을 지운다.
+
+```bash
+xattr -dr com.apple.quarantine /Applications/Toneka.app
+```
+
+그 다음 실행한다. 오디오 녹음 권한을 요청하면 허용해야 한다. 그러지 않으면
+이퀄라이저가 처리할 소리 자체가 없다.
+
+서명되지 않은 바이너리를 실행하고 싶지 않다면 — 합당한 판단이다 — 직접
+빌드하면 된다.
+
+## 빌드
 
 ```bash
 git clone https://github.com/CozyKim/Toneka.git
@@ -58,10 +73,11 @@ scripts/build-local.sh
 
 `scripts/build-local.sh`는 웹 인터페이스를 빌드하고,
 `native/Toneka.xcworkspace`의 Release 구성을 빌드한 뒤 결과물을
-`/Applications/Toneka Local.app`으로 복사한다. 이 빌드는 임시(ad-hoc)
-서명되고 번들 식별자로 `io.github.cozykim.toneka.local`을 쓰므로, 다른 빌드와
-충돌하지 않고 자기 설정과 권한을 따로 갖는다. `--no-install`을 넘기면
+`/Applications/Toneka.app`으로 복사한다. `--no-install`을 넘기면
 `/Applications`에 아무것도 복사하지 않고 빌드만 한다.
+
+이 빌드는 임시(ad-hoc) 서명이라 빌드한 기계에서는 실행되지만, 내려받기 등으로
+격리 표시가 붙어 도착한 사본에는 충분하지 않다.
 
 개발할 때는 `scripts/run-debug.sh`가 Debug 구성을 빌드해 실행하고 로그를
 stdout으로 내보낸다. Ctrl-C로 종료한다. 번들 식별자는
@@ -110,12 +126,12 @@ Toneka 자신의 설정 바깥에는 아무것도 쓰지 않는다. Toneka가 �
 ## 삭제
 
 1. Toneka를 종료한다.
-2. 앱을 지운다 — `/Applications/Toneka Local.app`, 또는 빌드를 둔 곳.
+2. 앱을 지운다 — `/Applications/Toneka.app`, 또는 빌드를 둔 곳.
 3. 저장된 데이터를 지운다.
 
    ```bash
    rm -rf ~/Library/Application\ Support/io.github.cozykim.toneka*
-   defaults delete io.github.cozykim.toneka.local
+   defaults delete io.github.cozykim.toneka
    ```
 
    `defaults` 줄은 저장한 프리셋, 음량, 설정을 지운다. 디버그 빌드도 돌렸다면

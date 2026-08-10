@@ -2,13 +2,13 @@
 #
 # Builds the release configuration and installs it to /Applications.
 #
-# This build is ad-hoc signed and uses io.github.cozykim.toneka.local, so it
-# lives alongside an installed release of Toneka instead of replacing it.
+# The build is ad-hoc signed, so it runs on this machine but Gatekeeper will
+# refuse it anywhere it arrives with a quarantine flag -- a download, say.
 
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-APP_NAME="Toneka Local.app"
+APP_NAME="Toneka.app"
 DESTINATION="/Applications/$APP_NAME"
 
 install=true
