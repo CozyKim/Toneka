@@ -127,6 +127,10 @@ class Application {
   /// or nil while the device has a volume control and macOS remembers it.
   static var volumeMemoryUID: String?
 
+  /// The same for balance, decided on its own: a device can carry one of the
+  /// two controls and not the other, as the built-in speakers do.
+  static var balanceMemoryUID: String?
+
   static func setupDeviceEvents () {
     AudioDeviceEvents.on(.outputChanged) { device in
       if Outputs.isDeviceAllowed(device) {
@@ -249,6 +253,13 @@ class Application {
         outMin: -1,
         outMax: 1
       )
+      balanceMemoryUID = nil
+    } else {
+      // Centred rather than left at whatever the last device used: a balance
+      // pushed to one side belongs to the device it was set on, and following
+      // the user to the next one is heard as a channel gone quiet.
+      balanceMemoryUID = selectedDevice!.uid
+      balance = balanceMemoryUID.flatMap { store.state.volume.balancePerDevice[$0] } ?? 0
     }
 
     Application.dispatchAction(VolumeAction.setBalance(balance, false))
