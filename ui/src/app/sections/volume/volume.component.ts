@@ -110,9 +110,11 @@ export class VolumeComponent implements OnInit {
   })
 
   async ngOnInit () {
-    // Gain moves without the interface asking: the volume keys change it, and
-    // so does turning boost off while the gain is above unity.
+    // These move without the interface asking: the volume keys change gain, as
+    // does turning boost off while gain is above unity, and balance belongs to
+    // the output device, so changing outputs brings a different one.
     this.volume.onGainChanged(({ gain }) => this.gain.set(gain))
+    this.volume.onBalanceChanged(({ balance }) => this.balance.set(balance))
     this.volume.onBoostEnabledChanged(({ enabled }) => this.boost.set(enabled))
 
     const [ gain, muted, balance, boost ] = await Promise.all([
