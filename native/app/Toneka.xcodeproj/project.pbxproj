@@ -973,7 +973,7 @@
 					"$(PROJECT_DIR)",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.2;
-				MARKETING_VERSION = 0.1.0;
+				MARKETING_VERSION = 0.1.1;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = io.github.cozykim.toneka.debug;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1038,7 +1038,7 @@
 					"$(PROJECT_DIR)",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.2;
-				MARKETING_VERSION = 0.1.0;
+				MARKETING_VERSION = 0.1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = io.github.cozykim.toneka;
 				PRODUCT_MODULE_NAME = Toneka;
 				PRODUCT_NAME = "$(TARGET_NAME)";
