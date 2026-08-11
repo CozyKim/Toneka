@@ -21,6 +21,11 @@ struct VolumeState: State {
   /// control of their own are kept here: macOS already remembers one per device
   /// for the rest, and a second answer could only disagree with it.
   @DefaultEmptyDictionary<String, Double> var gainPerDevice: [String: Double] = [:]
+  /// Balance per output device, kept on the same terms as `gainPerDevice` and
+  /// separately from it. Whether a device carries a balance control of its own
+  /// is a different question from whether it carries a volume one: the
+  /// built-in speakers have the second and not the first.
+  @DefaultEmptyDictionary<String, Double> var balancePerDevice: [String: Double] = [:]
 }
 
 enum VolumeAction: Action {
@@ -43,6 +48,9 @@ func VolumeStateReducer(action: Action, state: VolumeState?) -> VolumeState {
   case .setBalance(let balance, let transition)?:
     state.balance = balance
     state.transition = transition == true
+    if let uid = Application.balanceMemoryUID {
+      state.balancePerDevice[uid] = balance
+    }
   case .setMuted(let muted)?:
     state.muted = muted
   case .setBoostEnabled(let enabled)?:

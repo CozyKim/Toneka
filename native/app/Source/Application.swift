@@ -127,6 +127,10 @@ class Application {
   /// or nil while the device has a volume control and macOS remembers it.
   static var volumeMemoryUID: String?
 
+  /// The same for balance, decided on its own: a device can carry one of the
+  /// two controls and not the other, as the built-in speakers do.
+  static var balanceMemoryUID: String?
+
   static func setupDeviceEvents () {
     AudioDeviceEvents.on(.outputChanged) { device in
       if Outputs.isDeviceAllowed(device) {
@@ -249,18 +253,35 @@ class Application {
         outMin: -1,
         outMax: 1
       )
+      balanceMemoryUID = nil
+    } else {
+      // Centred rather than left at whatever the last device used: a balance
+      // pushed to one side belongs to the device it was set on, and following
+      // the user to the next one is heard as a channel gone quiet.
+      balanceMemoryUID = selectedDevice!.uid
+      balance = balanceMemoryUID.flatMap { store.state.volume.balancePerDevice[$0] } ?? 0
     }
 
     Application.dispatchAction(VolumeAction.setBalance(balance, false))
     Application.dispatchAction(VolumeAction.setGain(volume, false))
     Application.dispatchAction(VolumeAction.setMuted(muted))
     
-    // The tap leaves the user's device selection alone, so there is nothing to
-    // switch and nothing to wait for before building the pipeline.
-    ignoreEvents = false
-    createAudioPipeline()
-    startingPassthrough = false
-    completion?()
+    // The three actions above are delivered on the main queue rather than run
+    // here, so at this point the store still holds the volume of the device
+    // being left. Building the pipeline inline hands `Volume` that stale gain,
+    // and `Volume.init` writes whatever it reads straight to the new device --
+    // which is how a device with a volume of its own ends up wearing the one
+    // from the device before it. Queueing behind them keeps the order: store
+    // first, pipeline second.
+    //
+    // The tap leaves the user's device selection alone, so the store is the
+    // only thing there is to wait for.
+    DispatchQueue.main.async {
+      ignoreEvents = false
+      createAudioPipeline()
+      startingPassthrough = false
+      completion?()
+    }
   }
 
   private static func createAudioPipeline () {
