@@ -220,6 +220,19 @@ class Volume: StoreSubscriber {
   /// the mixer.
   func postSetup () {
     (muted = muted)
+
+    // Announcing the balance the way assigning `muted` above announces the
+    // gain. Nothing else does: the gain path applies balance to the device and
+    // to the mixer without raising the event, and the assignments in `init`
+    // raise nothing at all.
+    //
+    // Which matters most when the output is changed from Toneka's own list.
+    // That route tears the engine down before building the replacement, so the
+    // `Volume` that would have seen the new balance arrive in the store is
+    // already gone by the time it does, and the one built afterwards receives
+    // it as its initial value rather than as a change. Without this the
+    // interface is left showing the balance of the device before the switch.
+    Volume.balanceChanged.emit(balance)
   }
 
   deinit {

@@ -41,15 +41,21 @@ export class VolumeService extends DataService {
     return this.request({ method: 'POST', endpoint: '/gain/boost/enabled', data: { enabled } })
   }
 
-  // Gain and the boost flag are the two the native side pushes back. It moves
-  // gain on its own whenever the volume keys are pressed, so a slider that
-  // only ever read it once would sit still while the sound changed.
+  // These three move without the interface asking. Gain follows the volume
+  // keys, balance is stored per output device so changing outputs replaces it,
+  // and the boost flag turns itself off when gain drops back under unity. A
+  // slider that only ever read its value once would sit still while the sound
+  // changed.
   onGainChanged (callback: GainChangedEventCallback) { this.on('/gain', callback) }
   offGainChanged (callback: GainChangedEventCallback) { this.off('/gain', callback) }
+
+  onBalanceChanged (callback: BalanceChangedEventCallback) { this.on('/balance', callback) }
+  offBalanceChanged (callback: BalanceChangedEventCallback) { this.off('/balance', callback) }
 
   onBoostEnabledChanged (callback: BoostEnabledChangedEventCallback) { this.on('/gain/boost/enabled', callback) }
   offBoostEnabledChanged (callback: BoostEnabledChangedEventCallback) { this.off('/gain/boost/enabled', callback) }
 }
 
 export type GainChangedEventCallback = (data: { gain: number }) => void
+export type BalanceChangedEventCallback = (data: { balance: number }) => void
 export type BoostEnabledChangedEventCallback = (data: { enabled: boolean }) => void

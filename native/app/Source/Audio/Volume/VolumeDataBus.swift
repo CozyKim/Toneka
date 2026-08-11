@@ -17,6 +17,7 @@ class VolumeDataBus: DataBus {
 
   var outputCreatedListener: EventListener<Void>?
   var gainChangedListener: EventListener<Double>?
+  var balanceChangedListener: EventListener<Double>?
   var boostEnabledChangedListener: EventListener<Bool>?
   
   required init (route: String, bridge: Bridge) {
@@ -86,6 +87,13 @@ class VolumeDataBus: DataBus {
 
     gainChangedListener = Volume.gainChanged.on { gain in
       self.send(to: "/gain", data: JSON([ "gain": gain ]))
+    }
+
+    // Balance moves without the interface asking for it: each output device
+    // carries its own, so changing outputs replaces the value the slider is
+    // showing.
+    balanceChangedListener = Volume.balanceChanged.on { balance in
+      self.send(to: "/balance", data: JSON([ "balance": balance ]))
     }
 
     boostEnabledChangedListener = Volume.boostEnabledChanged.on { enabled in
