@@ -255,12 +255,22 @@ class Application {
     Application.dispatchAction(VolumeAction.setGain(volume, false))
     Application.dispatchAction(VolumeAction.setMuted(muted))
     
-    // The tap leaves the user's device selection alone, so there is nothing to
-    // switch and nothing to wait for before building the pipeline.
-    ignoreEvents = false
-    createAudioPipeline()
-    startingPassthrough = false
-    completion?()
+    // The three actions above are delivered on the main queue rather than run
+    // here, so at this point the store still holds the volume of the device
+    // being left. Building the pipeline inline hands `Volume` that stale gain,
+    // and `Volume.init` writes whatever it reads straight to the new device --
+    // which is how a device with a volume of its own ends up wearing the one
+    // from the device before it. Queueing behind them keeps the order: store
+    // first, pipeline second.
+    //
+    // The tap leaves the user's device selection alone, so the store is the
+    // only thing there is to wait for.
+    DispatchQueue.main.async {
+      ignoreEvents = false
+      createAudioPipeline()
+      startingPassthrough = false
+      completion?()
+    }
   }
 
   private static func createAudioPipeline () {

@@ -25,7 +25,35 @@ class Volume: StoreSubscriber {
   var mixer = AVAudioMixerNode()
 
   // MARK: - Properties
-  var gain: Double = 1 {
+
+  /// Writes `volume` to the device, unless the device already holds it.
+  ///
+  /// Some devices answer a read with a different value than they were written:
+  /// a Bluetooth headset quantises to its own scale, so writing 0.3125 reads
+  /// back as 0.625 and writing that reads back as 0.3125 again. Every write
+  /// raises a volume-changed notification, which is read off the device and
+  /// dispatched as a new gain, which is written once more -- the write and the
+  /// notification keep calling each other and the volume audibly oscillates.
+  ///
+  /// The cycle only closes when a value that came *from* the device is written
+  /// back *to* it, and that write is always redundant. Dropping it leaves the
+  /// user's own volume changes untouched, because those do differ from what
+  /// the device currently holds.
+  private static func setDeviceVolume (_ device: AudioDevice, _ volume: Double) {
+    if let current = device.virtualMasterVolume(direction: .playback),
+       abs(Double(current) - volume) < 0.0001 {
+      return
+    }
+    device.setVirtualMasterVolume(Float32(volume), direction: .playback)
+  }
+
+  // None of the four below carry a declared default. A stored property with
+  // one is already initialised by the time `init` runs, so assigning it there
+  // counts as a change and fires the observer; without one the same assignment
+  // is the initialisation itself and stays silent. Every observer here ends in
+  // re-applying `gain`, so a default would mean writing it to the output
+  // device before `gain` holds the value this object was built for.
+  var gain: Double {
     didSet {
       let device: AudioDevice! = Application.selectedDevice
       let volumeSupported = device.outputVolumeSupported
@@ -34,7 +62,7 @@ class Volume: StoreSubscriber {
       if (gain <= 1) {
         if (volumeSupported) {
           Application.ignoreNextVolumeEvent = true
-          device.setVirtualMasterVolume(Float32(gain), direction: .playback)
+          Volume.setDeviceVolume(device, gain)
         } else {
           virtualVolume = gain
         }
@@ -52,7 +80,7 @@ class Volume: StoreSubscriber {
         }
         if (volumeSupported) {
           Application.ignoreNextVolumeEvent = true
-          device.setVirtualMasterVolume(1.0, direction: .playback)
+          Volume.setDeviceVolume(device, 1.0)
         }
         virtualVolume = gain.remap(inMin: 1, inMax: 2, outMin: 1, outMax: 6)
 
@@ -76,7 +104,7 @@ class Volume: StoreSubscriber {
     }
   }
   
-  var muted: Bool = false {
+  var muted: Bool {
     didSet {
       Application.selectedDevice?.mute = muted
       if (muted) {
@@ -88,7 +116,7 @@ class Volume: StoreSubscriber {
     }
   }
   
-  var balance: Double = 0 {
+  var balance: Double {
     didSet {
       if (balance > 1) {
         balance = 1
@@ -103,7 +131,7 @@ class Volume: StoreSubscriber {
     }
   }
 
-  var boostEnabled: Bool = true {
+  var boostEnabled: Bool {
     didSet {
       if (boostEnabled != oldValue) {
         Volume.boostEnabledChanged.emit(boostEnabled)
@@ -165,12 +193,13 @@ class Volume: StoreSubscriber {
   // MARK: - Initialization
   init () {
     Console.log("Creating Volume")
-    ({
-      self.boostEnabled = state.boostEnabled
-      self.balance = state.balance
-      self.gain = state.gain
-      self.muted = state.muted
-    })()
+    // The store directly rather than `state`: that one reads through `self`,
+    // which is off limits until every stored property below has a value.
+    let initial = Application.store.state.volume
+    boostEnabled = initial.boostEnabled
+    gain = initial.gain
+    balance = initial.balance
+    muted = initial.muted
     setupStateListener()
   }
   
@@ -180,9 +209,11 @@ class Volume: StoreSubscriber {
     }
   }
 
-  /// Re-applies the current state to `mixer`. Attaching a node to an
-  /// AVAudioEngine resets its outputVolume to 1, so whatever was applied while
-  /// building this object is gone by the time the graph is running.
+  /// Applies the current state to the output device and to `mixer`. Building
+  /// this object only records the state -- the observers that carry it outward
+  /// stay silent during initialisation -- and attaching a node to an
+  /// AVAudioEngine resets its outputVolume to 1 regardless, so the graph has to
+  /// exist before any of it means anything.
   ///
   /// Assigning `muted` covers both cases: muted silences the mixer outright,
   /// unmuted re-runs the gain path that decides between hardware volume and
