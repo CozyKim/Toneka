@@ -90,12 +90,13 @@ final class VolumeHUD {
     })
   }
 
-  /// Bottom centre of whichever screen has the mouse, matching where macOS
-  /// puts its own HUD.
+  /// Bottom centre of the screen holding the window that keyboard events go
+  /// to, which is where macOS puts its own HUD. The mouse pointer is not a
+  /// stand-in for that: the volume keys are keyboard input, so a pointer left
+  /// parked on a second display would drag the HUD off the display the user is
+  /// actually typing on.
   private func position () {
-    let mouse = NSEvent.mouseLocation
-    let screen = NSScreen.screens.first { NSPointInRect(mouse, $0.frame) } ?? NSScreen.main
-    guard let frame = screen?.frame else { return }
+    guard let frame = NSScreen.main?.frame else { return }
 
     window.setFrameOrigin(NSPoint(
       x: frame.midX - VolumeHUD.size.width / 2,
