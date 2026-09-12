@@ -65,6 +65,7 @@ final class VolumeHUD {
   /// - Parameters:
   ///   - gain: 0...1 is normal range, above 1 is Toneka's boost.
   func show (gain: Double, muted: Bool) {
+    Console.log("HUD show requested gain=\(gain) muted=\(muted)")
     DispatchQueue.main.async {
       self.icon.image = VolumeHUD.symbol(gain: gain, muted: muted)
       self.bar.gain = muted ? 0 : gain
@@ -73,20 +74,33 @@ final class VolumeHUD {
       self.dismissal?.cancel()
       self.window.animator().alphaValue = 1
       self.window.orderFrontRegardless()
+      Console.log("HUD ordered front", self.diagnostics())
 
       let dismissal = DispatchWorkItem { [weak self] in self?.fadeOut() }
       self.dismissal = dismissal
       DispatchQueue.main.asyncAfter(deadline: .now() + VolumeHUD.visibleFor, execute: dismissal)
+
+      // Sampled once the fade-in should be over. The animator steps alphaValue
+      // over time rather than setting it up front, so an animation that never
+      // ran shows up here as alpha still at 0 on an otherwise visible window.
+      DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
+        guard let self = self else { return }
+        Console.log("HUD settled", self.diagnostics())
+      }
     }
   }
 
   private func fadeOut () {
+    Console.log("HUD fade-out start alpha=\(window.alphaValue)")
     NSAnimationContext.runAnimationGroup({ context in
       context.duration = VolumeHUD.fadeFor
       window.animator().alphaValue = 0
     }, completionHandler: { [weak self] in
+      guard let self = self else { return }
       // A show() during the fade would have raised alpha again; don't hide it.
-      if self?.window.alphaValue == 0 { self?.window.orderOut(nil) }
+      let hide = self.window.alphaValue == 0
+      Console.log("HUD fade-out done alpha=\(self.window.alphaValue) orderOut=\(hide)")
+      if hide { self.window.orderOut(nil) }
     })
   }
 
@@ -96,12 +110,36 @@ final class VolumeHUD {
   /// parked on a second display would drag the HUD off the display the user is
   /// actually typing on.
   private func position () {
-    guard let frame = NSScreen.main?.frame else { return }
+    guard let frame = NSScreen.main?.frame else {
+      Console.log("HUD position skipped: NSScreen.main is nil, screens=\(VolumeHUD.describe(NSScreen.screens))")
+      return
+    }
 
     window.setFrameOrigin(NSPoint(
       x: frame.midX - VolumeHUD.size.width / 2,
       y: frame.minY + 140
     ))
+  }
+
+  /// Everything that decides whether the window is actually on screen, on
+  /// one line so the log reads as a sequence of states.
+  private func diagnostics () -> String {
+    let content = window.contentView.map {
+      "\(type(of: $0)) hidden=\($0.isHidden) frame=\(NSStringFromRect($0.frame))"
+    } ?? "nil"
+    return "visible=\(window.isVisible) alpha=\(window.alphaValue)"
+      + " frame=\(NSStringFromRect(window.frame))"
+      + " screen=\(window.screen?.localizedName ?? "none")"
+      + " occlusionVisible=\(window.occlusionState.contains(.visible))"
+      + " activeSpace=\(window.isOnActiveSpace) number=\(window.windowNumber)"
+      + " appHidden=\(NSApp.isHidden) appActive=\(NSApp.isActive)"
+      + " content=[\(content)]"
+      + " main=\(NSScreen.main?.localizedName ?? "nil")"
+      + " screens=\(VolumeHUD.describe(NSScreen.screens))"
+  }
+
+  private static func describe (_ screens: [NSScreen]) -> String {
+    return "[" + screens.map { "\($0.localizedName)=\(NSStringFromRect($0.frame))" }.joined(separator: ", ") + "]"
   }
 
   private static func symbol (gain: Double, muted: Bool) -> NSImage? {
