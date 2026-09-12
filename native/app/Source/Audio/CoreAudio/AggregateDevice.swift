@@ -42,7 +42,7 @@ final class AggregateDevice {
     var objectID = AudioObjectID(kAudioObjectUnknown)
     let status = AudioHardwareCreateAggregateDevice(composition as CFDictionary, &objectID)
     guard status == noErr, objectID != kAudioObjectUnknown else {
-      Console.log("Failed to create aggregate device: \(status)")
+      Console.error("Failed to create aggregate device: \(status)")
       return nil
     }
 
@@ -56,7 +56,7 @@ final class AggregateDevice {
   deinit {
     let status = AudioHardwareDestroyAggregateDevice(objectID)
     if status != noErr {
-      Console.log("Failed to destroy aggregate device \(objectID): \(status)")
+      Console.error("Failed to destroy aggregate device \(objectID): \(status)")
     }
   }
 }

@@ -81,7 +81,7 @@ class Settings: StoreSubscriber {
           try SMAppService.mainApp.unregister()
         }
       } catch {
-        Console.log("Could not \(newValue ? "register" : "unregister") the login item: \(error)")
+        Console.error("Could not \(newValue ? "register" : "unregister") the login item: \(error)")
       }
     }
   }

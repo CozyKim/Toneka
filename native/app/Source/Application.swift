@@ -293,13 +293,13 @@ class Application {
       equalizers: Equalizers(),
       volume: Volume()
     ) else {
-      Console.log("Failed to build the tap pipeline for \(device.name)")
+      Console.error("Failed to build the tap pipeline for \(device.name)")
       warnAudioCaptureUnavailable()
       return
     }
 
     guard engine.start() else {
-      Console.log("Failed to start the tap pipeline for \(device.name)")
+      Console.error("Failed to start the tap pipeline for \(device.name)")
       warnAudioCaptureUnavailable()
       return
     }

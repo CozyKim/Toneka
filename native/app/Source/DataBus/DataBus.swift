@@ -53,6 +53,8 @@ class DataBus {
           res.send(resp)
         }
       } catch {
+        // The interface only shows what it asks for; the file keeps the rest.
+        Console.error("\(event): \(error.localizedDescription)")
         res.error(error.localizedDescription)
       }
     }

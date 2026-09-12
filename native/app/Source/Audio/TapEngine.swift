@@ -71,7 +71,7 @@ final class TapEngine {
 
   init? (outputDevice: AudioDevice, equalizers: Equalizers, volume: Volume) {
     guard let outputUID = outputDevice.uid else {
-      Console.log("Output device has no UID, cannot build tap pipeline")
+      Console.error("Output device has no UID, cannot build tap pipeline")
       return nil
     }
 
@@ -133,7 +133,7 @@ final class TapEngine {
       standardFormatWithSampleRate: sampleRate,
       channels: tap.format.mChannelsPerFrame
     ) else {
-      Console.log("Could not derive render format from tap")
+      Console.error("Could not derive render format from tap")
       return false
     }
 
@@ -163,7 +163,7 @@ final class TapEngine {
       )
       try engine.start()
     } catch {
-      Console.log("Failed to start manual rendering engine: \(error)")
+      Console.error("Failed to start manual rendering engine: \(error)")
       return false
     }
 
@@ -173,7 +173,7 @@ final class TapEngine {
     )
 
     guard renderBuffer != nil else {
-      Console.log("Could not allocate render buffer")
+      Console.error("Could not allocate render buffer")
       return false
     }
 
@@ -203,14 +203,14 @@ final class TapEngine {
     }
 
     guard createStatus == noErr, let createdProcID = procID else {
-      Console.log("Failed to create IOProc: \(createStatus)")
+      Console.error("Failed to create IOProc: \(createStatus)")
       return false
     }
 
     let startStatus = AudioDeviceStart(aggregate.objectID, createdProcID)
     guard startStatus == noErr else {
       AudioDeviceDestroyIOProcID(aggregate.objectID, createdProcID)
-      Console.log("Failed to start aggregate device: \(startStatus)")
+      Console.error("Failed to start aggregate device: \(startStatus)")
       return false
     }
 
