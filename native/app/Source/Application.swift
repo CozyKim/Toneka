@@ -293,13 +293,13 @@ class Application {
       equalizers: Equalizers(),
       volume: Volume()
     ) else {
-      Console.log("Failed to build the tap pipeline for \(device.name)")
+      Console.error("Failed to build the tap pipeline for \(device.name)")
       warnAudioCaptureUnavailable()
       return
     }
 
     guard engine.start() else {
-      Console.log("Failed to start the tap pipeline for \(device.name)")
+      Console.error("Failed to start the tap pipeline for \(device.name)")
       warnAudioCaptureUnavailable()
       return
     }
@@ -402,6 +402,8 @@ class Application {
   }
   
   static func volumeChangeButtonPressed (direction: VolumeChangeDirection, quarterStep: Bool = false) {
+    Console.log("volume key \(direction.rawValue) ignoreEvents=\(ignoreEvents) engine=\(tapEngine != nil)"
+      + " hwVolume=\(selectedDevice?.outputVolumeSupported ?? false) gain=\(tapEngine?.volume.gain ?? -1)")
     guard !ignoreEvents, let engine = tapEngine else {
       return
     }
@@ -446,6 +448,8 @@ class Application {
   }
 
   static func muteButtonPressed () {
+    Console.log("mute key ignoreEvents=\(ignoreEvents) engine=\(tapEngine != nil)"
+      + " hwVolume=\(selectedDevice?.outputVolumeSupported ?? false)")
     guard !ignoreEvents, let engine = tapEngine else { return }
 
     // Same split as the volume keys: a device with a mute control is handled

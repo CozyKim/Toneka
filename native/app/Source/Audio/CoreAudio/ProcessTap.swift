@@ -37,7 +37,7 @@ final class ProcessTap {
     var objectID = AudioObjectID(kAudioObjectUnknown)
     let status = AudioHardwareCreateProcessTap(description, &objectID)
     guard status == noErr, objectID != kAudioObjectUnknown else {
-      Console.log("Failed to create process tap: \(status)")
+      Console.error("Failed to create process tap: \(status)")
       return nil
     }
 
@@ -45,7 +45,7 @@ final class ProcessTap {
       objectID, CAProperty.address(kAudioTapPropertyUID)
     ) else {
       AudioHardwareDestroyProcessTap(objectID)
-      Console.log("Failed to read process tap UID")
+      Console.error("Failed to read process tap UID")
       return nil
     }
 
@@ -55,7 +55,7 @@ final class ProcessTap {
       default: AudioStreamBasicDescription()
     ), format.mSampleRate > 0 else {
       AudioHardwareDestroyProcessTap(objectID)
-      Console.log("Failed to read process tap format")
+      Console.error("Failed to read process tap format")
       return nil
     }
 
@@ -79,7 +79,7 @@ final class ProcessTap {
   deinit {
     let status = AudioHardwareDestroyProcessTap(objectID)
     if status != noErr {
-      Console.log("Failed to destroy process tap \(objectID): \(status)")
+      Console.error("Failed to destroy process tap \(objectID): \(status)")
     }
   }
 }

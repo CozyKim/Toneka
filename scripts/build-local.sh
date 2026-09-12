@@ -2,8 +2,12 @@
 #
 # Builds the release configuration and installs it to /Applications.
 #
-# The build is ad-hoc signed, so it runs on this machine but Gatekeeper will
-# refuse it anywhere it arrives with a quarantine flag -- a download, say.
+# The build is signed with SIGNING_IDENTITY when the keychain holds it and
+# ad-hoc otherwise. Either way it runs on this machine only: Gatekeeper
+# refuses both anywhere the app arrives with a quarantine flag -- a download,
+# say. The difference is that an ad-hoc signature is a hash of the build, so
+# each rebuild is a new app to macOS and its permission grants (the audio
+# capture one) start over, whereas a certificate keeps the identity fixed.
 
 set -euo pipefail
 
@@ -29,6 +33,16 @@ elif [ "$(node --version 2>/dev/null)" != "v24.18.1" ]; then
 fi
 ( cd "$ROOT/ui" && yarn build )
 
+# `security find-identity -v` lists only certificates the keychain trusts,
+# and a self-signed one is not, so this looks through the unfiltered list.
+SIGNING_IDENTITY="${SIGNING_IDENTITY:-TypelessLike Local Dev}"
+if security find-identity 2>/dev/null | grep -q "\"$SIGNING_IDENTITY\""; then
+  echo "==> Signing as $SIGNING_IDENTITY"
+else
+  echo "==> No '$SIGNING_IDENTITY' in the keychain, signing ad-hoc"
+  SIGNING_IDENTITY="-"
+fi
+
 echo "==> Building app"
 xcodebuild \
   -workspace "$ROOT/native/Toneka.xcworkspace" \
@@ -36,6 +50,7 @@ xcodebuild \
   -configuration Release \
   -destination 'platform=macOS,arch=arm64' \
   -quiet \
+  CODE_SIGN_IDENTITY="$SIGNING_IDENTITY" \
   build
 
 # See the note in run-debug.sh: the newest match under DerivedData can be a
