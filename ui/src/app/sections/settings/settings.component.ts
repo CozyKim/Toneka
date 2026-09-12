@@ -1,10 +1,12 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, OnInit, Output, computed, inject, signal } from '@angular/core'
 
+import { ButtonComponent } from '../../../lib/button/button.component'
 import { CheckboxComponent } from '../../../lib/checkbox/checkbox.component'
 import { ContainerComponent } from '../../../lib/container/container.component'
 import { ClickedOutsideDirective } from '../../../lib/directives/clicked-outside.directive'
 import { DropdownComponent } from '../../../lib/dropdown/dropdown.component'
 import { KnobControlStyle } from '../../../lib/knob/knob.component'
+import { ApplicationService } from '../../services/app.service'
 import { IconMode, SettingsService } from '../../services/settings.service'
 import { Skin, SkinNames, SkinService, Skins } from '../../services/skin.service'
 import { UIService } from '../../services/ui.service'
@@ -28,7 +30,7 @@ const SKINS: Array<Choice<Skin>> = Skins.map(skin => ({ id: skin, name: SkinName
 @Component({
   selector: 'eqm-settings',
   standalone: true,
-  imports: [ CheckboxComponent, ContainerComponent, ClickedOutsideDirective, DropdownComponent ],
+  imports: [ ButtonComponent, CheckboxComponent, ContainerComponent, ClickedOutsideDirective, DropdownComponent ],
   template: `
     <eqm-container class="sheet" (clickedOutside)="closed.emit()">
       <h2>설정</h2>
@@ -85,6 +87,13 @@ const SKINS: Array<Choice<Skin>> = Skins.map(skin => ({ id: skin, name: SkinName
           (selectedItemChange)="setSkin($event)">
         </eqm-dropdown>
       </div>
+
+      <!-- Opens the file rather than showing it here: a log wants more room
+           than this window has. -->
+      <div class="row">
+        <span class="name">로그 파일</span>
+        <eqm-button type="narrow" (pressed)="openLog()">열기</eqm-button>
+      </div>
     </eqm-container>
   `,
   styles: [`
@@ -128,6 +137,7 @@ const SKINS: Array<Choice<Skin>> = Skins.map(skin => ({ id: skin, name: SkinName
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SettingsComponent implements OnInit {
+  private readonly app = inject(ApplicationService)
   private readonly settings = inject(SettingsService)
   private readonly ui = inject(UIService)
   private readonly skinService = inject(SkinService)
@@ -181,5 +191,9 @@ export class SettingsComponent implements OnInit {
 
   setSkin (skin: Choice<Skin>) {
     void this.skinService.set(skin.id)
+  }
+
+  openLog () {
+    void this.app.openLog()
   }
 }

@@ -89,6 +89,21 @@ class ApplicationDataBus: DataBus {
       return "Updates are not available in this build."
     }
 
+    self.on(.GET, "/log/open") { _, _ in
+      NSWorkspace.shared.open(Console.fileURL)
+      return "Log opened"
+    }
+
+    // Errors raised in the interface land in the same file as native ones,
+    // in order, instead of staying behind in the web view's console.
+    self.on(.POST, "/log/error") { data, _ in
+      guard let message = data["message"] as? String else {
+        throw "Invalid 'message' parameter, must be a string"
+      }
+      Console.error("UI:", message)
+      return "Logged"
+    }
+
     self.on(.GET, "/enabled") { _, _ in
       return [ "enabled": Application.store.state.enabled ]
     }

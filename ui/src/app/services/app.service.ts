@@ -96,6 +96,14 @@ export class ApplicationService extends DataService {
     return this.request({ method: 'GET', endpoint: '/update' })
   }
 
+  openLog () {
+    return this.request({ method: 'GET', endpoint: '/log/open' })
+  }
+
+  reportError (message: string) {
+    return this.request({ method: 'POST', endpoint: '/log/error', data: { message } })
+  }
+
   async getEnabled (): Promise<boolean> {
     const { enabled } = await this.request({ method: 'GET', endpoint: '/enabled' })
     this.enabled = enabled
